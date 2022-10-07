@@ -7,4 +7,5 @@ public interface Unit {
     Point getGoal();
     void setLocation(Point location);
     int getSpeed();
+    Unit copy();
 }

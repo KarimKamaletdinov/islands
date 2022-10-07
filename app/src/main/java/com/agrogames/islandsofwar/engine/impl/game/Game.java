@@ -30,12 +30,12 @@ public class Game {
 
         GameObjectProvider provider1 = new GameObjectProvider(a1, a2);
         for (GameObject gameObject : a1) {
-            gameObject.update(futureMap, provider1);
+            gameObject.update(provider1);
         }
 
         GameObjectProvider provider2 = new GameObjectProvider(a2, a1);
         for (GameObject gameObject : a2) {
-            gameObject.update(futureMap, provider2);
+            gameObject.update(provider2);
         }
     }
 

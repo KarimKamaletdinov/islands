@@ -10,5 +10,5 @@ public interface GameObject extends MapObject {
     UUID getId();
     IntValue getHealth();
     void loseHealth(int lost);
-    void update(FutureMap map, GameObjectProvider provider);
+    void update(GameObjectProvider provider);
 }

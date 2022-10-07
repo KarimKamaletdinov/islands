@@ -17,7 +17,8 @@ public class FutureMapFactory {
         for (MapObject object : objects) {
             addTerritory(map, 0, object.GetTerritory());
 
-            if(object instanceof MovableObject movableObject){
+            if(object instanceof MovableObject){
+                MovableObject movableObject = (MovableObject) object;
                 int tick = 1;
                 while (true){
                     Cell[] territory = movableObject.GetTerritory(tick);
