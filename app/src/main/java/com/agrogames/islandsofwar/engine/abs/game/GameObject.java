@@ -8,6 +8,7 @@ import java.util.UUID;
 
 public interface GameObject extends MapObject {
     UUID getId();
+    GameObjectType getType();
     IntValue getHealth();
     void loseHealth(int lost);
     void update(GameObjectProvider provider);

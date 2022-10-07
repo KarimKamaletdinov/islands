@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.view.WindowManager;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
-import com.agrogames.islandsofwar.graphics.gl.GLSurfaceView;
+import com.agrogames.islandsofwar.graphics.impl.gl.GLSurfaceView;
 import com.agrogames.islandsofwar.rendermanager.Manager;
 
 public class MainActivity extends AppCompatActivity {

@@ -1,13 +1,26 @@
 package com.agrogames.islandsofwar.rendermanager;
 
-import com.agrogames.islandsofwar.graphics.abstractions.DrawTextureService;
-import com.agrogames.islandsofwar.graphics.abstractions.RenderManager;
-import com.agrogames.islandsofwar.graphics.abstractions.TextureBitmap;
+import com.agrogames.islandsofwar.engine.abs.Engine;
+import com.agrogames.islandsofwar.engine.abs.game.GameObject;
+import com.agrogames.islandsofwar.engine.impl.unit.UnitFactory;
+import com.agrogames.islandsofwar.graphics.abs.TextureDrawer;
+import com.agrogames.islandsofwar.graphics.abs.RenderManager;
+import com.agrogames.islandsofwar.render.impl.Renderer;
 
 public class Manager implements RenderManager {
+    private final Engine engine;
+    private final Renderer renderer;
+
+    public Manager() {
+        this.engine = new com.agrogames.islandsofwar.engine.impl.Engine(new GameObject[]{
+                UnitFactory.Tank(1, 1)
+        }, new GameObject[]{});
+        this.renderer = new Renderer(new Presenter(this.engine));
+    }
+
     @Override
-    public void Render(DrawTextureService service) {
-        service.DrawTexture(5, 5, TextureBitmap.Car, 5, 5, 0);
-        service.DrawTexture(10, 5, TextureBitmap.Car, 5, 5, 2);
+    public void Render(TextureDrawer drawer) {
+        engine.update(1);
+        renderer.render(drawer);
     }
 }

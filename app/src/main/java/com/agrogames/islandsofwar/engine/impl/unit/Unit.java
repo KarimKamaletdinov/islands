@@ -3,25 +3,32 @@ package com.agrogames.islandsofwar.engine.impl.unit;
 import com.agrogames.islandsofwar.engine.abs.common.Cell;
 import com.agrogames.islandsofwar.engine.abs.common.Point;
 import com.agrogames.islandsofwar.engine.abs.game.GameObject;
+import com.agrogames.islandsofwar.engine.abs.game.GameObjectType;
 import com.agrogames.islandsofwar.engine.abs.game.MovableObject;
 import com.agrogames.islandsofwar.engine.abs.gamevalue.IntValue;
 
 import java.util.UUID;
 
 abstract class Unit implements GameObject, MovableObject {
+    private final UUID id;
+    private final GameObjectType type;
     protected final IntValue health;
     protected final int speed;
-    private final UUID id;
     protected Point location;
     protected Cell goal = null;
 
-    protected Unit(UUID id, Point location, int health, int speed) {
-        this.health = new IntValue(health);
+    protected Unit(UUID id, GameObjectType type, Point location, int health, int speed) {
         this.id = id;
+        this.type = type;
+        this.health = new IntValue(health);
         this.location = location;
         this.speed = speed;
     }
 
+    @Override
+    public GameObjectType getType() {
+        return type;
+    }
 
     @Override
     public UUID getId() {

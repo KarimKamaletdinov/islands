@@ -1,4 +1,4 @@
-package com.agrogames.islandsofwar.graphics.gl;
+package com.agrogames.islandsofwar.graphics.impl.gl;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
@@ -6,9 +6,9 @@ import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
-import com.agrogames.islandsofwar.graphics.abstractions.RenderManager;
-import com.agrogames.islandsofwar.graphics.bitmap.BitmapProvider;
-import com.agrogames.islandsofwar.graphics.drawtexture.DrawTextureService;
+import com.agrogames.islandsofwar.graphics.abs.RenderManager;
+import com.agrogames.islandsofwar.graphics.impl.bitmap.BitmapProvider;
+import com.agrogames.islandsofwar.graphics.impl.drawtexture.TextureDrawer;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -25,11 +25,11 @@ public class GLRenderer implements GLSurfaceView.Renderer {
     private String fragmentShaderCode;
 
     private final RenderManager manager;
-    private final DrawTextureService drawTextureService;
+    private final TextureDrawer drawTextureService;
 
     public GLRenderer(Context context, RenderManager manager) {
         this.manager = manager;
-        drawTextureService = new DrawTextureService(new BitmapProvider(context));
+        drawTextureService = new TextureDrawer(new BitmapProvider(context));
         try {
             vertexShaderCode = new Scanner(context.getAssets().open("shaders/vertex.vert")).useDelimiter("\\A").next();
             fragmentShaderCode = new Scanner(context.getAssets().open("shaders/fragment.frag")).useDelimiter("\\A").next();

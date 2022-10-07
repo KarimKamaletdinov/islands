@@ -1,4 +1,4 @@
-package com.agrogames.islandsofwar.graphics.gl;
+package com.agrogames.islandsofwar.graphics.impl.gl;
 
 import java.nio.Buffer;
 import java.nio.ByteBuffer;

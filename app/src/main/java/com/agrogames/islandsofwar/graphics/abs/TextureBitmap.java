@@ -1,7 +1,9 @@
-package com.agrogames.islandsofwar.graphics.abstractions;
+package com.agrogames.islandsofwar.graphics.abs;
 
 public enum TextureBitmap {
-    Car("car.png");
+    Car("car.png"),
+    Error("error.png"),
+    Background("background.png");
 
     public final String name;
 

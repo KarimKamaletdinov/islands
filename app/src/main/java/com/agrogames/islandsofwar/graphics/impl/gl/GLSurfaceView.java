@@ -1,6 +1,6 @@
-package com.agrogames.islandsofwar.graphics.gl;
+package com.agrogames.islandsofwar.graphics.impl.gl;
 import android.content.Context;
-import com.agrogames.islandsofwar.graphics.abstractions.RenderManager;
+import com.agrogames.islandsofwar.graphics.abs.RenderManager;
 
 public class GLSurfaceView extends android.opengl.GLSurfaceView {
 

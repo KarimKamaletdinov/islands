@@ -1,4 +1,4 @@
-package com.agrogames.islandsofwar.graphics.gl;
+package com.agrogames.islandsofwar.graphics.impl.gl;
 
 import android.graphics.Bitmap;
 import android.opengl.GLES20;

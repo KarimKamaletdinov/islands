@@ -4,12 +4,13 @@ import com.agrogames.islandsofwar.engine.abs.common.Cell;
 import com.agrogames.islandsofwar.engine.abs.common.Point;
 import com.agrogames.islandsofwar.engine.abs.game.GameObject;
 import com.agrogames.islandsofwar.engine.abs.game.GameObjectProvider;
+import com.agrogames.islandsofwar.engine.abs.game.GameObjectType;
 
 import java.util.UUID;
 
-class LandUnit extends Unit{
-    public LandUnit(UUID id, Point location, int health, int speed) {
-        super(id, location, health, speed);
+class LandUnit extends Unit {
+    public LandUnit(UUID id, GameObjectType type, Point location, int health, int speed) {
+        super(id, type, location, health, speed);
     }
 
     @Override
