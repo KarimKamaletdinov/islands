@@ -8,6 +8,6 @@ import java.util.UUID;
 
 public class UnitFactory {
     public static GameObject Tank(int x, int y){
-        return new LandUnit(UUID.randomUUID(), GameObjectType.Tank, new Point(x, y), 10, 10);
+        return new LandUnit(UUID.randomUUID(), GameObjectType.Tank, new Point(x, y), 10, 1f, 2f);
     }
 }

@@ -1,7 +1,8 @@
 package com.agrogames.islandsofwar.graphics.abs;
 
 public enum TextureBitmap {
-    Car("car.png"),
+    Tank("tank.png"),
+    TankBullet("tank-bullet.png"),
     Error("error.png"),
     Background("background.png");
 

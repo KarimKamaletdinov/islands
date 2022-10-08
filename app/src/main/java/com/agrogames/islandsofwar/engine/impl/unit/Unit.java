@@ -13,16 +13,19 @@ abstract class Unit implements GameObject, MovableObject {
     private final UUID id;
     private final GameObjectType type;
     protected final IntValue health;
-    protected final int speed;
+    protected final float speed;
+    protected final float reload;
     protected Point location;
     protected Cell goal = null;
+    protected float rotation;
 
-    protected Unit(UUID id, GameObjectType type, Point location, int health, int speed) {
+    protected Unit(UUID id, GameObjectType type, Point location, int health, float speed, float reload) {
         this.id = id;
         this.type = type;
         this.health = new IntValue(health);
         this.location = location;
         this.speed = speed;
+        this.reload = reload;
     }
 
     @Override
@@ -45,7 +48,26 @@ abstract class Unit implements GameObject, MovableObject {
         health.current -= lost;
     }
 
-    public void setGoal(Cell goal) {this.goal = goal;}
+    @Override
+    public Point getLocation() {
+        return location;
+    }
+
+    @Override
+    public float getRotation() {
+        return rotation;
+    }
+
+    @Override
+    public void setGoal(Cell goal) {
+        this.goal = goal;
+        this.rotation = (float) Math.atan(
+                ((double) goal.y - (double) location.y) /
+                ((double) goal.x - (double) location.x));
+        if (goal.x  < location.x){
+            rotation += Math.PI;
+        }
+    }
 
     @Override
     public Cell[] GetTerritory() {

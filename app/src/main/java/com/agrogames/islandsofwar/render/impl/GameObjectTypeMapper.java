@@ -4,10 +4,12 @@ import com.agrogames.islandsofwar.engine.abs.game.GameObjectType;
 import com.agrogames.islandsofwar.graphics.abs.TextureBitmap;
 
 public class GameObjectTypeMapper {
-    public static TextureBitmap convert(GameObjectType type, int index){
+    public static TextureBitmap convert(GameObjectType type){
         switch (type){
             case Tank:
-                return TextureBitmap.Car;
+                return TextureBitmap.Tank;
+            case TankBullet:
+                return TextureBitmap.TankBullet;
             default:
                 return TextureBitmap.Error;
         }

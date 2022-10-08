@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
 
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        android.opengl.GLSurfaceView gLView = new GLSurfaceView(this, new Manager());
+        android.opengl.GLSurfaceView gLView = new GLSurfaceView(this, new Manager(this));
         setContentView(gLView);
 
         View decorView = getWindow().getDecorView();

@@ -51,7 +51,7 @@ public class GLRenderer implements GLSurfaceView.Renderer {
         GLES20.glAttachShader(mProgram, vertexShader);
         GLES20.glAttachShader(mProgram, fragmentShader);
         GLES20.glLinkProgram(mProgram);
-        GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        GLES20.glClearColor(95 / 255f, 177 / 255f, 222 / 255f, 1.0f);
     }
 
     public void onDrawFrame(GL10 unused) {
