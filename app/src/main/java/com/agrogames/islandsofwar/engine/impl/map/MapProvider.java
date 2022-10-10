@@ -1,18 +1,18 @@
-package com.agrogames.islandsofwar.engine.impl.game;
+package com.agrogames.islandsofwar.engine.impl.map;
 
-import com.agrogames.islandsofwar.engine.abs.game.GameObject;
+import com.agrogames.islandsofwar.engine.abs.unit.Unit;
 import com.agrogames.islandsofwar.engine.abs.map.MapObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class GameObjectProvider implements com.agrogames.islandsofwar.engine.abs.game.GameObjectProvider {
-    private final GameObject[] our;
-    private final GameObject[] enemies;
+public class MapProvider implements com.agrogames.islandsofwar.engine.abs.map.MapProvider {
+    private final Unit[] our;
+    private final Unit[] enemies;
     private final MapObject[] all;
 
-    public GameObjectProvider(GameObject[] our, GameObject[] enemies, MapObject[] mapObjects) {
+    public MapProvider(Unit[] our, Unit[] enemies, MapObject[] mapObjects) {
         this.our = our;
         this.enemies = enemies;
         List<MapObject> all = new ArrayList<>(Arrays.asList(our));
@@ -22,12 +22,12 @@ public class GameObjectProvider implements com.agrogames.islandsofwar.engine.abs
     }
 
     @Override
-    public GameObject[] getOur() {
+    public Unit[] getOur() {
         return our;
     }
 
     @Override
-    public GameObject[] getEnemies() {
+    public Unit[] getEnemies() {
         return enemies;
     }
 

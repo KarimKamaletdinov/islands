@@ -23,4 +23,11 @@ public class Point {
     public int hashCode() {
         return Objects.hash(x, y);
     }
+
+    public Point rotate(float angle){
+        return new Point(
+                (float) ((double)x * Math.cos(angle) - (double) y * Math.sin(angle)),
+                (float) ((double)x * Math.sin(angle) + (double) y * Math.cos(angle))
+        );
+    }
 }

@@ -1,11 +1,11 @@
 package com.agrogames.islandsofwar.render.abs;
 
-import com.agrogames.islandsofwar.engine.abs.game.Bullet;
-import com.agrogames.islandsofwar.engine.abs.game.GameObject;
+import com.agrogames.islandsofwar.engine.abs.bullet.Bullet;
+import com.agrogames.islandsofwar.engine.abs.unit.Unit;
 
 public interface Presenter {
-    GameObject[] getProtectors();
-    GameObject[] getAttackers();
+    Unit[] getProtectors();
+    Unit[] getAttackers();
     Bullet[] getProtectorsBullets();
     Bullet[] getAttackersBullets();
 }

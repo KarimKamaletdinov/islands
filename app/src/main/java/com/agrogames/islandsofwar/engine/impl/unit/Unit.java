@@ -2,40 +2,35 @@ package com.agrogames.islandsofwar.engine.impl.unit;
 
 import com.agrogames.islandsofwar.engine.abs.common.Cell;
 import com.agrogames.islandsofwar.engine.abs.common.Point;
-import com.agrogames.islandsofwar.engine.abs.game.GameObject;
-import com.agrogames.islandsofwar.engine.abs.game.GameObjectType;
-import com.agrogames.islandsofwar.engine.abs.game.MovableObject;
+import com.agrogames.islandsofwar.engine.abs.unit.UnitType;
+import com.agrogames.islandsofwar.engine.abs.movable.MovableObject;
+import com.agrogames.islandsofwar.engine.abs.weapon.Weapon;
 import com.agrogames.islandsofwar.engine.abs.gamevalue.IntValue;
 
-import java.util.UUID;
-
-abstract class Unit implements GameObject, MovableObject {
-    private final UUID id;
-    private final GameObjectType type;
+abstract class Unit implements com.agrogames.islandsofwar.engine.abs.unit.Unit, MovableObject {
+    private final UnitType type;
     protected final IntValue health;
     protected final float speed;
-    protected final float reload;
     protected Point location;
     protected Cell goal = null;
     protected float rotation;
+    private final Weapon[] weapons;
 
-    protected Unit(UUID id, GameObjectType type, Point location, int health, float speed, float reload) {
-        this.id = id;
+    protected Unit( UnitType type, Point location, Weapon[] weapons, int health, float speed) {
         this.type = type;
         this.health = new IntValue(health);
+        this.weapons = weapons;
         this.location = location;
         this.speed = speed;
-        this.reload = reload;
+
+        for (Weapon weapon: weapons){
+            weapon.setOwner(this);
+        }
     }
 
     @Override
-    public GameObjectType getType() {
+    public UnitType getType() {
         return type;
-    }
-
-    @Override
-    public UUID getId() {
-        return id;
     }
 
     @Override
@@ -53,6 +48,10 @@ abstract class Unit implements GameObject, MovableObject {
         return location;
     }
 
+    public Weapon[] getWeapons(){
+        return weapons;
+    }
+
     @Override
     public float getRotation() {
         return rotation;
@@ -61,7 +60,7 @@ abstract class Unit implements GameObject, MovableObject {
     @Override
     public void setGoal(Cell goal) {
         this.goal = goal;
-        this.rotation = (float) Math.atan(
+        rotation = (float) Math.atan(
                 ((double) goal.y - (double) location.y) /
                 ((double) goal.x - (double) location.x));
         if (goal.x  < location.x){

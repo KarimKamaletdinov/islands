@@ -1,49 +1,41 @@
-package com.agrogames.islandsofwar.engine.impl.unit;
+package com.agrogames.islandsofwar.engine.impl.bullet;
 
+import com.agrogames.islandsofwar.engine.abs.bullet.BulletType;
 import com.agrogames.islandsofwar.engine.abs.common.Cell;
 import com.agrogames.islandsofwar.engine.abs.common.Point;
-import com.agrogames.islandsofwar.engine.abs.game.BulletAdder;
-import com.agrogames.islandsofwar.engine.abs.game.GameObject;
-import com.agrogames.islandsofwar.engine.abs.game.GameObjectProvider;
-import com.agrogames.islandsofwar.engine.abs.game.GameObjectType;
-import com.agrogames.islandsofwar.engine.abs.gamevalue.IntValue;
+import com.agrogames.islandsofwar.engine.abs.bullet.BulletAdder;
+import com.agrogames.islandsofwar.engine.abs.map.MapObject;
+import com.agrogames.islandsofwar.engine.abs.unit.Unit;
+import com.agrogames.islandsofwar.engine.abs.map.MapProvider;
 
-import java.util.UUID;
-
-public class Bullet implements com.agrogames.islandsofwar.engine.abs.game.Bullet {
-    private final UUID id;
-    private final GameObjectType type;
+class Bullet implements com.agrogames.islandsofwar.engine.abs.bullet.Bullet {
+    private final BulletType type;
     private Point location;
     private float rotation;
     private final float speed;
     private final int power;
     private final float longRange;
-    private final IntValue health;
+    private final Unit owner;
+    private boolean isFlying = true;
     private float flewDistance;
 
-    public Bullet(GameObjectType type, Point location, int speed, int power, float longRange) {
+    public Bullet(BulletType type, Point location, int speed, int power, float longRange, Unit owner) {
         this.longRange = longRange;
-        this.id = UUID.randomUUID();
         this.type = type;
         this.location = location;
         this.speed = speed;
         this.power = power;
-        this.health = new IntValue(1);
+        this.owner = owner;
     }
 
     @Override
-    public UUID getId() {
-        return id;
-    }
-
-    @Override
-    public GameObjectType getType() {
+    public BulletType getType() {
         return type;
     }
 
     @Override
-    public IntValue getHealth() {
-        return health;
+    public boolean hasStopped() {
+        return !isFlying;
     }
 
     @Override
@@ -57,19 +49,15 @@ public class Bullet implements com.agrogames.islandsofwar.engine.abs.game.Bullet
     }
 
     @Override
-    public void loseHealth(int lost) {
-    }
-
-    @Override
-    public void update(GameObjectProvider provider, BulletAdder bulletAdder, float deltaTime) {
+    public void update(MapProvider provider, BulletAdder bulletAdder, float deltaTime) {
         move(deltaTime);
-        GameObject enemy = enemyAt(new Cell(location), provider.getEnemies());
+        MapObject enemy = enemyAt(new Cell(location), provider.getAll());
         if(enemy != null){
-            enemy.loseHealth(power);
-            health.current = 0;
+            if(enemy instanceof Unit) ((Unit)enemy).loseHealth(power);
+            isFlying = false;
         }
         if(flewDistance >= longRange){
-            health.current = 0;
+            isFlying = false;
         }
     }
 
@@ -80,9 +68,9 @@ public class Bullet implements com.agrogames.islandsofwar.engine.abs.game.Bullet
         flewDistance += speed * deltaTime;
     }
 
-    private GameObject enemyAt(Cell cell, GameObject[] enemies){
-        for (GameObject object : enemies){
-            if(object != this){
+    private MapObject enemyAt(Cell cell, MapObject[] enemies){
+        for (MapObject object : enemies){
+            if(object != owner){
                 Cell[] territory = object.GetTerritory();
                 for (Cell c : territory){
                     if(cell.equals(c)){
@@ -92,11 +80,6 @@ public class Bullet implements com.agrogames.islandsofwar.engine.abs.game.Bullet
             }
         }
         return null;
-    }
-
-    @Override
-    public Cell[] GetTerritory() {
-        return new Cell[0];
     }
 
     @Override

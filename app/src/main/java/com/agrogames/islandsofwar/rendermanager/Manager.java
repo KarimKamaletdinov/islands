@@ -2,14 +2,13 @@ package com.agrogames.islandsofwar.rendermanager;
 
 import android.content.Context;
 import android.os.Build;
-import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
 import com.agrogames.islandsofwar.engine.abs.Engine;
 import com.agrogames.islandsofwar.engine.abs.common.Cell;
-import com.agrogames.islandsofwar.engine.abs.game.GameObject;
-import com.agrogames.islandsofwar.engine.abs.game.MovableObject;
+import com.agrogames.islandsofwar.engine.abs.unit.Unit;
+import com.agrogames.islandsofwar.engine.abs.movable.MovableObject;
 import com.agrogames.islandsofwar.engine.impl.unit.UnitFactory;
 import com.agrogames.islandsofwar.graphics.abs.TextureDrawer;
 import com.agrogames.islandsofwar.graphics.abs.RenderManager;
@@ -18,7 +17,6 @@ import com.agrogames.islandsofwar.render.impl.Renderer;
 
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
-import java.util.UUID;
 
 public class Manager implements RenderManager {
     private final Engine engine;
@@ -26,15 +24,13 @@ public class Manager implements RenderManager {
     private LocalTime previous;
 
     public Manager(Context context) {
-        GameObject tank1 = UnitFactory.Tank(5, 5);
-        GameObject tank2 = UnitFactory.Tank(10, 5);
-        GameObject tank3 = UnitFactory.Tank(10, 4);
-        ((MovableObject)tank1).setGoal(new Cell(10, 1));
-        ((MovableObject)tank2).setGoal(new Cell(5, 1));
-        this.engine = new com.agrogames.islandsofwar.engine.impl.Engine(new GameObject[]{
+        Unit tank1 = UnitFactory.Tank(5, 4);
+        Unit tank2 = UnitFactory.Tank(6, 4);
+        Unit tank3 = UnitFactory.Tank(10, 4);
+        this.engine = new com.agrogames.islandsofwar.engine.impl.Engine(new Unit[]{
                 tank1,
                 tank2,
-        }, new GameObject[]{
+        }, new Unit[]{
                 tank3,
         }, Map.fromAssets(context, "map1.txt").getMap());
         this.renderer = new Renderer(new Presenter(this.engine));

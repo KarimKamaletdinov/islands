@@ -2,36 +2,24 @@ package com.agrogames.islandsofwar.engine.impl.unit;
 
 import com.agrogames.islandsofwar.engine.abs.common.Cell;
 import com.agrogames.islandsofwar.engine.abs.common.Point;
-import com.agrogames.islandsofwar.engine.abs.game.BulletAdder;
-import com.agrogames.islandsofwar.engine.abs.game.GameObject;
-import com.agrogames.islandsofwar.engine.abs.game.GameObjectProvider;
-import com.agrogames.islandsofwar.engine.abs.game.GameObjectType;
+import com.agrogames.islandsofwar.engine.abs.bullet.BulletAdder;
+import com.agrogames.islandsofwar.engine.abs.map.MapProvider;
+import com.agrogames.islandsofwar.engine.abs.unit.UnitType;
+import com.agrogames.islandsofwar.engine.abs.weapon.Weapon;
 import com.agrogames.islandsofwar.engine.abs.map.MapObject;
 
 import java.util.UUID;
 
 class LandUnit extends Unit {
-    private float fromLastReload = 0;
-
-    public LandUnit(UUID id, GameObjectType type, Point location, int health, float speed, float reload) {
-        super(id, type, location, health, speed, reload);
+    public LandUnit(UnitType type, Point location, Weapon[] weapons, int health, float speed) {
+        super(type, location, weapons, health, speed);
     }
 
     @Override
-    public void update(GameObjectProvider provider, BulletAdder bulletAdder, float deltaTime) {
+    public void update(MapProvider provider, BulletAdder bulletAdder, float deltaTime) {
         move(provider.getAll(), deltaTime);
-        shoot(provider.getEnemies(), bulletAdder, deltaTime);
-    }
-
-    private void shoot(GameObject[] enemies, BulletAdder bulletAdder, float deltaTime){
-        fromLastReload += deltaTime;
-        if(fromLastReload < reload) return;
-        fromLastReload = 0;
-
-        for (GameObject enemy: enemies){
-            Bullet bullet = BulletFactory.Create(this);
-            bullet.setGoal(enemy.getLocation());
-            bulletAdder.AddBullet(bullet);
+        for (Weapon weapon: getWeapons()){
+            weapon.update(provider, bulletAdder,  deltaTime);
         }
     }
 

@@ -1,9 +1,8 @@
 package com.agrogames.islandsofwar.render.impl;
 
-import android.util.Log;
-
-import com.agrogames.islandsofwar.engine.abs.game.Bullet;
-import com.agrogames.islandsofwar.engine.abs.game.GameObject;
+import com.agrogames.islandsofwar.engine.abs.bullet.Bullet;
+import com.agrogames.islandsofwar.engine.abs.unit.Unit;
+import com.agrogames.islandsofwar.engine.abs.weapon.Weapon;
 import com.agrogames.islandsofwar.graphics.abs.TextureBitmap;
 import com.agrogames.islandsofwar.graphics.abs.TextureDrawer;
 import com.agrogames.islandsofwar.render.abs.Presenter;
@@ -18,17 +17,23 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
     @Override
     public void render(TextureDrawer drawer) {
         drawer.DrawTexture(7.5f, 5, TextureBitmap.Background, 15, 10, 0);
-        for (GameObject object: presenter.getAttackers()){
-            GameObjectRenderer.render(object, drawer);
+        for (Unit unit: presenter.getAttackers()){
+            GameObjectRenderer.render(unit, drawer);
+            for(Weapon weapon: unit.getWeapons()){
+                GameObjectRenderer.render(weapon, drawer);
+            }
         }
-        for (GameObject object: presenter.getProtectors()){
-            GameObjectRenderer.render(object, drawer);
+        for (Unit unit: presenter.getProtectors()){
+            GameObjectRenderer.render(unit, drawer);
+            for(Weapon weapon: unit.getWeapons()){
+                GameObjectRenderer.render(weapon, drawer);
+            }
         }
-        for (Bullet object: presenter.getAttackersBullets()){
-            GameObjectRenderer.render(object, drawer);
+        for (Bullet bullet: presenter.getAttackersBullets()){
+            GameObjectRenderer.render(bullet, drawer);
         }
-        for (Bullet object: presenter.getProtectorsBullets()){
-            GameObjectRenderer.render(object, drawer);
+        for (Bullet bullet: presenter.getProtectorsBullets()){
+            GameObjectRenderer.render(bullet, drawer);
         }
     }
 }
