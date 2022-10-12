@@ -26,6 +26,8 @@ public class GLRenderer implements GLSurfaceView.Renderer {
 
     private final RenderManager manager;
     private final TextureDrawer drawTextureService;
+    private int width;
+    private int height;
 
     public GLRenderer(Context context, RenderManager manager) {
         this.manager = manager;
@@ -67,9 +69,15 @@ public class GLRenderer implements GLSurfaceView.Renderer {
     }
 
     public void onSurfaceChanged(GL10 unused, int width, int height) {
+        this.width = width;
+        this.height = height;
         GLES20.glViewport(0, 0, width, height);
         float ratio = (float) width / height;
         Matrix.frustumM(projectionMatrix, 0, -ratio, ratio, -1, 1, 3, 7);
+    }
+
+    public void onTouch(float x, float y){
+        manager.OnTouch((x - (width - height * 1.5f) / 2) / height * 10f, y / height * 10f);
     }
 
     public static int loadShader(int type, String shaderCode){

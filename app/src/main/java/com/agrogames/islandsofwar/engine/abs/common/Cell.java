@@ -1,5 +1,7 @@
 package com.agrogames.islandsofwar.engine.abs.common;
 
+import androidx.annotation.NonNull;
+
 import java.util.Objects;
 
 public class Cell {
@@ -22,6 +24,17 @@ public class Cell {
         if (o == null || getClass() != o.getClass()) return false;
         Cell cell = (Cell) o;
         return x == cell.x && y == cell.y;
+    }
+
+    public boolean nearlyEquals(Point p) {
+        return p.x + 0.7f >= x && p.x + 0.5f <= x &&
+                p.y + 0.7f >= y && p.y + 0.5f <= y;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "{" + x + ";" + y + "}";
     }
 
     @Override

@@ -15,6 +15,7 @@ import com.agrogames.islandsofwar.engine.abs.bullet.Bullet;
 import com.agrogames.islandsofwar.engine.impl.bullet.BulletFactory;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.stream.Stream;
 
 class Weapon implements com.agrogames.islandsofwar.engine.abs.weapon.Weapon {
@@ -56,8 +57,10 @@ class Weapon implements com.agrogames.islandsofwar.engine.abs.weapon.Weapon {
         if(fromLastReload < reload) return;
         fromLastReload = 0;
 
+        Point location = getLocation();
         Stream<Unit> enemies = Arrays.stream(provider.getEnemies());
-        Unit[] near = enemies.filter(this::isNear).filter(e -> isAvailable(e, provider.getAll())).toArray(Unit[]::new);
+        Unit[] near = enemies.filter(this::isNear).filter(e -> isAvailable(e, provider.getAll()))
+                .sorted(Comparator.comparingInt(e -> (int) getDist(e.getLocation(), location))).toArray(Unit[]::new);
         for (Unit enemy: near){
             rotate(enemy);
             shoot(bulletAdder, enemy);
@@ -116,35 +119,6 @@ class Weapon implements com.agrogames.islandsofwar.engine.abs.weapon.Weapon {
             r += Math.PI;
         }
         return r;
-    }
-
-    private boolean intersects(float r, float d, Cell cell){
-        Point location = getLocation();
-
-        Point p1 = new Point(cell.x, cell.y);
-        Point p2 = new Point(cell.x + 1, cell.y);
-        Point p3 = new Point(cell.x, cell.y + 1);
-        Point p4 = new Point(cell.x + 1, cell.y + 1);
-
-        float r1 = getAngle(location, p1);
-        float r2 = getAngle(location, p2);
-        float r3 = getAngle(location, p3);
-        float r4 = getAngle(location, p4);
-
-        float d1 = getDist(location, p1);
-        float d2 = getDist(location, p2);
-        float d3 = getDist(location, p3);
-        float d4 = getDist(location, p4);
-
-        if((r1 < r || r2 < r || r3 < r || r4 < r) &&
-                (r1 > r || r2 > r || r3 > r || r4 > r)){
-            if((d1 < d && d2 < d) || (d1 < d && d3 < d) ||
-                    (d2 < d && d3 < d) || (d3 < d && d4 < d) ||
-                    (d4 < d && d2 < d) || (d1 < d && d4 < d)){
-                return true;
-            }
-        }
-        return false;
     }
 
     private boolean isNear(Unit enemy){

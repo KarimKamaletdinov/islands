@@ -15,4 +15,9 @@ public class Water implements MapObject {
     public Cell[] GetTerritory() {
         return new Cell[]{location};
     }
+
+    @Override
+    public boolean isMoving() {
+        return false;
+    }
 }

@@ -12,15 +12,14 @@ abstract class Unit implements com.agrogames.islandsofwar.engine.abs.unit.Unit, 
     protected final IntValue health;
     protected final float speed;
     protected Point location;
-    protected Cell goal = null;
     protected float rotation;
     private final Weapon[] weapons;
 
-    protected Unit( UnitType type, Point location, Weapon[] weapons, int health, float speed) {
+    protected Unit( UnitType type, Cell location, Weapon[] weapons, int health, float speed) {
         this.type = type;
         this.health = new IntValue(health);
         this.weapons = weapons;
-        this.location = location;
+        this.location = new Point(location);
         this.speed = speed;
 
         for (Weapon weapon: weapons){
@@ -56,14 +55,12 @@ abstract class Unit implements com.agrogames.islandsofwar.engine.abs.unit.Unit, 
     public float getRotation() {
         return rotation;
     }
-
-    @Override
-    public void setGoal(Cell goal) {
-        this.goal = goal;
+    protected void rotate(Cell goal) {
+        Point g = new Point(goal);
         rotation = (float) Math.atan(
-                ((double) goal.y - (double) location.y) /
-                ((double) goal.x - (double) location.x));
-        if (goal.x  < location.x){
+                ((double) g.y - (double) location.y) /
+                ((double) g.x - (double) location.x));
+        if (g.x  < location.x){
             rotation += Math.PI;
         }
     }

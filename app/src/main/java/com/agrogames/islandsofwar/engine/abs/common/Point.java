@@ -1,5 +1,7 @@
 package com.agrogames.islandsofwar.engine.abs.common;
 
+import androidx.annotation.NonNull;
+
 import java.util.Objects;
 
 public class Point {
@@ -9,6 +11,11 @@ public class Point {
     public Point(float x, float y) {
         this.x = x;
         this.y = y;
+    }
+
+    public Point(Cell cell) {
+        this.x = cell.x - 0.5f;
+        this.y = cell.y - 0.5f;
     }
 
     @Override
@@ -29,5 +36,11 @@ public class Point {
                 (float) ((double)x * Math.cos(angle) - (double) y * Math.sin(angle)),
                 (float) ((double)x * Math.sin(angle) + (double) y * Math.cos(angle))
         );
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "{" + x + ";" + y + "}";
     }
 }
