@@ -34,7 +34,7 @@ class LandUnit extends com.agrogames.islandsofwar.engine.impl.unit.Unit {
     @Override
     public void update(MapProvider provider, BulletAdder bulletAdder, float deltaTime) {
         think(provider);
-
+        rotate(deltaTime);
         move(provider.getAll(), deltaTime);
         for (Weapon weapon: getWeapons()){
             weapon.update(provider, bulletAdder,  deltaTime);
@@ -85,7 +85,7 @@ class LandUnit extends com.agrogames.islandsofwar.engine.impl.unit.Unit {
                     if(distToClosest > 5){
                         goalUnit = closest;
                         buildRoute(provider.getAll(), goalUnit.GetTerritory()[0]);
-                        rotate(new Cell(goalUnit.getLocation()));
+                        setRotation(new Cell(goalUnit.getLocation()));
                     }
                 }
             } else {
@@ -122,7 +122,7 @@ class LandUnit extends com.agrogames.islandsofwar.engine.impl.unit.Unit {
         }
 
         Cell g = route.lastElement();
-        rotate(g);
+        setRotation(g);
         Point next = next(deltaTime, g);
         Cell nextCell = new Cell(next);
         Point further = next(0.5f / speed, g);

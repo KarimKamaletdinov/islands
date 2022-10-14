@@ -95,10 +95,10 @@ class Weapon implements com.agrogames.islandsofwar.engine.abs.weapon.Weapon {
         Point enemyLocation = enemy.getLocation();
         goalRotation = getAngle(enemyLocation, location);
         if(goalRotation > Math.PI * 2f){
-            goalRotation-= (float) (Math.PI * 2f);
+            goalRotation -= (float) (Math.PI * 2f);
         }
         if(goalRotation < 0){
-            goalRotation+= (float)Math.PI * 2f;
+            goalRotation += (float)Math.PI * 2f;
         }
     }
 

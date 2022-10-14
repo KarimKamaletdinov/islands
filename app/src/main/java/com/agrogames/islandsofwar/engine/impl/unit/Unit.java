@@ -13,6 +13,7 @@ abstract class Unit implements com.agrogames.islandsofwar.engine.abs.unit.Unit, 
     protected final float speed;
     protected Point location;
     protected float rotation;
+    protected float goalRotation;
     private final Weapon[] weapons;
 
     protected Unit( UnitType type, Cell location, Weapon[] weapons, int health, float speed) {
@@ -55,13 +56,41 @@ abstract class Unit implements com.agrogames.islandsofwar.engine.abs.unit.Unit, 
     public float getRotation() {
         return rotation;
     }
-    protected void rotate(Cell goal) {
+
+    protected void rotate(float deltaTime){
+        if(rotation == goalRotation) return;
+        if(rotation - goalRotation > Math.PI){
+            rotation -= Math.PI * 2f;
+        } else if(goalRotation - rotation > Math.PI){
+            rotation += Math.PI * 2f;
+        }
+        if(rotation < goalRotation){
+            rotation += Math.PI * deltaTime * speed / 2f;
+            if(rotation > goalRotation){
+                rotation = goalRotation;
+            }
+        }
+        else{
+            rotation -= Math.PI * deltaTime * speed  / 2f;
+            if(rotation < goalRotation){
+                rotation = goalRotation;
+            }
+        }
+    }
+
+    protected void setRotation(Cell goal) {
         Point g = new Point(goal);
-        rotation = (float) Math.atan(
+        goalRotation = (float) Math.atan(
                 ((double) g.y - (double) location.y) /
                 ((double) g.x - (double) location.x));
-        if (g.x  < location.x){
-            rotation += Math.PI;
+        if (g.x < location.x){
+            goalRotation += Math.PI;
+        }
+        if(goalRotation > Math.PI * 2f){
+            goalRotation -= (float) (Math.PI * 2f);
+        }
+        if(goalRotation < 0){
+            goalRotation += (float)Math.PI * 2f;
         }
     }
 
