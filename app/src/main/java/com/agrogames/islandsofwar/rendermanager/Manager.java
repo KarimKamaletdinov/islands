@@ -15,6 +15,7 @@ import com.agrogames.islandsofwar.graphics.abs.TextureDrawer;
 import com.agrogames.islandsofwar.graphics.abs.RenderManager;
 import com.agrogames.islandsofwar.map.impl.Map;
 import com.agrogames.islandsofwar.render.abs.Renderer;
+import com.agrogames.islandsofwar.ui.impl.UI;
 
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
@@ -41,7 +42,7 @@ public class Manager implements RenderManager {
                 tank3,
                 tank4,
         }, Map.fromAssets(context, "map1.txt").getMap());
-        this.renderer = new com.agrogames.islandsofwar.render.impl.Renderer(new Presenter(this.engine));
+        this.renderer = new com.agrogames.islandsofwar.render.impl.Renderer(new Presenter(this.engine), new UI());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

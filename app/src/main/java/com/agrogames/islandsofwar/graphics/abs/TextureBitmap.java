@@ -6,7 +6,8 @@ public enum TextureBitmap {
     TankTower("tank-tower.png"),
     TankBullet("tank-bullet.png"),
     Error("error.png"),
-    Background("background.png");
+    Background("background.png"),
+    CancelButton("cancel-button.png");
 
     public final String name;
 

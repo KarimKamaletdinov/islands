@@ -14,6 +14,9 @@ import com.agrogames.islandsofwar.engine.abs.weapon.Weapon;
 import com.agrogames.islandsofwar.graphics.abs.TextureBitmap;
 import com.agrogames.islandsofwar.graphics.abs.TextureDrawer;
 import com.agrogames.islandsofwar.render.abs.Presenter;
+import com.agrogames.islandsofwar.ui.abs.Element;
+import com.agrogames.islandsofwar.ui.abs.ElementType;
+import com.agrogames.islandsofwar.ui.abs.UI;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,11 +24,21 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer {
     private final Presenter presenter;
+    private final UI ui;
     private Unit selectedUnit;
     private final List<Pair<Unit, Float>> selectable = new ArrayList<>();
+    private final Element cancelButton;
 
-    public Renderer(Presenter presenter){
+    public Renderer(Presenter presenter, UI ui){
         this.presenter = presenter;
+        this.ui = ui;
+        cancelButton = ui.createElement(ElementType.Button, 14, 9, 1, 1, TextureBitmap.CancelButton);
+        cancelButton.setVisible(false);
+        cancelButton.onClick(() -> {
+            cancelButton.setVisible(false);
+            selectedUnit = null;
+            return null;
+        });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -61,6 +74,10 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
         if (touch != null){
             onTouch(touch);
         }
+        if(touch == null)
+            ui.render(drawer, null, null);
+        else
+            ui.render(drawer, touch.x, touch.y);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -73,6 +90,7 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
                 u.first instanceof MovableObject)
                 .findFirst().orElse(new Pair<>(null, null)).first;
         if(su != null){
+            cancelButton.setVisible(true);
             selectedUnit = su;
         } else if(selectedUnit != null){
             MovableObject mo = (MovableObject) selectedUnit;
