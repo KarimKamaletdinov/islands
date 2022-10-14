@@ -77,7 +77,7 @@ public class GLRenderer implements GLSurfaceView.Renderer {
     }
 
     public void onTouch(float x, float y){
-        manager.OnTouch((x - (width - height * 1.5f) / 2) / height * 10f, y / height * 10f);
+        manager.OnTouch((x - (width - height * 1.5f) / 2) / height * 10f, 10f - (y / height * 10f));
     }
 
     public static int loadShader(int type, String shaderCode){

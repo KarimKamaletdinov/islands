@@ -1,6 +1,7 @@
 package com.agrogames.islandsofwar.render.impl;
 
 import android.util.Log;
+import android.util.Pair;
 
 import com.agrogames.islandsofwar.graphics.abs.TextureBitmap;
 import com.agrogames.islandsofwar.graphics.abs.TextureDrawer;
@@ -8,8 +9,8 @@ import com.agrogames.islandsofwar.graphics.abs.TextureDrawer;
 public class RenderableTexture {
     private final float x;
     private final float y;
-    private final Float width;
-    private final Float height;
+    public Float width;
+    public Float height;
     private final float rotation;
     private final TextureBitmap bitmap;
 
@@ -35,7 +36,9 @@ public class RenderableTexture {
         if(width != null && height != null){
             drawer.DrawTexture(x, y, bitmap, width, height, rotation);
         } else {
-            drawer.DrawTexture(x, y, bitmap, rotation);
+            Pair<Float, Float> p = drawer.DrawTexture(x, y, bitmap, rotation);
+            width = p.first;
+            height = p.second;
         }
     }
 }

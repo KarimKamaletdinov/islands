@@ -2,7 +2,6 @@ package com.agrogames.islandsofwar.rendermanager;
 
 import android.content.Context;
 import android.os.Build;
-import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -15,7 +14,7 @@ import com.agrogames.islandsofwar.engine.impl.unit.UnitFactory;
 import com.agrogames.islandsofwar.graphics.abs.TextureDrawer;
 import com.agrogames.islandsofwar.graphics.abs.RenderManager;
 import com.agrogames.islandsofwar.map.impl.Map;
-import com.agrogames.islandsofwar.render.impl.Renderer;
+import com.agrogames.islandsofwar.render.abs.Renderer;
 
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
@@ -34,14 +33,14 @@ public class Manager implements RenderManager {
         Unit tank4 = UnitFactory.Tank(5, 6);
         Unit tank5 = UnitFactory.Tank(10, 5);
         this.engine = new com.agrogames.islandsofwar.engine.impl.Engine(new Unit[]{
+                tank5
+        }, new Unit[]{
                 tank1,
                 tank2,
                 tank3,
                 tank4,
-        }, new Unit[]{
-                tank5
         }, Map.fromAssets(context, "map1.txt").getMap());
-        this.renderer = new Renderer(new Presenter(this.engine));
+        this.renderer = new com.agrogames.islandsofwar.render.impl.Renderer(new Presenter(this.engine));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -62,6 +61,7 @@ public class Manager implements RenderManager {
     @Override
     public void OnTouch(float x, float y) {
         start = true;
-        Log.i("IOW", "MX: " + x + "; MY: " + y);
+
+        renderer.onTouch(x, y);
     }
 }

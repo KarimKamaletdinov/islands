@@ -2,6 +2,7 @@ package com.agrogames.islandsofwar.graphics.impl.drawtexture;
 
 import android.graphics.Bitmap;
 import android.os.Build;
+import android.util.Pair;
 
 import androidx.annotation.RequiresApi;
 
@@ -27,9 +28,12 @@ public class TextureDrawer implements com.agrogames.islandsofwar.graphics.abs.Te
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
-    public void DrawTexture(float x, float y, TextureBitmap bitmap, float rotation) {
+    public Pair<Float, Float> DrawTexture(float x, float y, TextureBitmap bitmap, float rotation) {
         Bitmap b = bitmapProvider.load(bitmap.name);
-        textures.add(new Texture(x, y, b, b.getWidth() / 50f, b.getHeight() / 50f, rotation));
+        float width = b.getWidth() / 50f;
+        float height = b.getHeight() / 50f;
+        textures.add(new Texture(x, y, b, width, height, rotation));
+        return new Pair<>(width, height);
     }
 
     public Texture[] GetTextures(){

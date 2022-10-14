@@ -53,6 +53,7 @@ class LandUnit extends com.agrogames.islandsofwar.engine.impl.unit.Unit {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             r = Navigator.buildRoute(location, goal, map.toArray(new Cell[0]));
         }
+        route.clear();
         for (int i = r.length - 1; i >= 0; i--) {
             Cell c = r[i];
             route.push(c);
