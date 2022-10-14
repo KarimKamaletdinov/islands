@@ -20,4 +20,9 @@ public class Water implements MapObject {
     public boolean isMoving() {
         return false;
     }
+
+    @Override
+    public int getHeight() {
+        return 0;
+    }
 }

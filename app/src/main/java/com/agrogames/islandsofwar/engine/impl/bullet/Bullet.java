@@ -15,16 +15,18 @@ class Bullet implements com.agrogames.islandsofwar.engine.abs.bullet.Bullet {
     private final float speed;
     private final int power;
     private final float longRange;
+    private final int height;
     private final Unit owner;
     private boolean isFlying = true;
     private float flewDistance;
 
-    public Bullet(BulletType type, Point location, int speed, int power, float longRange, Unit owner) {
+    public Bullet(BulletType type, Point location, int speed, int power, float longRange, int height, Unit owner) {
         this.longRange = longRange;
         this.type = type;
         this.location = location;
         this.speed = speed;
         this.power = power;
+        this.height = height;
         this.owner = owner;
     }
 
@@ -71,7 +73,7 @@ class Bullet implements com.agrogames.islandsofwar.engine.abs.bullet.Bullet {
 
     private MapObject enemyAt(Cell cell, MapObject[] enemies){
         for (MapObject object : enemies){
-            if(object != owner){
+            if(object != owner && object.getHeight() == height){
                 Cell[] territory = object.GetTerritory();
                 for (Cell c : territory){
                     if(cell.equals(c)){

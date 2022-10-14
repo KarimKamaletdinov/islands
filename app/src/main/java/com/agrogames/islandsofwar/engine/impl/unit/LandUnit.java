@@ -197,6 +197,11 @@ class LandUnit extends com.agrogames.islandsofwar.engine.impl.unit.Unit {
     }
 
     @Override
+    public int getHeight() {
+        return 1;
+    }
+
+    @Override
     public void setGoal(Cell goal) {
         this.goal = goal;
     }
