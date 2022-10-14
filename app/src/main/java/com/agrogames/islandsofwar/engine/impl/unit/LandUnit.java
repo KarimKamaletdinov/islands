@@ -13,9 +13,11 @@ import com.agrogames.islandsofwar.engine.abs.weapon.Weapon;
 import com.agrogames.islandsofwar.engine.abs.map.MapObject;
 import com.agrogames.islandsofwar.engine.abs.unit.Unit;
 import com.agrogames.islandsofwar.engine.impl.navigator.Navigator;
+import com.agrogames.islandsofwar.map.impl.Water;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
@@ -60,9 +62,13 @@ class LandUnit extends com.agrogames.islandsofwar.engine.impl.unit.Unit {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void think(MapProvider provider){
         if(goal != null){
-            buildRoute(provider.getAll(), goal);
+            if (Arrays.stream(provider.getAll())
+                    .noneMatch(o -> o instanceof Water && o.GetTerritory()[0].equals(goal))) {
+                buildRoute(provider.getAll(), goal);
+            }
             goal = null;
         }
 

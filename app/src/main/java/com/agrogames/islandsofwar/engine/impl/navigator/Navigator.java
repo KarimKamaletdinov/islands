@@ -23,7 +23,8 @@ public class Navigator {
         RouteCell location = new RouteCell(new Cell(start.x, start.y));
         simpleRoute.add(location);
         if(location.cell.equals(finish)) return new ArrayList<>();
-        for (int i = 0; i < 150; i++) {
+        int attempt = 0;
+        for (int i = 0; i < 30; i++) {
             if(i < 0){
                 return new ArrayList<>();
             }
@@ -38,6 +39,10 @@ public class Navigator {
                 simpleRoute.add(location);
                 if(location.cell.equals(finish)) break;
             }
+            if(attempt >= 100){
+                return new ArrayList<>();
+            }
+            attempt++;
         }
 
         List<Cell> result = new ArrayList<>();

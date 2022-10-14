@@ -28,8 +28,9 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
         this.presenter = presenter;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
-    public void render(TextureDrawer drawer) {
+    public void render(TextureDrawer drawer, Point touch) {
         drawer.DrawTexture(7.5f, 5, TextureBitmap.Background, 15, 10, 0);
 
         selectable.clear();
@@ -52,28 +53,26 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
         for (Bullet bullet: presenter.getProtectorsBullets()){
             GameObjectRenderer.render(bullet, drawer);
         }
+
+        if (touch != null){
+            onTouch(touch);
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    @Override
-    public void onTouch(float x, float y) {
-        Cell cell = new Cell(new Point(x, y));
-        AtomicReference<Unit> a = new AtomicReference<>();
-        selectable.stream()
-                .filter(u -> u.first.getLocation().x + u.second / 2 > x &&
-                        u.first.getLocation().x - u.second / 2 < x &&
-                        u.first.getLocation().y + u.second / 2 > y &&
-                        u.first.getLocation().y - u.second / 2 < y &&
+    public void onTouch(Point touch) {
+        Unit su = selectable.stream()
+                .filter(u -> u.first.getLocation().x + u.second / 2 > touch.x &&
+                        u.first.getLocation().x - u.second / 2 < touch.x &&
+                        u.first.getLocation().y + u.second / 2 > touch.y &&
+                        u.first.getLocation().y - u.second / 2 < touch.y &&
                 u.first instanceof MovableObject)
-                .findFirst().ifPresent(u -> {
-                    a.set(u.first);
-                });
-        Unit su = a.get();
+                .findFirst().orElse(new Pair<>(null, null)).first;
         if(su != null){
             selectedUnit = su;
         } else if(selectedUnit != null){
             MovableObject mo = (MovableObject) selectedUnit;
-            mo.setGoal(cell);
+            mo.setGoal(new Cell(touch));
         }
     }
 }

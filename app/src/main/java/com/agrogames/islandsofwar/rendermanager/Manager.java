@@ -24,6 +24,7 @@ public class Manager implements RenderManager {
     private final Renderer renderer;
     private LocalTime previous;
     private boolean start = false;
+    private Point touch;
 
     public Manager(Context context) {
         Unit tank1 = UnitFactory.Tank(4, 5);
@@ -55,13 +56,13 @@ public class Manager implements RenderManager {
             previous = LocalTime.now();
             engine.update(deltaTime);
         }
-        renderer.render(drawer);
+        renderer.render(drawer, touch);
+        touch = null;
     }
 
     @Override
     public void OnTouch(float x, float y) {
         start = true;
-
-        renderer.onTouch(x, y);
+        touch = new Point(x, y);
     }
 }
