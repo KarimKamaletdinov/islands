@@ -10,7 +10,8 @@ public class WeaponFactory {
         switch (unitType){
             case Tank:
                 return new Weapon[]{
-                        new com.agrogames.islandsofwar.engine.impl.weapon.Weapon(new Point(0, 0), 2.0f, WeaponType.TankTower, 10)
+                        new com.agrogames.islandsofwar.engine.impl.weapon.Weapon(
+                                new Point(0, 0), 2.0f, WeaponType.TankTower, 10, 0.8f)
                 };
             default:
                 return new Weapon[0];

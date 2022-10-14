@@ -23,15 +23,18 @@ class Weapon implements com.agrogames.islandsofwar.engine.abs.weapon.Weapon {
     private final float reload;
     private final WeaponType type;
     private final float longRange;
+    private final float rotationSpeed;
     private float fromLastReload = 0;
     private float relativeRotation;
+    private Float goalRotation;
     private Unit owner;
 
-    public Weapon(Point relativeLocation, float reload, WeaponType type, float longRange) {
+    public Weapon(Point relativeLocation, float reload, WeaponType type, float longRange, float rotationSpeed) {
         this.relativeLocation = relativeLocation;
         this.reload = reload;
         this.type = type;
         this.longRange = longRange;
+        this.rotationSpeed = rotationSpeed;
     }
 
     @Override
@@ -42,16 +45,20 @@ class Weapon implements com.agrogames.islandsofwar.engine.abs.weapon.Weapon {
 
     @Override
     public float getRotation() {
-        return owner.getRotation() + relativeRotation;
+        float r = owner.getRotation() + relativeRotation;
+        if(r > Math.PI * 2f){
+            r-=Math.PI * 2f;
+        }
+        if(r < 0){
+            r+=Math.PI * 2f;
+        }
+        return r;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void update(MapProvider provider, BulletAdder bulletAdder, float deltaTime) {
-        for (Unit enemy: provider.getEnemies()){
-            rotate(enemy);
-            break;
-        }
+        rotate(deltaTime);
 
         fromLastReload += deltaTime;
         if(fromLastReload < reload) return;
@@ -62,23 +69,55 @@ class Weapon implements com.agrogames.islandsofwar.engine.abs.weapon.Weapon {
         Unit[] near = enemies.filter(this::isNear).filter(e -> isAvailable(e, provider.getAll()))
                 .sorted(Comparator.comparingInt(e -> (int) getDist(e.getLocation(), location))).toArray(Unit[]::new);
         for (Unit enemy: near){
-            rotate(enemy);
+            setRotation(enemy);
             shoot(bulletAdder, enemy);
             return;
         }
     }
 
     private void shoot(BulletAdder bulletAdder, Unit enemy) {
+        //if (getRotation() != goalRotation) return;
         Point enemyLocation = enemy.getLocation();
         Bullet bullet = BulletFactory.Create(this);
         bullet.setGoal(enemyLocation);
         bulletAdder.AddBullet(bullet);
     }
 
-    private void rotate(Unit enemy) {
+    private void setRotation(Unit enemy) {
         Point location = getLocation();
         Point enemyLocation = enemy.getLocation();
-        relativeRotation = getAngle(enemyLocation, location) - owner.getRotation();
+        goalRotation = getAngle(enemyLocation, location);
+        if(goalRotation > Math.PI * 2f){
+            goalRotation-= (float) (Math.PI * 2f);
+        }
+        if(goalRotation < 0){
+            goalRotation+= (float)Math.PI * 2f;
+        }
+    }
+
+    private void rotate(float deltaTime){
+        if(goalRotation == null) return;
+        float r = getRotation();
+        if(r == goalRotation) return;
+        if(r > Math.PI * 2f){
+            r-=Math.PI * 2f;
+        }
+        if(r < 0){
+            r+=Math.PI * 2f;
+        }
+        if(r < goalRotation){
+            r += Math.PI * deltaTime * rotationSpeed;
+            if(r > goalRotation){
+                r = goalRotation;
+            }
+        }
+        else{
+            r -= Math.PI * deltaTime * rotationSpeed;
+            if(r < goalRotation){
+                r = goalRotation;
+            }
+        }
+        relativeRotation = r - owner.getRotation();
     }
 
     private boolean isAvailable(Unit enemy, MapObject[] all){
