@@ -24,7 +24,7 @@ class Weapon implements com.agrogames.islandsofwar.engine.abs.weapon.Weapon {
     private final WeaponType type;
     private final float longRange;
     private float fromLastReload = 0;
-    private float rotation;
+    private float relativeRotation;
     private Unit owner;
 
     public Weapon(Point relativeLocation, float reload, WeaponType type, float longRange) {
@@ -42,7 +42,7 @@ class Weapon implements com.agrogames.islandsofwar.engine.abs.weapon.Weapon {
 
     @Override
     public float getRotation() {
-        return rotation;
+        return owner.getRotation() + relativeRotation;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -78,7 +78,7 @@ class Weapon implements com.agrogames.islandsofwar.engine.abs.weapon.Weapon {
     private void rotate(Unit enemy) {
         Point location = getLocation();
         Point enemyLocation = enemy.getLocation();
-        rotation = getAngle(enemyLocation, location);
+        relativeRotation = getAngle(enemyLocation, location) - owner.getRotation();
     }
 
     private boolean isAvailable(Unit enemy, MapObject[] all){

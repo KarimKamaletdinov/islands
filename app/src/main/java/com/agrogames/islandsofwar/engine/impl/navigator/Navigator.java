@@ -15,9 +15,7 @@ import java.util.List;
 public class Navigator {
     @RequiresApi(api = Build.VERSION_CODES.N)
     public static Cell[] buildRoute(Point start, Cell finish, Cell[] map) {
-        List<Cell> route = new ArrayList<>();
-        route.addAll(buildSimpleRoute(new Cell(start), finish, Arrays.asList(map)));
-        return route.toArray(new Cell[0]);
+        return buildSimpleRoute(new Cell(start), finish, Arrays.asList(map)).toArray(new Cell[0]);
     }
 
     private static List<Cell> buildSimpleRoute(Cell start, Cell finish, List<Cell> map){
