@@ -4,6 +4,7 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import com.agrogames.islandsofwar.common.M;
 import com.agrogames.islandsofwar.engine.abs.common.Cell;
 import com.agrogames.islandsofwar.engine.abs.common.Point;
 import com.agrogames.islandsofwar.engine.abs.bullet.BulletAdder;
@@ -82,7 +83,7 @@ class Weapon implements com.agrogames.islandsofwar.engine.abs.weapon.Weapon {
     }
 
     private void shoot(BulletAdder bulletAdder, Unit enemy) {
-        //if (getRotation() != goalRotation) return;
+        if (getRotation() != goalRotation) return;
         Point enemyLocation = enemy.getLocation();
         Bullet bullet = BulletFactory.Create(this);
         bullet.setGoal(enemyLocation);
@@ -104,12 +105,17 @@ class Weapon implements com.agrogames.islandsofwar.engine.abs.weapon.Weapon {
     private void rotate(float deltaTime){
         if(goalRotation == null) return;
         float r = getRotation();
-        if(r == goalRotation) return;
         if(r > Math.PI * 2f){
             r-=Math.PI * 2f;
         }
         if(r < 0){
             r+=Math.PI * 2f;
+        }
+        if(r == goalRotation) return;
+        if(r - goalRotation > Math.PI){
+            r -= Math.PI * 2f;
+        } else if(goalRotation - r > Math.PI){
+            r += Math.PI * 2f;
         }
         if(r < goalRotation){
             r += Math.PI * deltaTime * rotationSpeed;
