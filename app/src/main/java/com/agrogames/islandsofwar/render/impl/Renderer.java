@@ -35,8 +35,12 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
 
         selectable.clear();
         for (Unit unit: presenter.getAttackers()){
-            float size = GameObjectRenderer.render(unit, drawer);
-            selectable.add(new Pair<>(unit, size));
+            if(unit == selectedUnit){
+                GameObjectRenderer.render(unit, drawer, true);
+            } else{
+                float size = GameObjectRenderer.render(unit, drawer);
+                selectable.add(new Pair<>(unit, size));
+            }
             for(Weapon weapon: unit.getWeapons()){
                 GameObjectRenderer.render(weapon, drawer);
             }

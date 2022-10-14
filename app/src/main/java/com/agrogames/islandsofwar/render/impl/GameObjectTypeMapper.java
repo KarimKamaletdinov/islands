@@ -7,10 +7,10 @@ import com.agrogames.islandsofwar.engine.abs.unit.UnitType;
 import com.agrogames.islandsofwar.graphics.abs.TextureBitmap;
 
 public class GameObjectTypeMapper {
-    public static TextureBitmap convert(RenderableObjectType type){
+    public static TextureBitmap convert(RenderableObjectType type, boolean selected){
         switch (type){
             case Tank:
-                return TextureBitmap.Tank;
+                return selected ? TextureBitmap.TankSelected : TextureBitmap.Tank;
             case TankTower:
                 return TextureBitmap.TankTower;
             case TankBullet:

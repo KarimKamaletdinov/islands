@@ -6,8 +6,8 @@ import com.agrogames.islandsofwar.engine.abs.unit.Unit;
 import com.agrogames.islandsofwar.graphics.abs.TextureBitmap;
 
 public class TextureProvider {
-    public static RenderableTexture getTexture(RenderableObject object){
+    public static RenderableTexture getTexture(RenderableObject object, boolean selected){
         Point location = object.getLocation();
-        return new RenderableTexture(location.x, location.y, object.getRotation(), GameObjectTypeMapper.convert(object.getType().toRenderableObjectType()));
+        return new RenderableTexture(location.x, location.y, object.getRotation(), GameObjectTypeMapper.convert(object.getType().toRenderableObjectType(), selected));
     }
 }
