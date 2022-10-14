@@ -58,16 +58,22 @@ class Weapon implements com.agrogames.islandsofwar.engine.abs.weapon.Weapon {
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void update(MapProvider provider, BulletAdder bulletAdder, float deltaTime) {
+        Point location = getLocation();
+        Stream<Unit> enemies = Arrays.stream(provider.getEnemies());
+        Unit[] near = enemies.filter(this::isNear).filter(e -> isAvailable(e, provider.getAll()))
+                .sorted(Comparator.comparingInt(e -> (int) getDist(e.getLocation(), location))).toArray(Unit[]::new);
+
+        for (Unit enemy: near){
+            setRotation(enemy);
+            break;
+        }
+
         rotate(deltaTime);
 
         fromLastReload += deltaTime;
         if(fromLastReload < reload) return;
         fromLastReload = 0;
 
-        Point location = getLocation();
-        Stream<Unit> enemies = Arrays.stream(provider.getEnemies());
-        Unit[] near = enemies.filter(this::isNear).filter(e -> isAvailable(e, provider.getAll()))
-                .sorted(Comparator.comparingInt(e -> (int) getDist(e.getLocation(), location))).toArray(Unit[]::new);
         for (Unit enemy: near){
             setRotation(enemy);
             shoot(bulletAdder, enemy);
@@ -124,6 +130,12 @@ class Weapon implements com.agrogames.islandsofwar.engine.abs.weapon.Weapon {
         Point location = getLocation();
         Point enemyLocation = enemy.getLocation();
         float r = getAngle(enemyLocation, location);
+        if(r > Math.PI * 2f){
+            r-=Math.PI * 2f;
+        }
+        if(r < 0){
+            r+=Math.PI * 2f;
+        }
         float d = getDist(enemyLocation, location);
 
         float l = 0;
@@ -138,7 +150,7 @@ class Weapon implements com.agrogames.islandsofwar.engine.abs.weapon.Weapon {
             for (MapObject mapObject: all) {
                 if(mapObject != owner && mapObject != enemy){
                     for (Cell cell: mapObject.GetTerritory()){
-                        Cell c = new Cell(new Point(x, y));
+                        Cell c = new Cell((int) x + 1, (int) y + 1);
                         if(cell.equals(c)) {
                             return false;
                         }

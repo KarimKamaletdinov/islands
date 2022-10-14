@@ -51,7 +51,8 @@ class Bullet implements com.agrogames.islandsofwar.engine.abs.bullet.Bullet {
     @Override
     public void update(MapProvider provider, BulletAdder bulletAdder, float deltaTime) {
         move(deltaTime);
-        MapObject enemy = enemyAt(new Cell(location), provider.getAll());
+        MapObject[] all = provider.getAll();
+        MapObject enemy = enemyAt(new Cell((int) location.x + 1, (int) location.y + 1), all);
         if(enemy != null){
             if(enemy instanceof Unit) ((Unit)enemy).loseHealth(power);
             isFlying = false;
