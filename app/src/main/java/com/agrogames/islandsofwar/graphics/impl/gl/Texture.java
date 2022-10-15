@@ -99,6 +99,6 @@ public class Texture {
         // Disable vertex array
         GLES20.glDisableVertexAttribArray(positionHandle);
         GLES20.glDisableVertexAttribArray(texturePositionHandle);
-
+        GLES20.glDeleteTextures(textureUnit.length, textureUnit, 0);
     }
 }
