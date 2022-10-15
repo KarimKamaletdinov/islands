@@ -39,7 +39,7 @@ public class Navigator {
                 simpleRoute.add(location);
                 if(location.cell.equals(finish)) break;
             }
-            if(attempt >= 100){
+            if(attempt >= 50){
                 return new ArrayList<>();
             }
             attempt++;
