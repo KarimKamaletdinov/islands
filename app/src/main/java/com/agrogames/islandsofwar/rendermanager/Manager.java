@@ -2,6 +2,7 @@ package com.agrogames.islandsofwar.rendermanager;
 
 import android.content.Context;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -27,6 +28,7 @@ public class Manager implements RenderManager {
     private boolean start = false;
     private Point touch;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public Manager(Context context) {
         Unit tank1 = UnitFactory.Tank(4, 5);
         Unit tank2 = UnitFactory.Tank(5, 5);
@@ -43,20 +45,26 @@ public class Manager implements RenderManager {
                 tank4,
         }, Map.fromAssets(context, "map1.txt").getMap());
         this.renderer = new com.agrogames.islandsofwar.render.impl.Renderer(new Presenter(this.engine), new UI());
+
+        new Thread(() -> {
+            while (true){
+                if(start){
+                    LocalTime now = LocalTime.now();
+                    if (previous == null) {
+                        previous = now;
+                    }
+                    float deltaTime = ((float)previous.until(now, ChronoUnit.MICROS)) / 1000000f;
+                    if(deltaTime > 0.1f) deltaTime = 0.1f;
+                    previous = now;
+                    engine.update(deltaTime);
+                }
+            }
+        }).start();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void Render(TextureDrawer drawer) {
-        if(start){
-            if (previous == null) {
-                previous = LocalTime.now();
-            }
-            float deltaTime = ((float)previous.until(LocalTime.now(), ChronoUnit.MICROS)) / 1000000f;
-            if(deltaTime > 0.1f) deltaTime = 0.1f;
-            previous = LocalTime.now();
-            engine.update(deltaTime);
-        }
         renderer.render(drawer, touch);
         touch = null;
     }
