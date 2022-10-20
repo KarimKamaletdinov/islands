@@ -1,10 +1,13 @@
 package com.agrogames.islandsofwar.engine.impl;
 
+import android.util.Log;
+
 import com.agrogames.islandsofwar.engine.abs.bullet.Bullet;
 import com.agrogames.islandsofwar.engine.abs.unit.Unit;
 import com.agrogames.islandsofwar.engine.abs.map.MapObject;
 import com.agrogames.islandsofwar.engine.impl.bullet.BulletAdder;
 import com.agrogames.islandsofwar.engine.impl.map.MapProvider;
+import com.agrogames.islandsofwar.engine.impl.unit.UnitAdder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,23 +39,43 @@ public class Engine implements com.agrogames.islandsofwar.engine.abs.Engine {
 
         MapProvider provider1 = new MapProvider(protectorsCopy, attackersCopy, mapObjects);
         BulletAdder bulletAdder1 = new BulletAdder();
+        UnitAdder unitAdder1 = new UnitAdder();
         for (Unit unit : protectorsCopy) {
-            unit.update(provider1, bulletAdder1, deltaTime);
+            try{
+                unit.update(provider1, bulletAdder1, unitAdder1, deltaTime);
+            }catch (Exception e){
+                Log.e("IOW", "An exception has occurred during Update", e);
+            }
         }
         for (Bullet bullet : protectorsBulletsCopy) {
-            bullet.update(provider1, bulletAdder1, deltaTime);
+            try{
+                bullet.update(provider1, bulletAdder1, unitAdder1, deltaTime);
+            }catch (Exception e){
+                Log.e("IOW", "An exception has occurred during Update", e);
+            }
         }
         protectorsBullets.addAll(bulletAdder1.getBullets());
+        protectors.addAll(unitAdder1.getUnits());
 
         BulletAdder bulletAdder2 = new BulletAdder();
         MapProvider provider2 = new MapProvider(attackersCopy, protectorsCopy, mapObjects);
+        UnitAdder unitAdder2 = new UnitAdder();
         for (Unit unit : attackersCopy) {
-            unit.update(provider2, bulletAdder2, deltaTime);
+            try{
+                unit.update(provider2, bulletAdder2, unitAdder2, deltaTime);
+            }catch (Exception e){
+                Log.e("IOW", "An exception has occurred during Update", e);
+            }
         }
         for (Bullet bullet : attackersBulletsCopy) {
-            bullet.update(provider2, bulletAdder2, deltaTime);
+            try{
+                bullet.update(provider2, bulletAdder2, unitAdder2, deltaTime);
+            }catch (Exception e){
+                Log.e("IOW", "An exception has occurred during Update", e);
+            }
         }
         attackersBullets.addAll(bulletAdder2.getBullets());
+        attackers.addAll(unitAdder2.getUnits());
     }
 
     private void deleteKilled() {

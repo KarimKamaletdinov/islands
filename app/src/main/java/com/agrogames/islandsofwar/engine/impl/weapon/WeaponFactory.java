@@ -11,7 +11,14 @@ public class WeaponFactory {
             case Tank:
                 return new Weapon[]{
                         new com.agrogames.islandsofwar.engine.impl.weapon.Weapon(
-                                new Point(0, 0), 2.0f, WeaponType.TankTower, 10, 0.8f)
+                                new Point(0, 0), 2.0f, WeaponType.TankTower, 6, 0.8f, 2)
+                };
+            case TransportShip:
+                return new Weapon[]{
+                        new com.agrogames.islandsofwar.engine.impl.weapon.Weapon(
+                                new Point(2, 0), 5.0f, WeaponType.TransportShipTower, 4, 0.1f, 10),
+                        new com.agrogames.islandsofwar.engine.impl.weapon.Weapon(
+                                new Point(1, 0), 5.0f, WeaponType.TransportShipTower, 4, 0.1f, 10),
                 };
             default:
                 return new Weapon[0];

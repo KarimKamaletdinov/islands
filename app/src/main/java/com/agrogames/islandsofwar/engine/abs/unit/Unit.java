@@ -13,6 +13,7 @@ public interface Unit extends MapObject, RenderableObject, UpdatableObject {
     UnitType getType();
     IntValue getHealth();
     Point getLocation();
+    int getMinDamage();
     Weapon[] getWeapons();
     void loseHealth(int lost);
 }

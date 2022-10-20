@@ -11,4 +11,5 @@ public interface Weapon extends RenderableObject, UpdatableObject {
     Point getLocation();
     WeaponType getType();
     float getLongRange();
+    int getDamage();
 }

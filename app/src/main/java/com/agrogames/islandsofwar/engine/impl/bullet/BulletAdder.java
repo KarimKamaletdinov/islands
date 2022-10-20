@@ -8,7 +8,7 @@ import java.util.List;
 public class BulletAdder implements com.agrogames.islandsofwar.engine.abs.bullet.BulletAdder {
     private final List<Bullet> bullets = new ArrayList<>();
     @Override
-    public void AddBullet(Bullet bullet) {
+    public void addBullet(Bullet bullet) {
         bullets.add(bullet);
     }
 

@@ -25,7 +25,7 @@ public class UI implements com.agrogames.islandsofwar.ui.abs.UI {
     }
 
     @Override
-    public void render(TextureDrawer drawer, Float touchX, Float touchY) {
+    public boolean render(TextureDrawer drawer, Float touchX, Float touchY) {
         for (Element element : elements){
             if(!element.getVisible()) continue;
             drawer.DrawTexture(element.getX(), element.getY(), element.getTexture(),
@@ -36,8 +36,10 @@ public class UI implements com.agrogames.islandsofwar.ui.abs.UI {
                 && element.getY() + element.getHeight() / 2 > touchY
                 && element.getY() - element.getHeight() / 2 < touchY){
                     element.callListener();
+                    return true;
                 }
             }
         }
+        return false;
     }
 }

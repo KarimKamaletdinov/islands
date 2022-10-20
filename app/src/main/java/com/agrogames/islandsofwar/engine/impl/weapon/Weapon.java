@@ -4,16 +4,17 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
-import com.agrogames.islandsofwar.common.M;
 import com.agrogames.islandsofwar.engine.abs.common.Cell;
 import com.agrogames.islandsofwar.engine.abs.common.Point;
 import com.agrogames.islandsofwar.engine.abs.bullet.BulletAdder;
 import com.agrogames.islandsofwar.engine.abs.map.MapObject;
 import com.agrogames.islandsofwar.engine.abs.unit.Unit;
 import com.agrogames.islandsofwar.engine.abs.map.MapProvider;
+import com.agrogames.islandsofwar.engine.abs.unit.UnitAdder;
 import com.agrogames.islandsofwar.engine.abs.weapon.WeaponType;
 import com.agrogames.islandsofwar.engine.abs.bullet.Bullet;
 import com.agrogames.islandsofwar.engine.impl.bullet.BulletFactory;
+import com.agrogames.islandsofwar.map.impl.Water;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -25,17 +26,19 @@ class Weapon implements com.agrogames.islandsofwar.engine.abs.weapon.Weapon {
     private final WeaponType type;
     private final float longRange;
     private final float rotationSpeed;
+    private final int damage;
     private float fromLastReload = 0;
     private float relativeRotation;
     private Float goalRotation;
     private Unit owner;
 
-    public Weapon(Point relativeLocation, float reload, WeaponType type, float longRange, float rotationSpeed) {
+    public Weapon(Point relativeLocation, float reload, WeaponType type, float longRange, float rotationSpeed, int damage) {
         this.relativeLocation = relativeLocation;
         this.reload = reload;
         this.type = type;
         this.longRange = longRange;
         this.rotationSpeed = rotationSpeed;
+        this.damage = damage;
     }
 
     @Override
@@ -58,7 +61,7 @@ class Weapon implements com.agrogames.islandsofwar.engine.abs.weapon.Weapon {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
-    public void update(MapProvider provider, BulletAdder bulletAdder, float deltaTime) {
+    public void update(MapProvider provider, BulletAdder bulletAdder, UnitAdder unitAdder, float deltaTime) {
         Point location = getLocation();
         Stream<Unit> enemies = Arrays.stream(provider.getEnemies());
         Unit[] near = enemies.filter(this::isNear).filter(e -> isAvailable(e, provider.getAll()))
@@ -73,7 +76,6 @@ class Weapon implements com.agrogames.islandsofwar.engine.abs.weapon.Weapon {
 
         fromLastReload += deltaTime;
         if(fromLastReload < reload) return;
-        fromLastReload = 0;
 
         for (Unit enemy: near){
             setRotation(enemy);
@@ -84,10 +86,13 @@ class Weapon implements com.agrogames.islandsofwar.engine.abs.weapon.Weapon {
 
     private void shoot(BulletAdder bulletAdder, Unit enemy) {
         if (getRotation() != goalRotation) return;
-        Point enemyLocation = enemy.getLocation();
+        fromLastReload = 0;
+        Point enemyLocation = enemy.getTerritory().length == 0
+                ? enemy.getLocation()
+                : new Point(enemy.getTerritory()[0]);
         Bullet bullet = BulletFactory.Create(this);
         bullet.setGoal(enemyLocation);
-        bulletAdder.AddBullet(bullet);
+        bulletAdder.addBullet(bullet);
     }
 
     private void setRotation(Unit enemy) {
@@ -133,6 +138,7 @@ class Weapon implements com.agrogames.islandsofwar.engine.abs.weapon.Weapon {
     }
 
     private boolean isAvailable(Unit enemy, MapObject[] all){
+        if(enemy.getMinDamage() > damage) return false;
         Point location = getLocation();
         Point enemyLocation = enemy.getLocation();
         float r = getAngle(enemyLocation, location);
@@ -154,8 +160,8 @@ class Weapon implements com.agrogames.islandsofwar.engine.abs.weapon.Weapon {
             y += Math.sin(r) * 0.5;
 
             for (MapObject mapObject: all) {
-                if(mapObject != owner && mapObject != enemy){
-                    for (Cell cell: mapObject.GetTerritory()){
+                if(mapObject != owner && mapObject != enemy && !(mapObject instanceof Water)){
+                    for (Cell cell: mapObject.getTerritory()){
                         Cell c = new Cell((int) x + 1, (int) y + 1);
                         if(cell.equals(c)) {
                             return false;
@@ -209,5 +215,10 @@ class Weapon implements com.agrogames.islandsofwar.engine.abs.weapon.Weapon {
     @Override
     public float getLongRange() {
         return longRange;
+    }
+
+    @Override
+    public int getDamage() {
+        return damage;
     }
 }

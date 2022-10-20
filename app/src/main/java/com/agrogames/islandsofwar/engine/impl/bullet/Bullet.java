@@ -7,6 +7,7 @@ import com.agrogames.islandsofwar.engine.abs.bullet.BulletAdder;
 import com.agrogames.islandsofwar.engine.abs.map.MapObject;
 import com.agrogames.islandsofwar.engine.abs.unit.Unit;
 import com.agrogames.islandsofwar.engine.abs.map.MapProvider;
+import com.agrogames.islandsofwar.engine.abs.unit.UnitAdder;
 
 class Bullet implements com.agrogames.islandsofwar.engine.abs.bullet.Bullet {
     private final BulletType type;
@@ -51,7 +52,7 @@ class Bullet implements com.agrogames.islandsofwar.engine.abs.bullet.Bullet {
     }
 
     @Override
-    public void update(MapProvider provider, BulletAdder bulletAdder, float deltaTime) {
+    public void update(MapProvider provider, BulletAdder bulletAdder, UnitAdder unitAdder, float deltaTime) {
         move(deltaTime);
         MapObject[] all = provider.getAll();
         MapObject enemy = enemyAt(new Cell((int) location.x + 1, (int) location.y + 1), all);
@@ -74,7 +75,7 @@ class Bullet implements com.agrogames.islandsofwar.engine.abs.bullet.Bullet {
     private MapObject enemyAt(Cell cell, MapObject[] enemies){
         for (MapObject object : enemies){
             if(object != owner && object.getHeight() == height){
-                Cell[] territory = object.GetTerritory();
+                Cell[] territory = object.getTerritory();
                 for (Cell c : territory){
                     if(cell.equals(c)){
                         return object;

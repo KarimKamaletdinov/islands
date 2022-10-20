@@ -8,6 +8,7 @@ import com.agrogames.islandsofwar.engine.abs.common.Cell;
 import com.agrogames.islandsofwar.engine.abs.common.Point;
 import com.agrogames.islandsofwar.engine.abs.bullet.BulletAdder;
 import com.agrogames.islandsofwar.engine.abs.map.MapProvider;
+import com.agrogames.islandsofwar.engine.abs.unit.UnitAdder;
 import com.agrogames.islandsofwar.engine.abs.unit.UnitType;
 import com.agrogames.islandsofwar.engine.abs.weapon.Weapon;
 import com.agrogames.islandsofwar.engine.abs.map.MapObject;
@@ -19,6 +20,7 @@ import com.agrogames.islandsofwar.map.impl.Water;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Stack;
 
@@ -27,19 +29,25 @@ class LandUnit extends com.agrogames.islandsofwar.engine.impl.unit.Unit {
     private final Stack<Cell> route = new Stack<>();
     private Cell goal;
     private boolean isMoving;
+    private int myMaxDamage;
 
-    public LandUnit(UnitType type, Cell location, Weapon[] weapons, int health, float speed) {
-        super(type, location, weapons, health, speed);
+    public LandUnit(UnitType type, Cell location, Weapon[] weapons, int health, float speed, float rotationSpeed) {
+        super(type, location, weapons, health, speed, rotationSpeed);
+        for (Weapon w: weapons){
+            if(w.getDamage() > myMaxDamage){
+                myMaxDamage = w.getDamage();
+            }
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
-    public void update(MapProvider provider, BulletAdder bulletAdder, float deltaTime) {
+    public void update(MapProvider provider, BulletAdder bulletAdder, UnitAdder unitAdder, float deltaTime) {
         think(provider);
         rotate(deltaTime);
         move(provider.getAll(), deltaTime);
         for (Weapon weapon: getWeapons()){
-            weapon.update(provider, bulletAdder,  deltaTime);
+            weapon.update(provider, bulletAdder, unitAdder, deltaTime);
         }
     }
 
@@ -47,7 +55,7 @@ class LandUnit extends com.agrogames.islandsofwar.engine.impl.unit.Unit {
         List<Cell> map = new ArrayList<>();
         for (MapObject object: all){
             if(object != this){
-                Collections.addAll(map, object.GetTerritory());
+                Collections.addAll(map, object.getTerritory());
             }
         }
         map.remove(goal);
@@ -66,17 +74,26 @@ class LandUnit extends com.agrogames.islandsofwar.engine.impl.unit.Unit {
     private void think(MapProvider provider){
         if(goal != null){
             if (Arrays.stream(provider.getAll())
-                    .noneMatch(o -> o instanceof Water && o.GetTerritory()[0].equals(goal))) {
+                    .noneMatch(o -> o instanceof Water && o.getTerritory()[0].equals(goal))) {
                 buildRoute(provider.getAll(), goal);
             }
             goal = null;
         }
 
         if(route.isEmpty()){
+            for(Unit e : provider.getEnemies()){
+                Weapon weapon = Arrays.stream(e.getWeapons())
+                        .max(Comparator.comparingInt(Weapon::getDamage)).orElse(null);
+                if(weapon != null && getDist(new Point(getTerritory()[0]), weapon.getLocation()) <= weapon.getLongRange() + 3
+                        && Arrays.stream(e.getWeapons()).anyMatch(w -> w.getDamage() >= health.current)){
+                    setGoal(new Cell(new Point(location.x - (weapon.getLocation().x - location.x) / 5f, location.y - (weapon.getLocation().y - location.y) / 2f)));
+                }
+            }
             if(goalUnit == null){
                 Unit closest = null;
                 Float distToClosest = null;
                 for (Unit enemy: provider.getEnemies()){
+                    if(enemy.getMinDamage() > myMaxDamage) continue;
                     float dist = getDist(location, enemy.getLocation());
                     if(distToClosest == null){
                         closest = enemy;
@@ -91,7 +108,7 @@ class LandUnit extends com.agrogames.islandsofwar.engine.impl.unit.Unit {
                 if(closest != null){
                     if(distToClosest > 5){
                         goalUnit = closest;
-                        buildRoute(provider.getAll(), goalUnit.GetTerritory()[0]);
+                        buildRoute(provider.getAll(), goalUnit.getTerritory()[0]);
                         setRotation(new Cell(goalUnit.getLocation()));
                     }
                 }
@@ -149,7 +166,7 @@ class LandUnit extends com.agrogames.islandsofwar.engine.impl.unit.Unit {
         boolean isTakingMoving = false;
         for (MapObject object: all){
             if(object != this){
-                for (Cell cell: object.GetTerritory()){
+                for (Cell cell: object.getTerritory()){
                     if(cell == taken){
                         isTakingMoving = object.isMoving();
                     }
@@ -166,7 +183,7 @@ class LandUnit extends com.agrogames.islandsofwar.engine.impl.unit.Unit {
     private boolean isTaken(Cell cell, MapObject[] all){
         for (MapObject object : all){
             if(object != this){
-                Cell[] territory = object.GetTerritory();
+                Cell[] territory = object.getTerritory();
                 for (Cell c : territory){
                     if(cell.equals(c)){
                         return true;

@@ -15,7 +15,9 @@ public class GLSurfaceView extends android.opengl.GLSurfaceView {
         GLRenderer renderer = new GLRenderer(context, manager);
         setOnTouchListener((v, e) -> {
             v.performClick();
-            renderer.onTouch(e.getX(), e.getY());
+            if(e.getAction() == MotionEvent.ACTION_UP){
+                renderer.onTouch(e.getX(), e.getY());
+            }
             return true;
         });
         // Set the Renderer for drawing on the GLSurfaceView

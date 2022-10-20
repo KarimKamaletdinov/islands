@@ -12,7 +12,7 @@ public class Water implements MapObject {
     }
 
     @Override
-    public Cell[] GetTerritory() {
+    public Cell[] getTerritory() {
         return new Cell[]{location};
     }
 

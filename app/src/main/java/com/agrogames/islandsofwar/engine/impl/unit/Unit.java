@@ -11,17 +11,20 @@ abstract class Unit implements com.agrogames.islandsofwar.engine.abs.unit.Unit, 
     private final UnitType type;
     protected final IntValue health;
     protected final float speed;
+    protected final float rotationSpeed;
     protected Point location;
     protected float rotation;
     protected float goalRotation;
+    protected int minDamage = 0;
     private final Weapon[] weapons;
 
-    protected Unit( UnitType type, Cell location, Weapon[] weapons, int health, float speed) {
+    protected Unit(UnitType type, Cell location, Weapon[] weapons, int health, float speed, float rotationSpeed) {
         this.type = type;
         this.health = new IntValue(health);
         this.weapons = weapons;
         this.location = new Point(location);
         this.speed = speed;
+        this.rotationSpeed = rotationSpeed;
 
         for (Weapon weapon: weapons){
             weapon.setOwner(this);
@@ -40,7 +43,9 @@ abstract class Unit implements com.agrogames.islandsofwar.engine.abs.unit.Unit, 
 
     @Override
     public void loseHealth(int lost) {
-        health.current -= lost;
+        if(lost >= minDamage){
+            health.current -= lost;
+        }
     }
 
     @Override
@@ -65,13 +70,13 @@ abstract class Unit implements com.agrogames.islandsofwar.engine.abs.unit.Unit, 
             rotation += Math.PI * 2f;
         }
         if(rotation < goalRotation){
-            rotation += Math.PI * deltaTime * speed / 2f;
+            rotation += Math.PI * deltaTime * rotationSpeed;
             if(rotation > goalRotation){
                 rotation = goalRotation;
             }
         }
         else{
-            rotation -= Math.PI * deltaTime * speed  / 2f;
+            rotation -= Math.PI * deltaTime * rotationSpeed;
             if(rotation < goalRotation){
                 rotation = goalRotation;
             }
@@ -95,9 +100,14 @@ abstract class Unit implements com.agrogames.islandsofwar.engine.abs.unit.Unit, 
     }
 
     @Override
-    public Cell[] GetTerritory() {
+    public Cell[] getTerritory() {
         return new Cell[]{
                 new Cell((int)(location.x + 0.5f), (int)(location.y + 0.5f))
         };
+    }
+
+    @Override
+    public int getMinDamage() {
+        return minDamage;
     }
 }

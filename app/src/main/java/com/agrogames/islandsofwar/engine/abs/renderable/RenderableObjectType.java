@@ -4,5 +4,9 @@ public enum RenderableObjectType {
     Tank,
     TankTower,
     TankBullet,
+    TransportShip,
+    TransportShipTower,
+    TransportShipBullet,
+    LandingCraft,
     None
 }

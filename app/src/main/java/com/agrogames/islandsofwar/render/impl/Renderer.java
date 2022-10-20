@@ -9,6 +9,8 @@ import com.agrogames.islandsofwar.engine.abs.bullet.Bullet;
 import com.agrogames.islandsofwar.engine.abs.common.Cell;
 import com.agrogames.islandsofwar.engine.abs.common.Point;
 import com.agrogames.islandsofwar.engine.abs.movable.MovableObject;
+import com.agrogames.islandsofwar.engine.abs.transport.Transport;
+import com.agrogames.islandsofwar.engine.abs.transport.TransportUnit;
 import com.agrogames.islandsofwar.engine.abs.unit.Unit;
 import com.agrogames.islandsofwar.engine.abs.weapon.Weapon;
 import com.agrogames.islandsofwar.graphics.abs.TextureBitmap;
@@ -20,7 +22,6 @@ import com.agrogames.islandsofwar.ui.abs.UI;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer {
     private final Presenter presenter;
@@ -28,15 +29,36 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
     private Unit selectedUnit;
     private final List<Pair<Unit, Float>> selectable = new ArrayList<>();
     private final Element cancelButton;
+    private final Element spawnButton;
+    private boolean spawn;
 
     public Renderer(Presenter presenter, UI ui){
         this.presenter = presenter;
         this.ui = ui;
         cancelButton = ui.createElement(ElementType.Button, 14, 9, 1, 1, TextureBitmap.CancelButton);
         cancelButton.setVisible(false);
+
+        spawnButton = ui.createElement(ElementType.Button, 14, 8, 1, 1, TextureBitmap.LandUnitsButton);
+        spawnButton.setVisible(false);
+
         cancelButton.onClick(() -> {
             cancelButton.setVisible(false);
+            spawnButton.setVisible(false);
             selectedUnit = null;
+            spawn = false;
+            spawnButton.setTexture(TextureBitmap.LandUnitsButton);
+            return null;
+        });
+        spawnButton.onClick(() -> {
+            if(selectedUnit != null && selectedUnit instanceof Transport){
+                if(spawn){
+                    spawn = false;
+                    spawnButton.setTexture(TextureBitmap.LandUnitsButton);
+                } else {
+                    spawn = true;
+                    spawnButton.setTexture(TextureBitmap.LandUnitsButtonSelected);
+                }
+            }
             return null;
         });
     }
@@ -54,15 +76,9 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
                 float size = GameObjectRenderer.render(unit, drawer);
                 selectable.add(new Pair<>(unit, size));
             }
-            for(Weapon weapon: unit.getWeapons()){
-                GameObjectRenderer.render(weapon, drawer);
-            }
         }
         for (Unit unit: presenter.getProtectors()){
             GameObjectRenderer.render(unit, drawer);
-            for(Weapon weapon: unit.getWeapons()){
-                GameObjectRenderer.render(weapon, drawer);
-            }
         }
         for (Bullet bullet: presenter.getAttackersBullets()){
             GameObjectRenderer.render(bullet, drawer);
@@ -71,13 +87,24 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
             GameObjectRenderer.render(bullet, drawer);
         }
 
-        if (touch != null){
-            onTouch(touch);
+        for (Unit unit: presenter.getAttackers()){
+            for(Weapon weapon: unit.getWeapons()){
+                GameObjectRenderer.render(weapon, drawer);
+            }
         }
-        if(touch == null)
+        for (Unit unit: presenter.getProtectors()){
+            for(Weapon weapon: unit.getWeapons()){
+                GameObjectRenderer.render(weapon, drawer);
+            }
+        }
+
+        if(touch == null) {
             ui.render(drawer, null, null);
-        else
-            ui.render(drawer, touch.x, touch.y);
+        } else {
+            if(!ui.render(drawer, touch.x, touch.y)){
+                onTouch(touch);
+            }
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -91,7 +118,18 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
                 .findFirst().orElse(new Pair<>(null, null)).first;
         if(su != null){
             cancelButton.setVisible(true);
+            spawnButton.setVisible(su instanceof Transport);
             selectedUnit = su;
+        } else if(spawn && selectedUnit != null && selectedUnit instanceof Transport){
+            Transport t = (Transport) selectedUnit;
+            TransportUnit[] units = t.getUnits();
+            if (units.length == 0) {
+                spawn = false;
+                spawnButton.setTexture(TextureBitmap.LandUnitsButton);
+                spawnButton.setVisible(false);
+            } else {
+                t.spawn(units[0], new Cell(touch));
+            }
         } else if(selectedUnit != null){
             MovableObject mo = (MovableObject) selectedUnit;
             mo.setGoal(new Cell(touch));
