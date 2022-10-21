@@ -16,6 +16,7 @@ public class Element implements com.agrogames.islandsofwar.ui.abs.Element {
     private TextureBitmap texture;
     private Callable<Void> listener;
     private boolean visible;
+    private boolean renderInBorders;
 
     @Override
     public void setType(ElementType type) {
@@ -93,12 +94,23 @@ public class Element implements com.agrogames.islandsofwar.ui.abs.Element {
     }
 
     @Override
-    public void callListener() {
-        if(listener == null) return;
+    public boolean callListener() {
+        if(listener == null) return false;
         try {
             listener.call();
         } catch (Exception e) {
             Log.e("IOW", "Exception when calling listener from UI element", e);
         }
+        return true;
+    }
+
+    @Override
+    public void setRenderInBorders(boolean inBorders) {
+        renderInBorders = inBorders;
+    }
+
+    @Override
+    public boolean getRenderInBorders() {
+        return renderInBorders;
     }
 }

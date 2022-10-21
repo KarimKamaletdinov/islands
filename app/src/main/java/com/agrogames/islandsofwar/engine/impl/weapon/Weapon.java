@@ -233,6 +233,11 @@ public class Weapon implements com.agrogames.islandsofwar.engine.abs.weapon.Weap
     }
 
     @Override
+    public Point getRelativeLocation() {
+        return relativeLocation;
+    }
+
+    @Override
     public float getLongRange() {
         return longRange;
     }

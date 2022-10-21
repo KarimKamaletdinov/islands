@@ -37,7 +37,7 @@ public class Manager implements RenderManager {
                 new TransportUnit(UnitType.Tank),
                 new TransportUnit(UnitType.Tank),
                 new TransportUnit(UnitType.Tank),
-                new TransportUnit(UnitType.Tank),
+                new TransportUnit(UnitType.RocketLauncher),
         });
 
         this.engine = new com.agrogames.islandsofwar.engine.impl.Engine(new Unit[]{

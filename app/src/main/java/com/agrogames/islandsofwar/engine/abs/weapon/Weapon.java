@@ -9,7 +9,7 @@ import com.agrogames.islandsofwar.types.WeaponType;
 public interface Weapon extends RenderableObject, UpdatableObject {
     void setOwner(Unit owner);
     Unit getOwner();
-    Point getLocation();
+    Point getRelativeLocation();
     WeaponType getType();
     float getLongRange();
     int getDamage();

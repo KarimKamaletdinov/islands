@@ -129,6 +129,10 @@ public class SmallShip extends Unit{
         switch (unit.type){
             case Tank:
                 u = UnitFactory.Tank(cell.x, cell.y);
+                break;
+            case RocketLauncher:
+                u = UnitFactory.RocketLauncher(cell.x, cell.y);
+                break;
         }
         if(u == null) return;
         if(!route.isEmpty() && !cell.equals(route.firstElement())){

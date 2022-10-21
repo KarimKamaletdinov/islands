@@ -20,5 +20,7 @@ public interface Element {
     void setVisible(boolean visible);
     boolean getVisible();
     void onClick(Callable<Void> listener);
-    void callListener();
+    boolean callListener();
+    void setRenderInBorders(boolean inBorders);
+    boolean getRenderInBorders();
 }

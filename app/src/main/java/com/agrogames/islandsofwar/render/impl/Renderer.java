@@ -30,8 +30,7 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
     private Unit selectedUnit;
     private final List<Pair<Unit, Float>> selectable = new ArrayList<>();
     private final Element cancelButton;
-    private final Element spawnButton;
-    private boolean spawn;
+    private final UnitList unitList;
 
     public Renderer(Presenter presenter, UI ui){
         this.presenter = presenter;
@@ -39,27 +38,12 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
         cancelButton = ui.createElement(ElementType.Button, 14, 9, 1, 1, TextureBitmap.CancelButton);
         cancelButton.setVisible(false);
 
-        spawnButton = ui.createElement(ElementType.Button, 14, 8, 1, 1, TextureBitmap.LandUnitsButton);
-        spawnButton.setVisible(false);
+        unitList = new UnitList(ui);
 
         cancelButton.onClick(() -> {
             cancelButton.setVisible(false);
-            spawnButton.setVisible(false);
+            unitList.clearUnits();
             selectedUnit = null;
-            spawn = false;
-            spawnButton.setTexture(TextureBitmap.LandUnitsButton);
-            return null;
-        });
-        spawnButton.onClick(() -> {
-            if(selectedUnit != null && selectedUnit instanceof Transport){
-                if(spawn){
-                    spawn = false;
-                    spawnButton.setTexture(TextureBitmap.LandUnitsButton);
-                } else {
-                    spawn = true;
-                    spawnButton.setTexture(TextureBitmap.LandUnitsButtonSelected);
-                }
-            }
             return null;
         });
     }
@@ -123,17 +107,21 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
                 .findFirst().orElse(new Pair<>(null, null)).first;
         if(su != null){
             cancelButton.setVisible(true);
-            spawnButton.setVisible(su instanceof Transport);
             selectedUnit = su;
-        } else if(spawn && selectedUnit != null && selectedUnit instanceof Transport){
+            if (su instanceof Transport)
+                unitList.setUnits(((Transport) su).getUnits());
+            else
+                unitList.clearUnits();
+        } else if(unitList.getCurrentUnit() != null && selectedUnit != null && selectedUnit instanceof Transport){
             Transport t = (Transport) selectedUnit;
             TransportUnit[] units = t.getUnits();
             if (units.length == 0) {
-                spawn = false;
-                spawnButton.setTexture(TextureBitmap.LandUnitsButton);
-                spawnButton.setVisible(false);
+                unitList.clearUnits();
             } else {
-                t.spawn(units[0], new Cell(touch));
+                t.spawn(unitList.getCurrentUnit(), new Cell(touch));
+                units = t.getUnits();
+                unitList.clearUnits(false);
+                unitList.setUnits(units);
             }
         } else if(selectedUnit != null){
             MovableObject mo = (MovableObject) selectedUnit;
