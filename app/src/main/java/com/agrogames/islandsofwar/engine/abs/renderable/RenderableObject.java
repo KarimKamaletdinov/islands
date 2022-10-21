@@ -6,4 +6,7 @@ public interface RenderableObject {
     Point getLocation();
     float getRotation();
     RenderableObjectTypeConvertable getType();
+    default float timeSinceDestroyed(){
+        return 0;
+    }
 }

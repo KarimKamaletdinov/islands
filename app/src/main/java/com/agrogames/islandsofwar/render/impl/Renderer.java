@@ -9,6 +9,7 @@ import com.agrogames.islandsofwar.engine.abs.bullet.Bullet;
 import com.agrogames.islandsofwar.engine.abs.common.Cell;
 import com.agrogames.islandsofwar.engine.abs.common.Point;
 import com.agrogames.islandsofwar.engine.abs.movable.MovableObject;
+import com.agrogames.islandsofwar.engine.abs.renderable.RenderableObject;
 import com.agrogames.islandsofwar.engine.abs.transport.Transport;
 import com.agrogames.islandsofwar.engine.abs.transport.TransportUnit;
 import com.agrogames.islandsofwar.engine.abs.unit.Unit;
@@ -71,7 +72,7 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
         selectable.clear();
         for (Unit unit: presenter.getAttackers()){
             if(unit == selectedUnit){
-                GameObjectRenderer.render(unit, drawer, true);
+                GameObjectRenderer.render(unit, drawer, ObjectState.Selected);
             } else{
                 float size = GameObjectRenderer.render(unit, drawer);
                 selectable.add(new Pair<>(unit, size));
@@ -80,6 +81,10 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
         for (Unit unit: presenter.getProtectors()){
             GameObjectRenderer.render(unit, drawer);
         }
+        for (RenderableObject r: presenter.getOther()){
+            GameObjectRenderer.render(r, drawer, ObjectState.Destroyed);
+        }
+
         for (Bullet bullet: presenter.getAttackersBullets()){
             GameObjectRenderer.render(bullet, drawer);
         }

@@ -2,6 +2,8 @@ package com.agrogames.islandsofwar.rendermanager;
 
 import com.agrogames.islandsofwar.engine.abs.Engine;
 import com.agrogames.islandsofwar.engine.abs.bullet.Bullet;
+import com.agrogames.islandsofwar.engine.abs.map.MapObject;
+import com.agrogames.islandsofwar.engine.abs.renderable.RenderableObject;
 import com.agrogames.islandsofwar.engine.abs.unit.Unit;
 
 public class Presenter implements com.agrogames.islandsofwar.render.abs.Presenter {
@@ -19,6 +21,11 @@ public class Presenter implements com.agrogames.islandsofwar.render.abs.Presente
     @Override
     public Unit[] getAttackers() {
         return engine.getAttackers();
+    }
+
+    @Override
+    public RenderableObject[] getOther() {
+        return engine.getOther();
     }
 
     @Override

@@ -137,6 +137,7 @@ public class SmallShip extends Unit{
         adder.addUnit(u);
         unit = null;
         health.current = 0;
+        timeSinceDestroyed = 100;
     }
 
     private boolean isTaken(Cell cell, MapObject[] all){

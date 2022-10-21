@@ -5,8 +5,8 @@ import com.agrogames.islandsofwar.engine.abs.renderable.RenderableObject;
 import com.agrogames.islandsofwar.types.GameObjectTypeMapper;
 
 public class TextureProvider {
-    public static RenderableTexture getTexture(RenderableObject object, boolean selected){
+    public static RenderableTexture getTexture(RenderableObject object, ObjectState state){
         Point location = object.getLocation();
-        return new RenderableTexture(location.x, location.y, object.getRotation(), GameObjectTypeMapper.convert(object.getType().toRenderableObjectType(), selected));
+        return new RenderableTexture(location.x, location.y, object.getRotation(), GameObjectTypeMapper.convert(object.getType().toRenderableObjectType(), state));
     }
 }

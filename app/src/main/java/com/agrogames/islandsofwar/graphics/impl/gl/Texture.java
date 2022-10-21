@@ -53,8 +53,6 @@ public class Texture {
 
     public void Render(int mProgram, float[] vPMatrix) {
         GLES20.glUseProgram(mProgram);
-        GLES20.glEnable(GLES20.GL_BLEND);
-        GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
         int textureUniformHandle = GLES20.glGetUniformLocation(mProgram, "u_Texture");
         GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
         int[] textureUnit = { 1 };

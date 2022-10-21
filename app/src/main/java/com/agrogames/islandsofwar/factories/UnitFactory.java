@@ -15,7 +15,7 @@ public class UnitFactory {
     }
 
     public static Unit TransportShip(int x, int y, TransportUnit[] units){
-        return new BigShip(UnitType.TransportShip, new Cell(x, y), WeaponFactory.create(UnitType.TransportShip), 50, 1f, 0.1f, units, 5);
+        return new BigShip(UnitType.TransportShip, new Cell(x, y), WeaponFactory.create(UnitType.TransportShip), 100, 1f, 0.1f, units, 5);
     }
 
     public static Unit LandingCraft(int x, int y){

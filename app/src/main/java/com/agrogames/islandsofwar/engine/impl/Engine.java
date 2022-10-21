@@ -3,6 +3,7 @@ package com.agrogames.islandsofwar.engine.impl;
 import android.util.Log;
 
 import com.agrogames.islandsofwar.engine.abs.bullet.Bullet;
+import com.agrogames.islandsofwar.engine.abs.renderable.RenderableObject;
 import com.agrogames.islandsofwar.engine.abs.unit.Unit;
 import com.agrogames.islandsofwar.engine.abs.map.MapObject;
 import com.agrogames.islandsofwar.engine.impl.bullet.BulletAdder;
@@ -16,6 +17,7 @@ import java.util.List;
 public class Engine implements com.agrogames.islandsofwar.engine.abs.Engine {
     private final List<Unit> protectors = new ArrayList<>();
     private final List<Unit> attackers = new ArrayList<>();
+    private final List<Unit> destroyed = new ArrayList<>();
     private final List<Bullet> protectorsBullets = new ArrayList<>();
     private final List<Bullet> attackersBullets = new ArrayList<>();
     private final MapObject[] mapObjects;
@@ -54,6 +56,9 @@ public class Engine implements com.agrogames.islandsofwar.engine.abs.Engine {
                 Log.e("IOW", "An exception has occurred during Update", e);
             }
         }
+        for(Unit unit : destroyed.toArray(new Unit[0])){
+            unit.addTsd(deltaTime);
+        }
         protectorsBullets.addAll(bulletAdder1.getBullets());
         protectors.addAll(unitAdder1.getUnits());
 
@@ -82,11 +87,18 @@ public class Engine implements com.agrogames.islandsofwar.engine.abs.Engine {
         for (Unit unit : protectors.toArray(new Unit[0])) {
             if(unit.getHealth().current <= 0){
                 protectors.remove(unit);
+                destroyed.add(unit);
             }
         }
         for (Unit unit : attackers.toArray(new Unit[0])) {
             if(unit.getHealth().current <= 0){
                 attackers.remove(unit);
+                destroyed.add(unit);
+            }
+        }
+        for(Unit unit : destroyed.toArray(new Unit[0])){
+            if(unit.timeSinceDestroyed() >= 2){
+                destroyed.remove(unit);
             }
         }
 
@@ -108,6 +120,11 @@ public class Engine implements com.agrogames.islandsofwar.engine.abs.Engine {
 
     public Unit[] getAttackers(){
         return attackers.toArray(new Unit[0]);
+    }
+
+    @Override
+    public RenderableObject[] getOther() {
+        return destroyed.toArray(new Unit[0]);
     }
 
     public Bullet[] getProtectorsBullets(){

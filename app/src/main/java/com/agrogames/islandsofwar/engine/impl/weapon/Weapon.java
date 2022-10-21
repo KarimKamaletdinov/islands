@@ -15,7 +15,6 @@ import com.agrogames.islandsofwar.engine.abs.unit.UnitAdder;
 import com.agrogames.islandsofwar.types.WeaponType;
 import com.agrogames.islandsofwar.engine.abs.bullet.Bullet;
 import com.agrogames.islandsofwar.factories.BulletFactory;
-import com.agrogames.islandsofwar.map.impl.Water;
 
 import java.util.Arrays;
 import java.util.Comparator;

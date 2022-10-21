@@ -1,7 +1,10 @@
 package com.agrogames.islandsofwar.engine.impl.unit;
 
+import com.agrogames.islandsofwar.engine.abs.bullet.BulletAdder;
 import com.agrogames.islandsofwar.engine.abs.common.Cell;
 import com.agrogames.islandsofwar.engine.abs.common.Point;
+import com.agrogames.islandsofwar.engine.abs.map.MapProvider;
+import com.agrogames.islandsofwar.engine.abs.unit.UnitAdder;
 import com.agrogames.islandsofwar.types.UnitType;
 import com.agrogames.islandsofwar.engine.abs.movable.MovableObject;
 import com.agrogames.islandsofwar.engine.abs.weapon.Weapon;
@@ -17,6 +20,7 @@ abstract class Unit implements com.agrogames.islandsofwar.engine.abs.unit.Unit, 
     protected float goalRotation;
     protected int minDamage = 0;
     private final Weapon[] weapons;
+    protected float timeSinceDestroyed;
 
     protected Unit(UnitType type, Cell location, Weapon[] weapons, int health, float speed, float rotationSpeed) {
         this.type = type;
@@ -60,6 +64,17 @@ abstract class Unit implements com.agrogames.islandsofwar.engine.abs.unit.Unit, 
     @Override
     public float getRotation() {
         return rotation;
+    }
+
+    public void addTsd(float deltaTime) {
+        if(health.current <= 0){
+            timeSinceDestroyed += deltaTime;
+        }
+    }
+
+    @Override
+    public float timeSinceDestroyed() {
+        return timeSinceDestroyed;
     }
 
     protected void rotate(float deltaTime){

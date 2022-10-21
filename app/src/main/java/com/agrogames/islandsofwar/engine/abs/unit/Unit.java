@@ -15,4 +15,5 @@ public interface Unit extends MapObject, RenderableObject, UpdatableObject {
     int getMinDamage();
     Weapon[] getWeapons();
     void loseHealth(int lost);
+    void addTsd(float deltaTime);
 }
