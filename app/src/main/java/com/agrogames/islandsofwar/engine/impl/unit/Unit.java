@@ -2,7 +2,7 @@ package com.agrogames.islandsofwar.engine.impl.unit;
 
 import com.agrogames.islandsofwar.engine.abs.common.Cell;
 import com.agrogames.islandsofwar.engine.abs.common.Point;
-import com.agrogames.islandsofwar.engine.abs.unit.UnitType;
+import com.agrogames.islandsofwar.types.UnitType;
 import com.agrogames.islandsofwar.engine.abs.movable.MovableObject;
 import com.agrogames.islandsofwar.engine.abs.weapon.Weapon;
 import com.agrogames.islandsofwar.engine.abs.gamevalue.IntValue;

@@ -1,9 +1,6 @@
-package com.agrogames.islandsofwar.render.impl;
+package com.agrogames.islandsofwar.types;
 
 import android.util.Log;
-
-import com.agrogames.islandsofwar.engine.abs.renderable.RenderableObjectType;
-import com.agrogames.islandsofwar.graphics.abs.TextureBitmap;
 
 public class GameObjectTypeMapper {
     public static TextureBitmap convert(RenderableObjectType type, boolean selected){
@@ -14,6 +11,12 @@ public class GameObjectTypeMapper {
                 return TextureBitmap.TankTower;
             case TankBullet:
                 return TextureBitmap.TankBullet;
+            case RocketLauncher:
+                return selected ? TextureBitmap.RocketLauncherSelected : TextureBitmap.RocketLauncher;
+            case RocketLauncherTower:
+                return TextureBitmap.RocketLauncherTower;
+            case Rocket:
+                return TextureBitmap.Rocket;
             case LandingCraft:
                 return selected ? TextureBitmap.LandingCraftSelected : TextureBitmap.LandingCraft;
             case TransportShip:

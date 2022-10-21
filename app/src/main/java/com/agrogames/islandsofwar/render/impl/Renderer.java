@@ -13,7 +13,7 @@ import com.agrogames.islandsofwar.engine.abs.transport.Transport;
 import com.agrogames.islandsofwar.engine.abs.transport.TransportUnit;
 import com.agrogames.islandsofwar.engine.abs.unit.Unit;
 import com.agrogames.islandsofwar.engine.abs.weapon.Weapon;
-import com.agrogames.islandsofwar.graphics.abs.TextureBitmap;
+import com.agrogames.islandsofwar.types.TextureBitmap;
 import com.agrogames.islandsofwar.graphics.abs.TextureDrawer;
 import com.agrogames.islandsofwar.render.abs.Presenter;
 import com.agrogames.islandsofwar.ui.abs.Element;

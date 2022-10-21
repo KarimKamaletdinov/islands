@@ -6,8 +6,7 @@ import com.agrogames.islandsofwar.engine.abs.gamevalue.IntValue;
 import com.agrogames.islandsofwar.engine.abs.map.MapObject;
 import com.agrogames.islandsofwar.engine.abs.renderable.RenderableObject;
 import com.agrogames.islandsofwar.engine.abs.updatable.UpdatableObject;
-
-import java.util.UUID;
+import com.agrogames.islandsofwar.types.UnitType;
 
 public interface Unit extends MapObject, RenderableObject, UpdatableObject {
     UnitType getType();

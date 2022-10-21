@@ -6,7 +6,7 @@ import android.util.Pair;
 
 import androidx.annotation.RequiresApi;
 
-import com.agrogames.islandsofwar.graphics.abs.TextureBitmap;
+import com.agrogames.islandsofwar.types.TextureBitmap;
 import com.agrogames.islandsofwar.graphics.impl.bitmap.BitmapProvider;
 import com.agrogames.islandsofwar.graphics.impl.gl.Texture;
 

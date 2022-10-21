@@ -2,7 +2,7 @@ package com.agrogames.islandsofwar.ui.impl;
 
 import android.util.Log;
 
-import com.agrogames.islandsofwar.graphics.abs.TextureBitmap;
+import com.agrogames.islandsofwar.types.TextureBitmap;
 import com.agrogames.islandsofwar.ui.abs.ElementType;
 
 import java.util.concurrent.Callable;

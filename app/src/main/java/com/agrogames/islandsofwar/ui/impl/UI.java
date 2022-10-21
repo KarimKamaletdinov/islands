@@ -1,6 +1,6 @@
 package com.agrogames.islandsofwar.ui.impl;
 
-import com.agrogames.islandsofwar.graphics.abs.TextureBitmap;
+import com.agrogames.islandsofwar.types.TextureBitmap;
 import com.agrogames.islandsofwar.graphics.abs.TextureDrawer;
 import com.agrogames.islandsofwar.ui.abs.Element;
 import com.agrogames.islandsofwar.ui.abs.ElementType;

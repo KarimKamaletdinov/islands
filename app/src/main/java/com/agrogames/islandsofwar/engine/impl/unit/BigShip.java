@@ -13,7 +13,8 @@ import com.agrogames.islandsofwar.engine.abs.movable.MovableObject;
 import com.agrogames.islandsofwar.engine.abs.transport.Transport;
 import com.agrogames.islandsofwar.engine.abs.transport.TransportUnit;
 import com.agrogames.islandsofwar.engine.abs.unit.UnitAdder;
-import com.agrogames.islandsofwar.engine.abs.unit.UnitType;
+import com.agrogames.islandsofwar.factories.UnitFactory;
+import com.agrogames.islandsofwar.types.UnitType;
 import com.agrogames.islandsofwar.engine.abs.weapon.Weapon;
 import com.agrogames.islandsofwar.engine.impl.navigator.BigShipNavigator;
 import com.agrogames.islandsofwar.map.abs.MapParams;
@@ -137,5 +138,28 @@ public class BigShip extends Unit implements Transport {
         if(units.remove(unit)){
             toAdd.add(new Pair<>(unit, goal));
         }
+    }
+
+    @Override
+    public Cell[] getTerritory() {
+        Cell l = new Cell(location);
+        float r = getRotation();
+        float g45 = (float) Math.PI / 4.0f;
+        if(r < g45 || r > g45 * 3 && r < g45 * 5 || r > g45 * 7){
+            return new Cell[]{
+                    l,
+                    new Cell(l.x + 2, l.y),
+                    new Cell(l.x + 1, l.y),
+                    new Cell(l.x - 1, l.y),
+                    new Cell(l.x - 2, l.y),
+            };
+        }
+        return new Cell[]{
+                l,
+                new Cell(l.x, l.y + 2),
+                new Cell(l.x, l.y + 1),
+                new Cell(l.x, l.y - 1),
+                new Cell(l.x, l.y - 2),
+        };
     }
 }

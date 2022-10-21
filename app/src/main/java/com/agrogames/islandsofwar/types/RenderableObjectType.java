@@ -1,9 +1,12 @@
-package com.agrogames.islandsofwar.engine.abs.renderable;
+package com.agrogames.islandsofwar.types;
 
 public enum RenderableObjectType {
     Tank,
     TankTower,
     TankBullet,
+    RocketLauncher,
+    RocketLauncherTower,
+    Rocket,
     TransportShip,
     TransportShipTower,
     TransportShipBullet,

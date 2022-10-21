@@ -9,7 +9,7 @@ import com.agrogames.islandsofwar.engine.abs.common.Point;
 import com.agrogames.islandsofwar.engine.abs.bullet.BulletAdder;
 import com.agrogames.islandsofwar.engine.abs.map.MapProvider;
 import com.agrogames.islandsofwar.engine.abs.unit.UnitAdder;
-import com.agrogames.islandsofwar.engine.abs.unit.UnitType;
+import com.agrogames.islandsofwar.types.UnitType;
 import com.agrogames.islandsofwar.engine.abs.weapon.Weapon;
 import com.agrogames.islandsofwar.engine.abs.map.MapObject;
 import com.agrogames.islandsofwar.engine.abs.unit.Unit;
@@ -24,7 +24,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Stack;
 
-class LandUnit extends com.agrogames.islandsofwar.engine.impl.unit.Unit {
+public class LandUnit extends com.agrogames.islandsofwar.engine.impl.unit.Unit {
     private Unit goalUnit;
     private final Stack<Cell> route = new Stack<>();
     private Cell goal;

@@ -4,6 +4,7 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import com.agrogames.islandsofwar.common.M;
 import com.agrogames.islandsofwar.engine.abs.common.Cell;
 import com.agrogames.islandsofwar.engine.abs.common.Point;
 import com.agrogames.islandsofwar.engine.abs.bullet.BulletAdder;
@@ -11,34 +12,54 @@ import com.agrogames.islandsofwar.engine.abs.map.MapObject;
 import com.agrogames.islandsofwar.engine.abs.unit.Unit;
 import com.agrogames.islandsofwar.engine.abs.map.MapProvider;
 import com.agrogames.islandsofwar.engine.abs.unit.UnitAdder;
-import com.agrogames.islandsofwar.engine.abs.weapon.WeaponType;
+import com.agrogames.islandsofwar.types.WeaponType;
 import com.agrogames.islandsofwar.engine.abs.bullet.Bullet;
-import com.agrogames.islandsofwar.engine.impl.bullet.BulletFactory;
+import com.agrogames.islandsofwar.factories.BulletFactory;
 import com.agrogames.islandsofwar.map.impl.Water;
 
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.stream.Stream;
 
-class Weapon implements com.agrogames.islandsofwar.engine.abs.weapon.Weapon {
+public class Weapon implements com.agrogames.islandsofwar.engine.abs.weapon.Weapon {
     private final Point relativeLocation;
     private final float reload;
     private final WeaponType type;
     private final float longRange;
     private final float rotationSpeed;
     private final int damage;
+    private final float speed;
+    private final int flightHeight;
+    private final int targetHeight;
     private float fromLastReload = 0;
     private float relativeRotation;
     private Float goalRotation;
     private Unit owner;
 
-    public Weapon(Point relativeLocation, float reload, WeaponType type, float longRange, float rotationSpeed, int damage) {
+    public Weapon(Point relativeLocation, float reload, WeaponType type, float longRange,
+                  float rotationSpeed, int damage, float speed, int flightHeight, int targetHeight) {
         this.relativeLocation = relativeLocation;
         this.reload = reload;
         this.type = type;
         this.longRange = longRange;
         this.rotationSpeed = rotationSpeed;
         this.damage = damage;
+        this.speed = speed;
+        this.flightHeight = flightHeight;
+        this.targetHeight = targetHeight;
+    }
+
+    public Weapon(Point relativeLocation, float reload, WeaponType type, float longRange,
+                  float rotationSpeed, int damage, float speed, int flightHeight) {
+        this.relativeLocation = relativeLocation;
+        this.reload = reload;
+        this.type = type;
+        this.longRange = longRange;
+        this.rotationSpeed = rotationSpeed;
+        this.damage = damage;
+        this.speed = speed;
+        this.flightHeight = flightHeight;
+        this.targetHeight = flightHeight;
     }
 
     @Override
@@ -85,12 +106,12 @@ class Weapon implements com.agrogames.islandsofwar.engine.abs.weapon.Weapon {
     }
 
     private void shoot(BulletAdder bulletAdder, Unit enemy) {
-        if (getRotation() != goalRotation) return;
+        if (!M.nearlyEquals(getRotation(), goalRotation)) return;
         fromLastReload = 0;
         Point enemyLocation = enemy.getTerritory().length == 0
                 ? enemy.getLocation()
                 : new Point(enemy.getTerritory()[0]);
-        Bullet bullet = BulletFactory.Create(this);
+        Bullet bullet = BulletFactory.create(this);
         bullet.setGoal(enemyLocation);
         bulletAdder.addBullet(bullet);
     }
@@ -160,7 +181,7 @@ class Weapon implements com.agrogames.islandsofwar.engine.abs.weapon.Weapon {
             y += Math.sin(r) * 0.5;
 
             for (MapObject mapObject: all) {
-                if(mapObject != owner && mapObject != enemy && !(mapObject instanceof Water)){
+                if(mapObject != owner && mapObject != enemy && mapObject.getHeight() == flightHeight){
                     for (Cell cell: mapObject.getTerritory()){
                         Cell c = new Cell((int) x + 1, (int) y + 1);
                         if(cell.equals(c)) {
@@ -220,5 +241,20 @@ class Weapon implements com.agrogames.islandsofwar.engine.abs.weapon.Weapon {
     @Override
     public int getDamage() {
         return damage;
+    }
+
+    @Override
+    public float getSpeed() {
+        return speed;
+    }
+
+    @Override
+    public int getFlightHeight() {
+        return flightHeight;
+    }
+
+    @Override
+    public int getTargetHeight() {
+        return targetHeight;
     }
 }

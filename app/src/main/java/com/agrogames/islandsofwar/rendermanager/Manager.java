@@ -2,18 +2,15 @@ package com.agrogames.islandsofwar.rendermanager;
 
 import android.content.Context;
 import android.os.Build;
-import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
 import com.agrogames.islandsofwar.engine.abs.Engine;
-import com.agrogames.islandsofwar.engine.abs.common.Cell;
 import com.agrogames.islandsofwar.engine.abs.common.Point;
 import com.agrogames.islandsofwar.engine.abs.transport.TransportUnit;
 import com.agrogames.islandsofwar.engine.abs.unit.Unit;
-import com.agrogames.islandsofwar.engine.abs.movable.MovableObject;
-import com.agrogames.islandsofwar.engine.abs.unit.UnitType;
-import com.agrogames.islandsofwar.engine.impl.unit.UnitFactory;
+import com.agrogames.islandsofwar.types.UnitType;
+import com.agrogames.islandsofwar.factories.UnitFactory;
 import com.agrogames.islandsofwar.graphics.abs.TextureDrawer;
 import com.agrogames.islandsofwar.graphics.abs.RenderManager;
 import com.agrogames.islandsofwar.map.impl.Map;
@@ -50,7 +47,7 @@ public class Manager implements RenderManager {
                 UnitFactory.Tank(5, 6),
                 UnitFactory.Tank(6, 5),
                 UnitFactory.Tank(6, 4),
-                UnitFactory.Tank(6, 6),
+                UnitFactory.RocketLauncher(6, 6),
                 UnitFactory.Tank(7, 5),
                 UnitFactory.Tank(7, 4),
                 UnitFactory.Tank(7, 6),

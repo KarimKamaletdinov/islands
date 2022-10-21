@@ -1,9 +1,8 @@
 package com.agrogames.islandsofwar.render.impl;
 
-import android.util.Log;
 import android.util.Pair;
 
-import com.agrogames.islandsofwar.graphics.abs.TextureBitmap;
+import com.agrogames.islandsofwar.types.TextureBitmap;
 import com.agrogames.islandsofwar.graphics.abs.TextureDrawer;
 
 public class RenderableTexture {
