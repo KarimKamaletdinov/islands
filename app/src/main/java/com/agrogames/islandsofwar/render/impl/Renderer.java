@@ -8,6 +8,7 @@ import androidx.annotation.RequiresApi;
 import com.agrogames.islandsofwar.engine.abs.bullet.Bullet;
 import com.agrogames.islandsofwar.engine.abs.common.Cell;
 import com.agrogames.islandsofwar.engine.abs.common.Point;
+import com.agrogames.islandsofwar.engine.abs.gamevalue.IntValue;
 import com.agrogames.islandsofwar.engine.abs.movable.MovableObject;
 import com.agrogames.islandsofwar.engine.abs.renderable.RenderableObject;
 import com.agrogames.islandsofwar.engine.abs.transport.Transport;
@@ -57,6 +58,7 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
         for (Unit unit: presenter.getAttackers()){
             if(unit == selectedUnit){
                 GameObjectRenderer.render(unit, drawer, ObjectState.Selected);
+                drawHealth(drawer, unit);
             } else{
                 float size = GameObjectRenderer.render(unit, drawer);
                 selectable.add(new Pair<>(unit, size));
@@ -127,5 +129,13 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
             MovableObject mo = (MovableObject) selectedUnit;
             mo.setGoal(new Cell(touch));
         }
+    }
+
+    private void drawHealth(TextureDrawer drawer, Unit unit){
+        Point l = unit.getLocation();
+        IntValue health = unit.getHealth();
+        drawer.DrawTexture(l.x, l.y + 1, TextureBitmap.Red, health.start / 15f, 0.1f, 0);
+        drawer.DrawTexture(l.x - (health.start - health.current) / 30f, l.y + 1, TextureBitmap.Green,
+                health.current / 15f, 0.1f, 0);
     }
 }

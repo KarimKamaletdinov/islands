@@ -12,6 +12,8 @@ public enum TextureBitmap {
     RocketLauncherTower("rocket-launcher-tower.png"),
     Rocket("rocket.png"),
     Error("error.png"),
+    Red("red.png"),
+    Green("green.png"),
     LandingCraft("landing-craft.png"),
     LandingCraftSelected("landing-craft-selected.png"),
     LandingCraftDestroyed("landing-craft-destroyed.png"),
