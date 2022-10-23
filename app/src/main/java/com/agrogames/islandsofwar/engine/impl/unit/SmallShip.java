@@ -21,6 +21,7 @@ import com.agrogames.islandsofwar.map.abs.MapParams;
 import com.agrogames.islandsofwar.map.impl.Water;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 
@@ -156,6 +157,8 @@ public class SmallShip extends Unit{
                 for (Cell c: object.getTerritory()){
                     map.remove(c);
                 }
+            } else if (object != this){
+                Collections.addAll(map, object.getTerritory());
             }
         }
 
