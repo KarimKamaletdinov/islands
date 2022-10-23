@@ -62,7 +62,7 @@ public class GLRenderer implements GLSurfaceView.Renderer {
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
         Matrix.setLookAtM(viewMatrix, 0, 0, 0, 3, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
         Matrix.multiplyMM(vPMatrix, 0, projectionMatrix, 0, viewMatrix, 0);
-        manager.Render(drawTextureService);
+        manager.render(drawTextureService);
         Texture[] textures = drawTextureService.GetTextures();
         for (Texture texture: textures) {
             texture.Render(mProgram, vPMatrix);
@@ -79,7 +79,11 @@ public class GLRenderer implements GLSurfaceView.Renderer {
     }
 
     public void onTouch(float x, float y){
-        manager.OnTouch((x - (width - height * 1.5f) / 2) / height * 10f, 10f - (y / height * 10f));
+        manager.onTouch((x - (width - height * 1.5f) / 2) / height * 10f, 10f - (y / height * 10f));
+    }
+
+    public void onMove(float x, float y){
+        manager.onMove((x - (width - height * 1.5f) / 2) / height * 10f, 10f - (y / height * 10f));
     }
 
     public static int loadShader(int type, String shaderCode){

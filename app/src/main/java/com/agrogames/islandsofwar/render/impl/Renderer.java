@@ -47,13 +47,16 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
             selectedUnit = null;
             return null;
         });
+
+        MapScroller.scroll(-5f, -5f);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
-    public void render(TextureDrawer drawer, Point touch) {
-        drawer.DrawTexture(7.5f, 5, TextureBitmap.Background, 15, 10, 0);
+    public void render(TextureDrawer drawer, Point touch, Point move, Point previousMove) {
 
+        MapScroller.start(drawer);
+        drawer.drawTexture(15f, 10, TextureBitmap.Background, 30, 20, 0);
         selectable.clear();
         for (Unit unit: presenter.getAttackers()){
             if(unit == selectedUnit){
@@ -88,13 +91,15 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
                 GameObjectRenderer.render(weapon, drawer);
             }
         }
+        MapScroller.finish(drawer);
 
         if(touch == null) {
             ui.render(drawer, null, null);
-        } else {
-            if(!ui.render(drawer, touch.x, touch.y)){
-                onTouch(touch);
-            }
+        } else if(!ui.render(drawer, touch.x, touch.y) && move == null && previousMove == null){
+            onTouch(MapScroller.convert(touch));
+        }
+        if(move != null && previousMove != null){
+            MapScroller.scroll(move.x - previousMove.x, move.y - previousMove.y);
         }
     }
 
@@ -134,8 +139,8 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
     private void drawHealth(TextureDrawer drawer, Unit unit){
         Point l = unit.getLocation();
         IntValue health = unit.getHealth();
-        drawer.DrawTexture(l.x, l.y + 1, TextureBitmap.Red, health.start / 15f, 0.1f, 0);
-        drawer.DrawTexture(l.x - (health.start - health.current) / 30f, l.y + 1, TextureBitmap.Green,
+        drawer.drawTexture(l.x, l.y + 1, TextureBitmap.Red, health.start / 15f, 0.1f, 0);
+        drawer.drawTexture(l.x - (health.start - health.current) / 30f, l.y + 1, TextureBitmap.Green,
                 health.current / 15f, 0.1f, 0);
     }
 }

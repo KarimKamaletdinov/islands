@@ -33,9 +33,9 @@ public class RenderableTexture {
 
     public void render(TextureDrawer drawer){
         if(width != null && height != null){
-            drawer.DrawTexture(x, y, bitmap, width, height, rotation);
+            drawer.drawTexture(x, y, bitmap, width, height, rotation);
         } else {
-            Pair<Float, Float> p = drawer.DrawTexture(x, y, bitmap, rotation);
+            Pair<Float, Float> p = drawer.drawTexture(x, y, bitmap, rotation);
             width = p.first;
             height = p.second;
         }

@@ -26,6 +26,8 @@ public class Manager implements RenderManager {
     private LocalTime previous;
     private boolean start = false;
     private Point touch;
+    private Point move;
+    private Point previousMove;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public Manager(Context context) {
@@ -41,17 +43,17 @@ public class Manager implements RenderManager {
         });
 
         this.engine = new com.agrogames.islandsofwar.engine.impl.Engine(new Unit[]{
-                UnitFactory.Tank(4, 5),
-                UnitFactory.Tank(5, 5),
-                UnitFactory.Tank(5, 4),
-                UnitFactory.Tank(5, 6),
-                UnitFactory.Tank(6, 5),
-                UnitFactory.Tank(6, 4),
-                UnitFactory.RocketLauncher(6, 6),
-                UnitFactory.Tank(7, 5),
-                UnitFactory.Tank(7, 4),
-                UnitFactory.Tank(7, 6),
-                UnitFactory.Tank(10, 5),
+                UnitFactory.Tank(14, 10),
+                UnitFactory.Tank(15, 10),
+                UnitFactory.Tank(15, 9),
+                UnitFactory.Tank(15, 11),
+                UnitFactory.Tank(16, 10),
+                UnitFactory.Tank(16, 9),
+                UnitFactory.RocketLauncher(16, 11),
+                UnitFactory.Tank(17, 10),
+                UnitFactory.Tank(17, 9),
+                UnitFactory.Tank(17, 11),
+                UnitFactory.Tank(20, 10),
         }, new Unit[]{
                 ts,
         }, Map.fromAssets(context, "map1.txt").getMap());
@@ -75,14 +77,21 @@ public class Manager implements RenderManager {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
-    public void Render(TextureDrawer drawer) {
+    public void render(TextureDrawer drawer) {
         start = true;
-        renderer.render(drawer, touch);
+        renderer.render(drawer, touch, move, previousMove);
         touch = null;
+        previousMove = move;
+        move = null;
     }
 
     @Override
-    public void OnTouch(float x, float y) {
+    public void onTouch(float x, float y) {
         touch = new Point(x, y);
+    }
+
+    @Override
+    public void onMove(float x, float y) {
+        move = new Point(x, y);
     }
 }

@@ -9,7 +9,7 @@ public class GLSurfaceView extends android.opengl.GLSurfaceView {
 
     public GLSurfaceView(Context context, RenderManager manager){
         super(context);
-        // Create an OpenGL ES 2.0 context
+
         setEGLContextClientVersion(2);
 
         GLRenderer renderer = new GLRenderer(context, manager);
@@ -17,10 +17,12 @@ public class GLSurfaceView extends android.opengl.GLSurfaceView {
             v.performClick();
             if(e.getAction() == MotionEvent.ACTION_UP){
                 renderer.onTouch(e.getX(), e.getY());
+            } else if(e.getAction() == MotionEvent.ACTION_MOVE){
+                renderer.onMove(e.getX(), e.getY());
             }
             return true;
         });
-        // Set the Renderer for drawing on the GLSurfaceView
+
         setRenderer(renderer);
     }
 }

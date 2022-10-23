@@ -16,23 +16,31 @@ import java.util.List;
 public class TextureDrawer implements com.agrogames.islandsofwar.graphics.abs.TextureDrawer {
     private final List<Texture> textures = new ArrayList<>();
     private final BitmapProvider bitmapProvider;
+    private int currentX;
+    private int currentY;
 
     public TextureDrawer(BitmapProvider bitmapProvider) {
         this.bitmapProvider = bitmapProvider;
     }
 
     @Override
-    public void DrawTexture(float x, float y, TextureBitmap bitmap, float width, float height, float rotation) {
-        textures.add(new Texture(x, y, bitmapProvider.load(bitmap.name), width, height, rotation));
+    public void translate(float x, float y) {
+        currentX += x;
+        currentY += y;
+    }
+
+    @Override
+    public void drawTexture(float x, float y, TextureBitmap bitmap, float width, float height, float rotation) {
+        textures.add(new Texture(x + currentX, y + currentY, bitmapProvider.load(bitmap.name), width, height, rotation));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
-    public Pair<Float, Float> DrawTexture(float x, float y, TextureBitmap bitmap, float rotation) {
+    public Pair<Float, Float> drawTexture(float x, float y, TextureBitmap bitmap, float rotation) {
         Bitmap b = bitmapProvider.load(bitmap.name);
         float width = b.getWidth() / 50f;
         float height = b.getHeight() / 50f;
-        textures.add(new Texture(x, y, b, width, height, rotation));
+        textures.add(new Texture(x + currentX, y + currentY, b, width, height, rotation));
         return new Pair<>(width, height);
     }
 

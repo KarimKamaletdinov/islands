@@ -4,5 +4,5 @@ import com.agrogames.islandsofwar.engine.abs.common.Point;
 import com.agrogames.islandsofwar.graphics.abs.TextureDrawer;
 
 public interface Renderer {
-    void render(TextureDrawer drawer, Point touchPoint);
+    void render(TextureDrawer drawer, Point touchPoint, Point movePoint, Point previousMovePoint);
 }

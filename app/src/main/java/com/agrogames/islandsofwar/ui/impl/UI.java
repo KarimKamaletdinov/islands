@@ -37,11 +37,11 @@ public class UI implements com.agrogames.islandsofwar.ui.abs.UI {
         for (Element element : elements){
             if(!element.getVisible()) continue;
             if(element.getRenderInBorders()) {
-                drawer.DrawTexture(element.getX(), element.getY(), element.getTexture(),
+                drawer.drawTexture(element.getX(), element.getY(), element.getTexture(),
                         element.getWidth(), element.getHeight(), 0);
             } else {
                 Pair<Float, Float> size =
-                        drawer.DrawTexture(element.getX(), element.getY(), element.getTexture(), 0);
+                        drawer.drawTexture(element.getX(), element.getY(), element.getTexture(), 0);
                 if(element.getWidth() == -1 || element.getHeight() == -1) {
                     element.setWidth(size.first);
                     element.setHeight(size.second);

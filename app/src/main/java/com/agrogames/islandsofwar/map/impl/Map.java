@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.agrogames.islandsofwar.engine.abs.common.Cell;
 import com.agrogames.islandsofwar.engine.abs.map.MapObject;
+import com.agrogames.islandsofwar.map.abs.MapParams;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,7 +38,7 @@ public class Map implements com.agrogames.islandsofwar.map.abs.Map {
             for(int j = 0; j < row.length(); j++){
                 char symbol = row.charAt(j);
                 if(symbol == 'w'){
-                    map.add(new Water(new Cell(j, 10-i)));
+                    map.add(new Water(new Cell(j, MapParams.Height-i)));
                 }
             }
         }
