@@ -10,6 +10,7 @@ public interface Weapon extends RenderableObject, UpdatableObject {
     void setOwner(Unit owner);
     Unit getOwner();
     Point getRelativeLocation();
+    Point[] getBulletStarts();
     WeaponType getType();
     float getLongRange();
     int getDamage();

@@ -16,8 +16,10 @@ import com.agrogames.islandsofwar.types.WeaponType;
 import com.agrogames.islandsofwar.engine.abs.bullet.Bullet;
 import com.agrogames.islandsofwar.factories.BulletFactory;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Stream;
 
 public class Weapon implements com.agrogames.islandsofwar.engine.abs.weapon.Weapon {
@@ -30,13 +32,14 @@ public class Weapon implements com.agrogames.islandsofwar.engine.abs.weapon.Weap
     private final float speed;
     private final int flightHeight;
     private final int targetHeight;
+    private final Point[] bulletsStarts;
     private float fromLastReload = 0;
     private float relativeRotation;
     private Float goalRotation;
     private Unit owner;
 
     public Weapon(Point relativeLocation, float reload, WeaponType type, float longRange,
-                  float rotationSpeed, int damage, float speed, int flightHeight, int targetHeight) {
+                  float rotationSpeed, int damage, float speed, int flightHeight, int targetHeight, Point[] bulletsStarts) {
         this.relativeLocation = relativeLocation;
         this.reload = reload;
         this.type = type;
@@ -46,25 +49,38 @@ public class Weapon implements com.agrogames.islandsofwar.engine.abs.weapon.Weap
         this.speed = speed;
         this.flightHeight = flightHeight;
         this.targetHeight = targetHeight;
+        this.bulletsStarts = bulletsStarts;
+    }
+
+    public Weapon(Point relativeLocation, float reload, WeaponType type, float longRange,
+                  float rotationSpeed, int damage, float speed, int flightHeight, Point[] bulletsStarts) {
+        this(relativeLocation,reload, type, longRange, rotationSpeed, damage, speed, flightHeight, flightHeight, bulletsStarts);
+    }
+    public Weapon(Point relativeLocation, float reload, WeaponType type, float longRange,
+                  float rotationSpeed, int damage, float speed, int flightHeight, int targetHeight) {
+        this(relativeLocation,reload, type, longRange, rotationSpeed, damage, speed, flightHeight, targetHeight, new Point[]{new Point(0, 0)});
     }
 
     public Weapon(Point relativeLocation, float reload, WeaponType type, float longRange,
                   float rotationSpeed, int damage, float speed, int flightHeight) {
-        this.relativeLocation = relativeLocation;
-        this.reload = reload;
-        this.type = type;
-        this.longRange = longRange;
-        this.rotationSpeed = rotationSpeed;
-        this.damage = damage;
-        this.speed = speed;
-        this.flightHeight = flightHeight;
-        this.targetHeight = flightHeight;
+        this(relativeLocation,reload, type, longRange, rotationSpeed, damage, speed, flightHeight, flightHeight, new Point[]{new Point(0, 0)});
     }
 
     @Override
     public Point getLocation() {
         Point rr = relativeLocation.rotate(owner.getRotation());
         return new Point(owner.getLocation().x + rr.x, owner.getLocation().y + rr.y);
+    }
+
+    public Point[] getBulletStarts(){
+        List<Point> result = new ArrayList<>();
+        Point l = getLocation();
+        float rotation = getRotation();
+        for(Point s : bulletsStarts){
+            Point rr = s.rotate(rotation);
+            result.add(new Point(l.x + rr.x, l.y + rr.y));
+        }
+        return result.toArray(new Point[0]);
     }
 
     @Override
@@ -110,9 +126,12 @@ public class Weapon implements com.agrogames.islandsofwar.engine.abs.weapon.Weap
         Point enemyLocation = enemy.getTerritory().length == 0
                 ? enemy.getLocation()
                 : new Point(enemy.getTerritory()[0]);
-        Bullet bullet = BulletFactory.create(this);
-        bullet.setGoal(enemyLocation);
-        bulletAdder.addBullet(bullet);
+
+        Bullet[] bullets = BulletFactory.create(this);
+        for(Bullet bullet : bullets){
+            bullet.setGoal(enemyLocation);
+            bulletAdder.addBullet(bullet);
+        }
     }
 
     private void setRotation(Unit enemy) {
