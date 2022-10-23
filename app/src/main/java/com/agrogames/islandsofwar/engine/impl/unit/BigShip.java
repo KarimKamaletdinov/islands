@@ -5,6 +5,7 @@ import android.util.Pair;
 
 import androidx.annotation.RequiresApi;
 
+import com.agrogames.islandsofwar.common.M;
 import com.agrogames.islandsofwar.engine.abs.bullet.BulletAdder;
 import com.agrogames.islandsofwar.engine.abs.common.Cell;
 import com.agrogames.islandsofwar.engine.abs.common.Point;
@@ -54,14 +55,21 @@ public class BigShip extends Unit implements Transport {
         int gy = goal.y;
         if(goal.x != 1 && goal.x != MapParams.Width &&
                 goal.y != 1 && goal.y != MapParams.Height){
-            if(goal.x < MapParams.Width / 2)
-                gx = 1;
-            if(goal.x > MapParams.Width / 2)
-                gx = MapParams.Width;
-            if(goal.y < MapParams.Height / 2)
-                gy = 1;
-            if(goal.y > MapParams.Height / 2)
-                gy = MapParams.Height;
+            int cdx = gx - MapParams.Width / 2;
+            int cdy = gy - MapParams.Height / 2;
+            if(M.module(cdx) > M.module(cdy)){
+                if(cdx > 0){
+                    gx = MapParams.Width;
+                } else {
+                    gx = 1;
+                }
+            } else {
+                if(cdy > 0){
+                    gy = MapParams.Height;
+                } else {
+                    gy = 1;
+                }
+            }
         }
         if(goal.x < 1)
             gx = 1;
