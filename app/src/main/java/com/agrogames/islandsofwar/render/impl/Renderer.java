@@ -95,7 +95,7 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
 
         if(touch == null) {
             ui.render(drawer, null, null);
-        } else if(!ui.render(drawer, touch.x, touch.y) && move == null && previousMove == null){
+        } else if(!ui.render(drawer, touch.x, touch.y)){
             onTouch(MapScroller.convert(touch));
         }
         if(move != null && previousMove != null){
