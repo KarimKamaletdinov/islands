@@ -134,7 +134,9 @@ public class BigShip extends Unit implements Transport {
             goalRotation = -(float) Math.PI / 2f;
         }
 
-        rotate(deltaTime);
+        if(!route.lastElement().equals(new Cell(location))){
+            rotate(deltaTime);
+        }
     }
 
     @Override

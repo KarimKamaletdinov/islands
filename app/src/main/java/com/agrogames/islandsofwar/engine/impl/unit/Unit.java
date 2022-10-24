@@ -99,6 +99,7 @@ abstract class Unit implements com.agrogames.islandsofwar.engine.abs.unit.Unit, 
     }
 
     protected void setRotation(Cell goal) {
+        if(goal.equals(new Cell(location))) return;
         Point g = new Point(goal);
         goalRotation = (float) Math.atan(
                 ((double) g.y - (double) location.y) /
