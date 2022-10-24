@@ -6,7 +6,7 @@ import android.util.Log;
 import androidx.annotation.RequiresApi;
 
 import com.agrogames.islandsofwar.engine.abs.another.AnotherObject;
-import com.agrogames.islandsofwar.engine.abs.another.AnotherObjectFactory;
+import com.agrogames.islandsofwar.factories.AnotherObjectFactory;
 import com.agrogames.islandsofwar.engine.abs.bullet.Bullet;
 import com.agrogames.islandsofwar.engine.abs.renderable.RenderableObject;
 import com.agrogames.islandsofwar.engine.abs.unit.Unit;
@@ -20,7 +20,6 @@ import com.agrogames.islandsofwar.engine.impl.unit.UnitAdder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
 
 public class Engine implements com.agrogames.islandsofwar.engine.abs.Engine {
     private final List<Unit> protectors = new ArrayList<>();

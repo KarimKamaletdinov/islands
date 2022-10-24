@@ -1,5 +1,6 @@
-package com.agrogames.islandsofwar.engine.abs.another;
+package com.agrogames.islandsofwar.factories;
 
+import com.agrogames.islandsofwar.engine.abs.another.AnotherObject;
 import com.agrogames.islandsofwar.engine.abs.unit.Unit;
 import com.agrogames.islandsofwar.types.BulletType;
 

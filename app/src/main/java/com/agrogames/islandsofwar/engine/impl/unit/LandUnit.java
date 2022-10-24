@@ -86,7 +86,7 @@ public class LandUnit extends com.agrogames.islandsofwar.engine.impl.unit.Unit {
                 Weapon weapon = Arrays.stream(e.getWeapons())
                         .max(Comparator.comparingInt(Weapon::getDamage)).orElse(null);
                 if(weapon != null && getDist(new Point(getTerritory()[0]), weapon.getLocation()) <= weapon.getLongRange() + 3
-                        && Arrays.stream(e.getWeapons()).anyMatch(w -> w.getDamage() >= health.current)){
+                        && weapon.getDamage() >= health.current){
                     setGoal(new Cell(new Point(location.x - (weapon.getLocation().x - location.x) / 5f, location.y - (weapon.getLocation().y - location.y) / 2f)));
                 }
             }

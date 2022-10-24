@@ -46,7 +46,7 @@ public class Weapon implements com.agrogames.islandsofwar.engine.abs.weapon.Weap
         this.type = type;
         this.longRange = longRange;
         this.rotationSpeed = rotationSpeed;
-        this.damage = damage;
+        this.damage = damage * bulletsStarts.length;
         this.speed = speed;
         this.flightHeight = flightHeight;
         this.targetHeight = targetHeight;
