@@ -47,8 +47,6 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
             selectedUnit = null;
             return null;
         });
-
-        MapScroller.scroll(-5f, -5f);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

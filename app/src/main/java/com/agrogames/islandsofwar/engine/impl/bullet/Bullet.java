@@ -1,6 +1,12 @@
 package com.agrogames.islandsofwar.engine.impl.bullet;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import com.agrogames.islandsofwar.engine.abs.another.AnotherAdder;
+import com.agrogames.islandsofwar.factories.AnotherObjectFactory;
+import com.agrogames.islandsofwar.map.impl.Water;
 import com.agrogames.islandsofwar.types.BulletType;
 import com.agrogames.islandsofwar.engine.abs.common.Cell;
 import com.agrogames.islandsofwar.engine.abs.common.Point;
@@ -9,6 +15,8 @@ import com.agrogames.islandsofwar.engine.abs.map.MapObject;
 import com.agrogames.islandsofwar.engine.abs.unit.Unit;
 import com.agrogames.islandsofwar.engine.abs.map.MapProvider;
 import com.agrogames.islandsofwar.engine.abs.unit.UnitAdder;
+
+import java.util.Arrays;
 
 public class Bullet implements com.agrogames.islandsofwar.engine.abs.bullet.Bullet {
     private final BulletType type;
@@ -20,11 +28,12 @@ public class Bullet implements com.agrogames.islandsofwar.engine.abs.bullet.Bull
     private final int flightHeight;
     private final int targetHeight;
     private final Unit owner;
+    private final boolean bang;
     private boolean isFlying = true;
     private float flewDistance;
     private Cell goal;
 
-    public Bullet(BulletType type, Point location, float speed, int power, float longRange, int flightHeight, int targetHeight, Unit owner) {
+    public Bullet(BulletType type, Point location, float speed, int power, float longRange, int flightHeight, int targetHeight, Unit owner, boolean bang) {
         this.longRange = longRange;
         this.type = type;
         this.location = location;
@@ -33,6 +42,7 @@ public class Bullet implements com.agrogames.islandsofwar.engine.abs.bullet.Bull
         this.flightHeight = flightHeight;
         this.targetHeight = targetHeight;
         this.owner = owner;
+        this.bang = bang;
     }
 
     @Override
@@ -55,6 +65,7 @@ public class Bullet implements com.agrogames.islandsofwar.engine.abs.bullet.Bull
         return rotation;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void update(MapProvider provider, BulletAdder bulletAdder, UnitAdder unitAdder, AnotherAdder anotherAdder, float deltaTime) {
         move(deltaTime);
@@ -62,17 +73,26 @@ public class Bullet implements com.agrogames.islandsofwar.engine.abs.bullet.Bull
         MapObject enemy = enemyAt(new Cell((int) location.x + 1, (int) location.y + 1), all, flightHeight);
         if(enemy != null){
             if(enemy instanceof Unit) ((Unit)enemy).loseHealth(power);
-            isFlying = false;
+            stop(provider, anotherAdder);
         }
         else if(new Cell((int) location.x + 1, (int) location.y + 1).equals(goal)){
             MapObject e2 = enemyAt(new Cell((int) location.x + 1, (int) location.y + 1), all, targetHeight);
             if(e2 != null){
                 if(e2 instanceof Unit) ((Unit)e2).loseHealth(power);
             }
-            isFlying = false;
+            stop(provider, anotherAdder);
         }
         else if(flewDistance >= longRange){
-            isFlying = false;
+            stop(provider, anotherAdder);
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void stop(MapProvider provider, AnotherAdder adder){
+        isFlying = false;
+        if(bang && Arrays.stream(provider.getAll()).noneMatch(o ->
+                Arrays.asList(o.getTerritory()).contains(new Cell(location)) && o instanceof Water)){
+            adder.addAnother(AnotherObjectFactory.bang(this));
         }
     }
 

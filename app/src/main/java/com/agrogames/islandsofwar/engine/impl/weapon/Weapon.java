@@ -34,13 +34,15 @@ public class Weapon implements com.agrogames.islandsofwar.engine.abs.weapon.Weap
     private final int flightHeight;
     private final int targetHeight;
     private final Point[] bulletsStarts;
+    private final boolean bang;
+
     private float fromLastReload = 0;
     private float relativeRotation;
     private Float goalRotation;
     private Unit owner;
 
     public Weapon(Point relativeLocation, float reload, WeaponType type, float longRange,
-                  float rotationSpeed, int damage, float speed, int flightHeight, int targetHeight, Point[] bulletsStarts) {
+                  float rotationSpeed, int damage, float speed, int flightHeight, int targetHeight, Point[] bulletsStarts, boolean bang) {
         this.relativeLocation = relativeLocation;
         this.reload = reload;
         this.type = type;
@@ -51,20 +53,31 @@ public class Weapon implements com.agrogames.islandsofwar.engine.abs.weapon.Weap
         this.flightHeight = flightHeight;
         this.targetHeight = targetHeight;
         this.bulletsStarts = bulletsStarts;
+        this.bang = bang;
+    }
+
+    public Weapon(Point relativeLocation, float reload, WeaponType type, float longRange,
+                  float rotationSpeed, int damage, float speed, int flightHeight, int targetHeight, Point[] bulletsStarts) {
+        this(relativeLocation,reload, type, longRange, rotationSpeed, damage, speed, flightHeight, targetHeight, bulletsStarts, false);
     }
 
     public Weapon(Point relativeLocation, float reload, WeaponType type, float longRange,
                   float rotationSpeed, int damage, float speed, int flightHeight, Point[] bulletsStarts) {
-        this(relativeLocation,reload, type, longRange, rotationSpeed, damage, speed, flightHeight, flightHeight, bulletsStarts);
+        this(relativeLocation,reload, type, longRange, rotationSpeed, damage, speed, flightHeight, flightHeight, bulletsStarts, false);
     }
+
     public Weapon(Point relativeLocation, float reload, WeaponType type, float longRange,
                   float rotationSpeed, int damage, float speed, int flightHeight, int targetHeight) {
-        this(relativeLocation,reload, type, longRange, rotationSpeed, damage, speed, flightHeight, targetHeight, new Point[]{new Point(0, 0)});
+        this(relativeLocation,reload, type, longRange, rotationSpeed, damage, speed, flightHeight, targetHeight, new Point[]{new Point(0, 0)}, false);
+    }
+    public Weapon(Point relativeLocation, float reload, WeaponType type, float longRange,
+                  float rotationSpeed, int damage, float speed, int flightHeight, int targetHeight, boolean bang) {
+        this(relativeLocation,reload, type, longRange, rotationSpeed, damage, speed, flightHeight, targetHeight, new Point[]{new Point(0, 0)}, bang);
     }
 
     public Weapon(Point relativeLocation, float reload, WeaponType type, float longRange,
                   float rotationSpeed, int damage, float speed, int flightHeight) {
-        this(relativeLocation,reload, type, longRange, rotationSpeed, damage, speed, flightHeight, flightHeight, new Point[]{new Point(0, 0)});
+        this(relativeLocation,reload, type, longRange, rotationSpeed, damage, speed, flightHeight, flightHeight, new Point[]{new Point(0, 0)}, false);
     }
 
     @Override
@@ -280,5 +293,10 @@ public class Weapon implements com.agrogames.islandsofwar.engine.abs.weapon.Weap
     @Override
     public int getTargetHeight() {
         return targetHeight;
+    }
+
+    @Override
+    public boolean getBang() {
+        return bang;
     }
 }

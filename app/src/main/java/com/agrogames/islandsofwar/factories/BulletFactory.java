@@ -16,7 +16,7 @@ public class BulletFactory {
         List<Bullet> result = new ArrayList<>();
         for(Point start : weapon.getBulletStarts()){
             result.add(new Bullet(convert(weapon.getType()), start, weapon.getSpeed(), weapon.getDamage(),
-                    weapon.getLongRange(), weapon.getFlightHeight(), weapon.getTargetHeight(), weapon.getOwner()));
+                    weapon.getLongRange(), weapon.getFlightHeight(), weapon.getTargetHeight(), weapon.getOwner(), weapon.getBang()));
         }
         return result.toArray(new Bullet[0]);
     }

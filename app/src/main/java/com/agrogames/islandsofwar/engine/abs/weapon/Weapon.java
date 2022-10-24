@@ -17,4 +17,5 @@ public interface Weapon extends RenderableObject, UpdatableObject {
     float getSpeed();
     int getFlightHeight();
     int getTargetHeight();
+    boolean getBang();
 }

@@ -50,6 +50,7 @@ public class Manager implements RenderManager {
                 UnitFactory.Tank(16, 10),
                 UnitFactory.Tank(16, 9),
                 UnitFactory.RocketLauncher(16, 11),
+                UnitFactory.RocketLauncher(16, 12),
                 UnitFactory.Tank(17, 10),
                 UnitFactory.Tank(17, 9),
                 UnitFactory.Tank(17, 11),
