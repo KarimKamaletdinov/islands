@@ -5,6 +5,7 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import com.agrogames.islandsofwar.common.M;
+import com.agrogames.islandsofwar.engine.abs.another.AnotherAdder;
 import com.agrogames.islandsofwar.engine.abs.bullet.BulletAdder;
 import com.agrogames.islandsofwar.engine.abs.common.Cell;
 import com.agrogames.islandsofwar.engine.abs.common.Point;
@@ -37,7 +38,7 @@ public class SmallShip extends Unit{
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
-    public void update(MapProvider provider, BulletAdder bulletAdder, UnitAdder unitAdder, float deltaTime) {
+    public void update(MapProvider provider, BulletAdder bulletAdder, UnitAdder unitAdder, AnotherAdder anotherAdder, float deltaTime) {
         if(goal != null){
             buildRoute(provider.getAll(), goal);
             goal = null;
@@ -45,7 +46,7 @@ public class SmallShip extends Unit{
         rotate(deltaTime);
         move(provider.getAll(), unitAdder, deltaTime);
         for (Weapon weapon: getWeapons()){
-            weapon.update(provider, bulletAdder, unitAdder, deltaTime);
+            weapon.update(provider, bulletAdder, unitAdder, anotherAdder, deltaTime);
         }
     }
 

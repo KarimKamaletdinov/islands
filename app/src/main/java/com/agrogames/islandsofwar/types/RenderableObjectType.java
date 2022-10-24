@@ -11,5 +11,7 @@ public enum RenderableObjectType {
     TransportShipTower,
     TransportShipBullet,
     LandingCraft,
+    Pit,
+    Bang,
     None
 }

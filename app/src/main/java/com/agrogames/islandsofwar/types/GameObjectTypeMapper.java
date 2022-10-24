@@ -35,6 +35,10 @@ public class GameObjectTypeMapper {
                 return TextureBitmap.TransportShipTower;
             case TransportShipBullet:
                 return TextureBitmap.TransportShipBullet;
+            case Pit:
+                return TextureBitmap.Pit;
+            case Bang:
+                return TextureBitmap.Bang;
             case None:
             default:
                 Log.e("IOW", "Cannot specify TextureBitmap for RenderableObjectType " + type);

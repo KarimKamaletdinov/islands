@@ -4,6 +4,7 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import com.agrogames.islandsofwar.common.M;
+import com.agrogames.islandsofwar.engine.abs.another.AnotherAdder;
 import com.agrogames.islandsofwar.engine.abs.common.Cell;
 import com.agrogames.islandsofwar.engine.abs.common.Point;
 import com.agrogames.islandsofwar.engine.abs.bullet.BulletAdder;
@@ -42,12 +43,12 @@ public class LandUnit extends com.agrogames.islandsofwar.engine.impl.unit.Unit {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
-    public void update(MapProvider provider, BulletAdder bulletAdder, UnitAdder unitAdder, float deltaTime) {
+    public void update(MapProvider provider, BulletAdder bulletAdder, UnitAdder unitAdder, AnotherAdder anotherAdder, float deltaTime) {
         think(provider);
         rotate(deltaTime);
         move(provider.getAll(), deltaTime);
         for (Weapon weapon: getWeapons()){
-            weapon.update(provider, bulletAdder, unitAdder, deltaTime);
+            weapon.update(provider, bulletAdder, unitAdder, anotherAdder, deltaTime);
         }
     }
 

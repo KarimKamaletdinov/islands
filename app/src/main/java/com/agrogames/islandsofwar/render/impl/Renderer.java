@@ -58,6 +58,9 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
         MapScroller.start(drawer);
         drawer.drawTexture(15f, 10, TextureBitmap.Background, 30, 20, 0);
         selectable.clear();
+        for (RenderableObject r: presenter.getOther()){
+            GameObjectRenderer.render(r, drawer, ObjectState.Destroyed);
+        }
         for (Unit unit: presenter.getAttackers()){
             if(unit == selectedUnit){
                 GameObjectRenderer.render(unit, drawer, ObjectState.Selected);
@@ -69,9 +72,6 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
         }
         for (Unit unit: presenter.getProtectors()){
             GameObjectRenderer.render(unit, drawer);
-        }
-        for (RenderableObject r: presenter.getOther()){
-            GameObjectRenderer.render(r, drawer, ObjectState.Destroyed);
         }
 
         for (Bullet bullet: presenter.getAttackersBullets()){

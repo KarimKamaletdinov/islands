@@ -1,5 +1,6 @@
 package com.agrogames.islandsofwar.engine.impl.bullet;
 
+import com.agrogames.islandsofwar.engine.abs.another.AnotherAdder;
 import com.agrogames.islandsofwar.types.BulletType;
 import com.agrogames.islandsofwar.engine.abs.common.Cell;
 import com.agrogames.islandsofwar.engine.abs.common.Point;
@@ -55,7 +56,7 @@ public class Bullet implements com.agrogames.islandsofwar.engine.abs.bullet.Bull
     }
 
     @Override
-    public void update(MapProvider provider, BulletAdder bulletAdder, UnitAdder unitAdder, float deltaTime) {
+    public void update(MapProvider provider, BulletAdder bulletAdder, UnitAdder unitAdder, AnotherAdder anotherAdder, float deltaTime) {
         move(deltaTime);
         MapObject[] all = provider.getAll();
         MapObject enemy = enemyAt(new Cell((int) location.x + 1, (int) location.y + 1), all, flightHeight);

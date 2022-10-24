@@ -5,6 +5,7 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import com.agrogames.islandsofwar.common.M;
+import com.agrogames.islandsofwar.engine.abs.another.AnotherAdder;
 import com.agrogames.islandsofwar.engine.abs.common.Cell;
 import com.agrogames.islandsofwar.engine.abs.common.Point;
 import com.agrogames.islandsofwar.engine.abs.bullet.BulletAdder;
@@ -97,7 +98,7 @@ public class Weapon implements com.agrogames.islandsofwar.engine.abs.weapon.Weap
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
-    public void update(MapProvider provider, BulletAdder bulletAdder, UnitAdder unitAdder, float deltaTime) {
+    public void update(MapProvider provider, BulletAdder bulletAdder, UnitAdder unitAdder, AnotherAdder anotherAdder, float deltaTime) {
         Point location = getLocation();
         Stream<Unit> enemies = Arrays.stream(provider.getEnemies());
         Unit[] near = enemies.filter(this::isNear).filter(e -> isAvailable(e, provider.getAll()))

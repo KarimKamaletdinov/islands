@@ -6,6 +6,7 @@ import com.agrogames.islandsofwar.engine.abs.transport.TransportUnit;
 import com.agrogames.islandsofwar.engine.abs.weapon.Weapon;
 import com.agrogames.islandsofwar.factories.WeaponFactory;
 import com.agrogames.islandsofwar.types.GameObjectTypeMapper;
+import com.agrogames.islandsofwar.types.TextureBitmap;
 import com.agrogames.islandsofwar.ui.abs.Element;
 import com.agrogames.islandsofwar.ui.abs.ElementType;
 import com.agrogames.islandsofwar.ui.abs.UI;
@@ -34,16 +35,11 @@ public class UnitList {
                 unitTypes.add(unit);
             }
         }
-        int x = 14;
-        int y = 8;
+        float x = 14;
+        float y = 7.5f;
         for (TransportUnit unit : unitTypes){
-            Element e = ui.createElement(ElementType.Button, x, y, -1, -1,
-                    GameObjectTypeMapper.convert(unit.type.toRenderableObjectType(),
-                            unit.equals(currentUnit)
-                                    ? ObjectState.Selected
-                                    : ObjectState.Normal));
-            e.setRenderInBorders(false);
-            e.onClick(() -> {
+            Element button = ui.createElement(ElementType.Button, x, y, 1.2f, 1.2f, TextureBitmap.ButtonBackground);
+            button.onClick(() -> {
                 if(currentUnit == null || currentUnit != unit) {
                     clearUnits();
                     currentUnit = unit;
@@ -55,7 +51,16 @@ public class UnitList {
                 }
                 return null;
             });
+            elements.add(button);
+
+            Element e = ui.createElement(ElementType.Button, x, y, -1, -1,
+                    GameObjectTypeMapper.convert(unit.type.toRenderableObjectType(),
+                            unit.equals(currentUnit)
+                                    ? ObjectState.Selected
+                                    : ObjectState.Normal));
+            e.setRenderInBorders(false);
             elements.add(e);
+
             for (Weapon weapon : WeaponFactory.create(unit.type)){
                 Element e1 = ui.createElement(ElementType.Button, x + weapon.getRelativeLocation().x, y + weapon.getRelativeLocation().y, -1, -1,
                         GameObjectTypeMapper.convert(weapon.getType().toRenderableObjectType(), ObjectState.Normal));
