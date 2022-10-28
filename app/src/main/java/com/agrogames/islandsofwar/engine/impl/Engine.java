@@ -5,6 +5,7 @@ import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
+import com.agrogames.islandsofwar.engine.abs.GameState;
 import com.agrogames.islandsofwar.engine.abs.another.AnotherObject;
 import com.agrogames.islandsofwar.factories.AnotherObjectFactory;
 import com.agrogames.islandsofwar.engine.abs.bullet.Bullet;
@@ -29,6 +30,7 @@ public class Engine implements com.agrogames.islandsofwar.engine.abs.Engine {
     private final List<Bullet> attackersBullets = new ArrayList<>();
     private final List<AnotherObject> otherObjects = new ArrayList<>();
     private final MapObject[] mapObjects;
+    private GameState state = GameState.Game;
 
     public Engine(Unit[] protectors, Unit[] attackers, MapObject[] mapObjects){
         this.protectors.addAll(Arrays.asList(protectors));
@@ -39,6 +41,7 @@ public class Engine implements com.agrogames.islandsofwar.engine.abs.Engine {
     public void update(float deltaTime) {
         updateObjects(deltaTime);
         deleteKilled();
+        updateState();
     }
 
     private void updateObjects(float deltaTime) {
@@ -141,6 +144,12 @@ public class Engine implements com.agrogames.islandsofwar.engine.abs.Engine {
         }
     }
 
+    private void updateState(){
+        if(state != GameState.Game) return;
+        if(attackers.size() == 0) state = GameState.Defeat;
+        else if(protectors.size() == 0) state = GameState.Win;
+    }
+
     public Unit[] getProtectors(){
         return protectors.toArray(new Unit[0]);
     }
@@ -164,5 +173,10 @@ public class Engine implements com.agrogames.islandsofwar.engine.abs.Engine {
 
     public Bullet[] getAttackersBullets(){
         return attackersBullets.toArray(new Bullet[0]);
+    }
+
+    @Override
+    public GameState getState() {
+        return state;
     }
 }

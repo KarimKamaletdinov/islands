@@ -13,5 +13,7 @@ public enum RenderableObjectType {
     LandingCraft,
     Pit,
     Bang,
+    Bomber,
+    Bomb,
     None
 }

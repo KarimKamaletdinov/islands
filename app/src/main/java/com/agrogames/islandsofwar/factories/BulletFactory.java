@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.agrogames.islandsofwar.engine.abs.common.Point;
 import com.agrogames.islandsofwar.engine.impl.bullet.Bullet;
+import com.agrogames.islandsofwar.engine.impl.unit.Plane;
 import com.agrogames.islandsofwar.types.BulletType;
 import com.agrogames.islandsofwar.engine.abs.weapon.Weapon;
 import com.agrogames.islandsofwar.types.WeaponType;
@@ -19,6 +20,20 @@ public class BulletFactory {
                     weapon.getLongRange(), weapon.getFlightHeight(), weapon.getTargetHeight(), weapon.getOwner(), weapon.getBang()));
         }
         return result.toArray(new Bullet[0]);
+    }
+
+    public static Bullet[] createBombs(Plane plane){
+        switch (plane.getType()){
+            case Bomber:
+                return new Bullet[]{
+                        new Bullet(BulletType.Bomb, plane.getLocation(), 0.4f, 15, 0.1f, 2, 1, plane, true),
+                        new Bullet(BulletType.Bomb, plane.getLocation(), 0.4f, 15, 0.1f, 2, 1, plane, true),
+                        new Bullet(BulletType.Bomb, plane.getLocation(), 0.4f, 15, 0.1f, 2, 1, plane, true),
+                        new Bullet(BulletType.Bomb, plane.getLocation(), 0.4f, 15, 0.1f, 2, 1, plane, true),
+                };
+            default:
+                return new Bullet[0];
+        }
     }
 
     private static BulletType convert(WeaponType weaponType){

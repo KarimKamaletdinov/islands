@@ -16,6 +16,8 @@ public enum TextureBitmap {
     Green("green.png"),
     Pit("pit.png"),
     Bang("bang.png"),
+    Win("win.png"),
+    Defeat("defeat.png"),
     LandingCraft("landing-craft.png"),
     LandingCraftSelected("landing-craft-selected.png"),
     LandingCraftDestroyed("landing-craft-destroyed.png"),
@@ -27,6 +29,8 @@ public enum TextureBitmap {
     TransportShip("transport-ship.png"),
     TransportShipSelected("transport-ship-selected.png"),
     TransportShipDestroyed("transport-ship-destroyed.png"),
+    Bomber("bomber.png"),
+    Bomb("bomb.png"),
     TransportShipTower("transport-ship-tower.png"),
     TransportShipBullet("transport-ship-bullet.png");
 

@@ -6,9 +6,12 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import com.agrogames.islandsofwar.engine.abs.Engine;
+import com.agrogames.islandsofwar.engine.abs.common.Cell;
 import com.agrogames.islandsofwar.engine.abs.common.Point;
+import com.agrogames.islandsofwar.engine.abs.movable.MovableObject;
 import com.agrogames.islandsofwar.engine.abs.transport.TransportUnit;
 import com.agrogames.islandsofwar.engine.abs.unit.Unit;
+import com.agrogames.islandsofwar.engine.impl.unit.Plane;
 import com.agrogames.islandsofwar.types.UnitType;
 import com.agrogames.islandsofwar.factories.UnitFactory;
 import com.agrogames.islandsofwar.graphics.abs.TextureDrawer;
@@ -31,6 +34,8 @@ public class Manager implements RenderManager {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public Manager(Context context) {
+        Unit b = UnitFactory.Bomber();
+        ((MovableObject)b).setGoal(new Cell(16, 9));
         Unit ts = UnitFactory.TransportShip(1, 1, new TransportUnit[]{
                 new TransportUnit(UnitType.Tank),
                 new TransportUnit(UnitType.Tank),
@@ -57,6 +62,7 @@ public class Manager implements RenderManager {
                 UnitFactory.Tank(20, 10),
         }, new Unit[]{
                 ts,
+                b
         }, Map.fromAssets(context, "map1.txt").getMap());
         this.renderer = new com.agrogames.islandsofwar.render.impl.Renderer(new Presenter(this.engine), new UI());
 

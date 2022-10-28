@@ -5,6 +5,7 @@ import android.util.Pair;
 
 import androidx.annotation.RequiresApi;
 
+import com.agrogames.islandsofwar.engine.abs.GameState;
 import com.agrogames.islandsofwar.engine.abs.bullet.Bullet;
 import com.agrogames.islandsofwar.engine.abs.common.Cell;
 import com.agrogames.islandsofwar.engine.abs.common.Point;
@@ -23,6 +24,7 @@ import com.agrogames.islandsofwar.ui.abs.ElementType;
 import com.agrogames.islandsofwar.ui.abs.UI;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer {
@@ -59,7 +61,7 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
         for (RenderableObject r: presenter.getOther()){
             GameObjectRenderer.render(r, drawer, ObjectState.Destroyed);
         }
-        for (Unit unit: presenter.getAttackers()){
+        for (Unit unit: Arrays.stream(presenter.getAttackers()).filter(c -> c.getHeight() < 3).toArray(Unit[]::new)){
             if(unit == selectedUnit){
                 GameObjectRenderer.render(unit, drawer, ObjectState.Selected);
                 drawHealth(drawer, unit);
@@ -89,6 +91,9 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
                 GameObjectRenderer.render(weapon, drawer);
             }
         }
+        for (Unit unit: Arrays.stream(presenter.getAttackers()).filter(c -> c.getHeight() >= 3).toArray(Unit[]::new)){
+            GameObjectRenderer.render(unit, drawer);
+        }
         MapScroller.finish(drawer);
 
         if(touch == null) {
@@ -99,6 +104,11 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
         if(move != null && previousMove != null){
             MapScroller.scroll(move.x - previousMove.x, move.y - previousMove.y);
         }
+
+        if(presenter.getState() == GameState.Win)
+            drawer.drawTexture(7.5f, 5f, TextureBitmap.Win, 0);
+        else if(presenter.getState() == GameState.Defeat)
+            drawer.drawTexture(7.5f, 5f, TextureBitmap.Defeat, 0);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

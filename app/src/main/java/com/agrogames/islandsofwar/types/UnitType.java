@@ -5,7 +5,7 @@ import android.util.Log;
 import com.agrogames.islandsofwar.engine.abs.renderable.RenderableObjectTypeConvertable;
 
 public enum UnitType implements RenderableObjectTypeConvertable {
-    Tank, TransportShip, LandingCraft, RocketLauncher;
+    Tank, TransportShip, LandingCraft, RocketLauncher, Bomber;
 
     @Override
     public RenderableObjectType toRenderableObjectType() {
@@ -18,6 +18,8 @@ public enum UnitType implements RenderableObjectTypeConvertable {
                 return RenderableObjectType.LandingCraft;
             case RocketLauncher:
                 return RenderableObjectType.RocketLauncher;
+            case Bomber:
+                return RenderableObjectType.Bomber;
             default:
                 Log.e("IOW", "Cannot specify RenderableObjectType for UnitType " + this);
                 return RenderableObjectType.None;

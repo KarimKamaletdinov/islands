@@ -11,4 +11,5 @@ public interface Engine {
     RenderableObject[] getOther();
     Bullet[] getProtectorsBullets();
     Bullet[] getAttackersBullets();
+    GameState getState();
 }

@@ -191,7 +191,7 @@ public class Weapon implements com.agrogames.islandsofwar.engine.abs.weapon.Weap
     }
 
     private boolean isAvailable(Unit enemy, MapObject[] all){
-        if(enemy.getMinDamage() > damage) return false;
+        if(enemy.getMinDamage() > damage || enemy.getHeight() != targetHeight) return false;
         Point location = getLocation();
         Point enemyLocation = enemy.getLocation();
         float r = getAngle(enemyLocation, location);
