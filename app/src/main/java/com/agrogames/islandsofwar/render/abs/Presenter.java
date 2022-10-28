@@ -13,4 +13,5 @@ public interface Presenter {
     Bullet[] getProtectorsBullets();
     Bullet[] getAttackersBullets();
     GameState getState();
+    void addPlane(Unit plane);
 }

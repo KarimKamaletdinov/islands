@@ -40,6 +40,8 @@ public class GameObjectTypeMapper {
             case Bang:
                 return TextureBitmap.Bang;
             case Bomber:
+                if(state == ObjectState.Picture) return TextureBitmap.BomberPicture;
+                else if(state == ObjectState.Selected) return TextureBitmap.BomberPictureSelected;
                 return TextureBitmap.Bomber;
             case Bomb:
                 return TextureBitmap.Bomb;

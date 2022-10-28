@@ -179,4 +179,9 @@ public class Engine implements com.agrogames.islandsofwar.engine.abs.Engine {
     public GameState getState() {
         return state;
     }
+
+    @Override
+    public void addPlane(Unit plane) {
+        attackers.add(plane);
+    }
 }

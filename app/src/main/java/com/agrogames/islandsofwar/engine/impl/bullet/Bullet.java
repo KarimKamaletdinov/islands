@@ -5,6 +5,7 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import com.agrogames.islandsofwar.engine.abs.another.AnotherAdder;
+import com.agrogames.islandsofwar.engine.abs.renderable.RenderableObject;
 import com.agrogames.islandsofwar.factories.AnotherObjectFactory;
 import com.agrogames.islandsofwar.map.impl.Water;
 import com.agrogames.islandsofwar.types.BulletType;
@@ -109,6 +110,13 @@ public class Bullet implements com.agrogames.islandsofwar.engine.abs.bullet.Bull
                 Cell[] territory = object.getTerritory();
                 for (Cell c : territory){
                     if(cell.equals(c)){
+                        return object;
+                    }
+                }
+                if(bang && object instanceof RenderableObject){
+                    Point l = ((RenderableObject) object).getLocation();
+                    if(l.x - 0.8f < location.x && l.x + 0.8f > location.x &&
+                            l.y - 0.8f < location.y && l.y + 0.8f > location.y){
                         return object;
                     }
                 }

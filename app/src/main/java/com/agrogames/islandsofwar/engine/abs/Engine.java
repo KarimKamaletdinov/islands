@@ -12,4 +12,5 @@ public interface Engine {
     Bullet[] getProtectorsBullets();
     Bullet[] getAttackersBullets();
     GameState getState();
+    void addPlane(Unit plane);
 }

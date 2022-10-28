@@ -34,8 +34,6 @@ public class Manager implements RenderManager {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public Manager(Context context) {
-        Unit b = UnitFactory.Bomber();
-        ((MovableObject)b).setGoal(new Cell(16, 9));
         Unit ts = UnitFactory.TransportShip(1, 1, new TransportUnit[]{
                 new TransportUnit(UnitType.Tank),
                 new TransportUnit(UnitType.Tank),
@@ -61,8 +59,7 @@ public class Manager implements RenderManager {
                 UnitFactory.Tank(17, 11),
                 UnitFactory.Tank(20, 10),
         }, new Unit[]{
-                ts,
-                b
+                ts
         }, Map.fromAssets(context, "map1.txt").getMap());
         this.renderer = new com.agrogames.islandsofwar.render.impl.Renderer(new Presenter(this.engine), new UI());
 

@@ -16,9 +16,11 @@ import com.agrogames.islandsofwar.engine.abs.transport.Transport;
 import com.agrogames.islandsofwar.engine.abs.transport.TransportUnit;
 import com.agrogames.islandsofwar.engine.abs.unit.Unit;
 import com.agrogames.islandsofwar.engine.abs.weapon.Weapon;
+import com.agrogames.islandsofwar.factories.UnitFactory;
 import com.agrogames.islandsofwar.types.TextureBitmap;
 import com.agrogames.islandsofwar.graphics.abs.TextureDrawer;
 import com.agrogames.islandsofwar.render.abs.Presenter;
+import com.agrogames.islandsofwar.types.UnitType;
 import com.agrogames.islandsofwar.ui.abs.Element;
 import com.agrogames.islandsofwar.ui.abs.ElementType;
 import com.agrogames.islandsofwar.ui.abs.UI;
@@ -33,7 +35,8 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
     private Unit selectedUnit;
     private final List<Pair<Unit, Float>> selectable = new ArrayList<>();
     private final Element cancelButton;
-    private final UnitList unitList;
+    private final UnitList landingList;
+    private final UnitList planeList;
 
     public Renderer(Presenter presenter, UI ui){
         this.presenter = presenter;
@@ -41,13 +44,18 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
         cancelButton = ui.createElement(ElementType.Button, 14, 9, 1, 1, TextureBitmap.CancelButton);
         cancelButton.setVisible(false);
 
-        unitList = new UnitList(ui);
+        landingList = new UnitList(ui, 14);
 
         cancelButton.onClick(() -> {
             cancelButton.setVisible(false);
-            unitList.clearUnits();
+            landingList.clearUnits();
             selectedUnit = null;
             return null;
+        });
+
+        planeList = new UnitList(ui, 0);
+        planeList.setUnits(new TransportUnit[]{
+                new TransportUnit(UnitType.Bomber)
         });
     }
 
@@ -124,19 +132,27 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
             cancelButton.setVisible(true);
             selectedUnit = su;
             if (su instanceof Transport)
-                unitList.setUnits(((Transport) su).getUnits());
+                landingList.setUnits(((Transport) su).getUnits());
             else
-                unitList.clearUnits();
-        } else if(unitList.getCurrentUnit() != null && selectedUnit != null && selectedUnit instanceof Transport){
+                landingList.clearUnits();
+        } else if(landingList.getCurrentUnit() != null && selectedUnit != null && selectedUnit instanceof Transport){
             Transport t = (Transport) selectedUnit;
             TransportUnit[] units = t.getUnits();
             if (units.length == 0) {
-                unitList.clearUnits();
+                landingList.clearUnits();
             } else {
-                t.spawn(unitList.getCurrentUnit(), new Cell(touch));
+                t.spawn(landingList.getCurrentUnit(), new Cell(touch));
                 units = t.getUnits();
-                unitList.clearUnits(false);
-                unitList.setUnits(units);
+                landingList.clearUnits(false);
+                landingList.setUnits(units);
+            }
+        } else if(planeList.getCurrentUnit() != null){
+            if (planeList.getCurrentUnit().type == UnitType.Bomber) {
+                Unit bomber = UnitFactory.Bomber();
+                MovableObject mo = (MovableObject) bomber;
+                mo.setGoal(new Cell(touch));
+                presenter.addPlane(bomber);
+                planeList.clearUnits();
             }
         } else if(selectedUnit != null){
             MovableObject mo = (MovableObject) selectedUnit;

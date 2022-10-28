@@ -1,7 +1,5 @@
 package com.agrogames.islandsofwar.render.impl;
 
-import android.os.Build;
-
 import com.agrogames.islandsofwar.engine.abs.transport.TransportUnit;
 import com.agrogames.islandsofwar.engine.abs.weapon.Weapon;
 import com.agrogames.islandsofwar.factories.WeaponFactory;
@@ -17,11 +15,13 @@ import java.util.List;
 
 public class UnitList {
     private final UI ui;
+    private final float x;
     private final List<Element> elements = new ArrayList<>();
     private TransportUnit currentUnit;
 
-    public UnitList(UI ui) {
+    public UnitList(UI ui, float x) {
         this.ui = ui;
+        this.x = x;
     }
 
     public void setUnits(TransportUnit[] units){
@@ -35,7 +35,6 @@ public class UnitList {
                 unitTypes.add(unit);
             }
         }
-        float x = 14;
         float y = 7.5f;
         for (TransportUnit unit : unitTypes){
             Element button = ui.createElement(ElementType.Button, x, y, 1.2f, 1.2f, TextureBitmap.ButtonBackground);
@@ -57,7 +56,7 @@ public class UnitList {
                     GameObjectTypeMapper.convert(unit.type.toRenderableObjectType(),
                             unit.equals(currentUnit)
                                     ? ObjectState.Selected
-                                    : ObjectState.Normal));
+                                    : ObjectState.Picture));
             e.setRenderInBorders(false);
             elements.add(e);
 

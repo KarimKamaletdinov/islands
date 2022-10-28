@@ -3,7 +3,6 @@ package com.agrogames.islandsofwar.rendermanager;
 import com.agrogames.islandsofwar.engine.abs.Engine;
 import com.agrogames.islandsofwar.engine.abs.GameState;
 import com.agrogames.islandsofwar.engine.abs.bullet.Bullet;
-import com.agrogames.islandsofwar.engine.abs.map.MapObject;
 import com.agrogames.islandsofwar.engine.abs.renderable.RenderableObject;
 import com.agrogames.islandsofwar.engine.abs.unit.Unit;
 
@@ -42,5 +41,10 @@ public class Presenter implements com.agrogames.islandsofwar.render.abs.Presente
     @Override
     public GameState getState() {
         return engine.getState();
+    }
+
+    @Override
+    public void addPlane(Unit plane){
+        engine.addPlane(plane);
     }
 }
