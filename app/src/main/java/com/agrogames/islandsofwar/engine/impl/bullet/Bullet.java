@@ -92,7 +92,7 @@ public class Bullet implements com.agrogames.islandsofwar.engine.abs.bullet.Bull
     private void stop(MapProvider provider, AnotherAdder adder){
         isFlying = false;
         if(bang && Arrays.stream(provider.getAll()).noneMatch(o ->
-                Arrays.asList(o.getTerritory()).contains(new Cell(location)) && o instanceof Water)){
+                Arrays.asList(o.getTerritory()).contains(new Cell(location)) && o instanceof Water) && targetHeight == 1){
             adder.addAnother(AnotherObjectFactory.bang(this));
         }
     }

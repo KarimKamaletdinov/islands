@@ -58,6 +58,7 @@ public class Manager implements RenderManager {
                 UnitFactory.Tank(17, 9),
                 UnitFactory.Tank(17, 11),
                 UnitFactory.Tank(20, 10),
+                UnitFactory.AirDefence(15, 12),
         }, new Unit[]{
                 ts
         }, Map.fromAssets(context, "map1.txt").getMap());

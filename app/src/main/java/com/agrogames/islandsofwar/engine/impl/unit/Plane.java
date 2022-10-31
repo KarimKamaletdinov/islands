@@ -26,6 +26,24 @@ public class Plane extends Unit{
     }
 
     @Override
+    public Cell[] getTerritory() {
+        Cell l = new Cell(location);
+        return new Cell[]{
+                l,
+                new Cell(l.x, l.y + 1),
+                new Cell(l.x, l.y - 1),
+
+                new Cell(l.x + 1, l.y),
+                new Cell(l.x + 2, l.y + 1),
+                new Cell(l.x + 2, l.y - 1),
+
+                new Cell(l.x - 1, l.y),
+                new Cell(l.x - 1, l.y + 1),
+                new Cell(l.x - 1, l.y - 1),
+        };
+    }
+
+    @Override
     public boolean isMoving() {
         return true;
     }
@@ -93,7 +111,7 @@ public class Plane extends Unit{
         int gy = goal.y;
         int cdx = gx - MapParams.Width / 2;
         int cdy = gy - MapParams.Height / 2;
-        if(M.module(cdx) < M.module(cdy)){
+        if(M.module(cdx) > M.module(cdy)){
             if(cdx > 0){
                 gx = MapParams.Width;
                 direction = Direction.Left;

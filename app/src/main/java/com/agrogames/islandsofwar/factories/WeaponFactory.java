@@ -31,6 +31,11 @@ public class WeaponFactory {
                                         new Point(0, -0.05f), new Point(0, 0.15f)
                                 }),
                 };
+            case AirDefence:
+                return new Weapon[]{
+                        new com.agrogames.islandsofwar.engine.impl.weapon.Weapon(
+                                new Point(0, 0), 4.0f, WeaponType.AirDefenceTower, 11, 0.5f, 10, 2, 4, 4, true)
+                };
             default:
                 return new Weapon[0];
         }

@@ -4,6 +4,7 @@ import com.agrogames.islandsofwar.engine.abs.common.Cell;
 import com.agrogames.islandsofwar.engine.abs.transport.TransportUnit;
 import com.agrogames.islandsofwar.engine.abs.unit.Unit;
 import com.agrogames.islandsofwar.engine.impl.unit.BigShip;
+import com.agrogames.islandsofwar.engine.impl.unit.Building;
 import com.agrogames.islandsofwar.engine.impl.unit.LandUnit;
 import com.agrogames.islandsofwar.engine.impl.unit.Plane;
 import com.agrogames.islandsofwar.engine.impl.unit.SmallShip;
@@ -25,6 +26,10 @@ public class UnitFactory {
 
     public static Unit RocketLauncher(int x, int y){
         return new LandUnit(UnitType.RocketLauncher, new Cell(x, y), WeaponFactory.create(UnitType.RocketLauncher), 5, 0.8f, 0.3f);
+    }
+
+    public static Unit AirDefence(int x, int y){
+        return new Building(UnitType.AirDefence, new Cell(x, y), WeaponFactory.create(UnitType.AirDefence), 5);
     }
 
     public static Unit Bomber(){

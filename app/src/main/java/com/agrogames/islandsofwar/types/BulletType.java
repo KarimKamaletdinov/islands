@@ -26,21 +26,5 @@ public enum BulletType implements RenderableObjectTypeConvertable {
                 return RenderableObjectType.None;
         }
     }
-
-    public enum AnotherObjectType implements RenderableObjectTypeConvertable {
-        Pit, Bang;
-
-        @Override
-        public RenderableObjectType toRenderableObjectType() {
-            switch (this){
-                case Pit:
-                    return RenderableObjectType.Pit;
-                case Bang:
-                    return RenderableObjectType.Bang;
-                default:
-                    Log.e("IOW", "Cannot provide RenderableObjectType for AnotherObjectType: " + this);
-                    return RenderableObjectType.None;
-            }
-        }
-    }
 }
+

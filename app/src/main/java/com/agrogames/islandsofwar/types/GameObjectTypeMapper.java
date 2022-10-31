@@ -39,12 +39,21 @@ public class GameObjectTypeMapper {
                 return TextureBitmap.Pit;
             case Bang:
                 return TextureBitmap.Bang;
+            case BigPit:
+                return TextureBitmap.BigPit;
+            case BigBang:
+                return TextureBitmap.BigBang;
             case Bomber:
                 if(state == ObjectState.Picture) return TextureBitmap.BomberPicture;
                 else if(state == ObjectState.Selected) return TextureBitmap.BomberPictureSelected;
+                else if (state == ObjectState.Destroyed) return TextureBitmap.BomberDestroyed;
                 return TextureBitmap.Bomber;
             case Bomb:
                 return TextureBitmap.Bomb;
+            case AirDefence:
+                return TextureBitmap.AirDefence;
+            case AirDefenceTower:
+                return TextureBitmap.AirDefenceTower;
             case None:
             default:
                 Log.e("IOW", "Cannot specify TextureBitmap for RenderableObjectType " + type);

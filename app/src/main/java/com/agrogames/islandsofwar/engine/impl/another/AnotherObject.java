@@ -5,18 +5,19 @@ import com.agrogames.islandsofwar.engine.abs.bullet.BulletAdder;
 import com.agrogames.islandsofwar.engine.abs.common.Point;
 import com.agrogames.islandsofwar.engine.abs.map.MapProvider;
 import com.agrogames.islandsofwar.engine.abs.unit.UnitAdder;
+import com.agrogames.islandsofwar.types.AnotherObjectType;
 import com.agrogames.islandsofwar.types.BulletType;
 
 public class AnotherObject implements com.agrogames.islandsofwar.engine.abs.another.AnotherObject {
     private final Point location;
     private final float rotation;
-    private final BulletType.AnotherObjectType type;
+    private final AnotherObjectType type;
     private final com.agrogames.islandsofwar.engine.abs.another.AnotherObject next;
     private final float lifeTime;
     private float timeSinceCreated;
     private boolean remove;
 
-    public AnotherObject(Point location, float rotation, BulletType.AnotherObjectType type, com.agrogames.islandsofwar.engine.abs.another.AnotherObject next, float lifeTime) {
+    public AnotherObject(Point location, float rotation, AnotherObjectType type, com.agrogames.islandsofwar.engine.abs.another.AnotherObject next, float lifeTime) {
         this.location = location;
         this.rotation = rotation;
         this.type = type;
@@ -24,7 +25,7 @@ public class AnotherObject implements com.agrogames.islandsofwar.engine.abs.anot
         this.lifeTime = lifeTime;
     }
 
-    public AnotherObject(Point location, float rotation, BulletType.AnotherObjectType type, float lifeTime) {
+    public AnotherObject(Point location, float rotation, AnotherObjectType type, float lifeTime) {
         this(location, rotation, type, null, lifeTime);
     }
 
@@ -44,7 +45,7 @@ public class AnotherObject implements com.agrogames.islandsofwar.engine.abs.anot
     }
 
     @Override
-    public BulletType.AnotherObjectType getType() {
+    public AnotherObjectType getType() {
         return type;
     }
 

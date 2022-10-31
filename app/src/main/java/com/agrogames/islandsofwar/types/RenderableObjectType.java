@@ -15,5 +15,7 @@ public enum RenderableObjectType {
     Bang,
     Bomber,
     Bomb,
-    None
+    AirDefence,
+    AirDefenceTower,
+    BigPit, BigBang, None
 }

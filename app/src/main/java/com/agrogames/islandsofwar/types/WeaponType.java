@@ -8,6 +8,7 @@ import com.agrogames.islandsofwar.engine.abs.renderable.RenderableObjectTypeConv
 public enum WeaponType implements RenderableObjectTypeConvertable {
     TankTower,
     TransportShipTower,
+    AirDefenceTower,
     RocketLauncherTower;
 
     @Override
@@ -19,6 +20,8 @@ public enum WeaponType implements RenderableObjectTypeConvertable {
                 return RenderableObjectType.TransportShipTower;
             case RocketLauncherTower:
                 return RenderableObjectType.RocketLauncherTower;
+            case AirDefenceTower:
+                return RenderableObjectType.AirDefenceTower;
             default:
                 Log.e("IOW", "Cannot specify RenderableObjectType for WeaponType " + this);
                 return RenderableObjectType.None;

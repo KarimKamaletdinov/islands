@@ -41,6 +41,7 @@ public class BulletFactory {
             case TankTower:
                 return BulletType.TankBullet;
             case RocketLauncherTower:
+            case AirDefenceTower:
                 return BulletType.Rocket;
             case TransportShipTower:
                 return BulletType.TransportShipBullet;

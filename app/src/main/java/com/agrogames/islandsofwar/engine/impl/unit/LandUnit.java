@@ -72,7 +72,7 @@ public class LandUnit extends com.agrogames.islandsofwar.engine.impl.unit.Unit {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private void think(MapProvider provider){
+    protected void think(MapProvider provider){
         if(goal != null){
             if (Arrays.stream(provider.getAll())
                     .noneMatch(o -> o instanceof Water && o.getTerritory()[0].equals(goal))) {
@@ -133,7 +133,7 @@ public class LandUnit extends com.agrogames.islandsofwar.engine.impl.unit.Unit {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private void move(MapObject[] all, float deltaTime){
+    protected void move(MapObject[] all, float deltaTime){
         if(route.isEmpty()){
             isMoving = false;
             return;

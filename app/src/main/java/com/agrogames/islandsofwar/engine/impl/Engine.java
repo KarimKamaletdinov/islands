@@ -7,6 +7,8 @@ import androidx.annotation.RequiresApi;
 
 import com.agrogames.islandsofwar.engine.abs.GameState;
 import com.agrogames.islandsofwar.engine.abs.another.AnotherObject;
+import com.agrogames.islandsofwar.engine.abs.common.Cell;
+import com.agrogames.islandsofwar.engine.impl.unit.Plane;
 import com.agrogames.islandsofwar.factories.AnotherObjectFactory;
 import com.agrogames.islandsofwar.engine.abs.bullet.Bullet;
 import com.agrogames.islandsofwar.engine.abs.renderable.RenderableObject;
@@ -17,6 +19,7 @@ import com.agrogames.islandsofwar.engine.impl.bullet.BulletAdder;
 import com.agrogames.islandsofwar.engine.impl.map.MapProvider;
 import com.agrogames.islandsofwar.engine.impl.unit.LandUnit;
 import com.agrogames.islandsofwar.engine.impl.unit.UnitAdder;
+import com.agrogames.islandsofwar.map.impl.Water;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,6 +41,7 @@ public class Engine implements com.agrogames.islandsofwar.engine.abs.Engine {
         this.mapObjects = mapObjects;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void update(float deltaTime) {
         updateObjects(deltaTime);
         deleteKilled();
@@ -100,30 +104,43 @@ public class Engine implements com.agrogames.islandsofwar.engine.abs.Engine {
         otherObjects.addAll(anotherAdder.getAnotherObjects());
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void deleteKilled() {
         for (Unit unit : protectors.toArray(new Unit[0])) {
             if(unit.getHealth().current <= 0){
-                protectors.remove(unit);
                 if(unit instanceof LandUnit){
+                    protectors.remove(unit);
                     otherObjects.add(AnotherObjectFactory.bang(unit));
                 } else {
-                    destroyed.add(unit);
+                    if(!destroyed.contains(unit)) destroyed.add(unit);
                 }
             }
         }
         for (Unit unit : attackers.toArray(new Unit[0])) {
             if(unit.getHealth().current <= 0){
-                attackers.remove(unit);
                 if(unit instanceof LandUnit){
+                    attackers.remove(unit);
                     otherObjects.add(AnotherObjectFactory.bang(unit));
                 } else {
-                    destroyed.add(unit);
+                    if(!destroyed.contains(unit)) destroyed.add(unit);
                 }
             }
         }
         for(Unit unit : destroyed.toArray(new Unit[0])){
-            if(unit.timeSinceDestroyed() >= 2){
+            if(unit.timeSinceDestroyed() >= 3.5f){
                 destroyed.remove(unit);
+                attackers.remove(unit);
+                if(Arrays.stream(mapObjects).noneMatch(c -> c instanceof Water && Arrays.asList(c.getTerritory()).contains(new Cell(unit.getLocation())))){
+                    otherObjects.add(AnotherObjectFactory.bigBang(unit));
+                }
+                for (Cell cell : unit.getTerritory()){
+                    for(Unit u : protectors.stream().filter(c -> Arrays.asList(c.getTerritory()).contains(cell)).toArray(Unit[]::new)){
+                        u.loseHealth(15);
+                    }
+                    for(Unit u : attackers.stream().filter(c -> Arrays.asList(c.getTerritory()).contains(cell)).toArray(Unit[]::new)){
+                        u.loseHealth(15);
+                    }
+                }
             }
         }
         for(AnotherObject anotherObject : otherObjects.toArray(new AnotherObject[0])){
