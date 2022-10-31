@@ -51,9 +51,12 @@ public class GameObjectTypeMapper {
             case Bomb:
                 return TextureBitmap.Bomb;
             case AirDefence:
+            case ShipDefence:
                 return TextureBitmap.AirDefence;
             case AirDefenceTower:
                 return TextureBitmap.AirDefenceTower;
+            case ShipDefenceTower:
+                return TextureBitmap.ShipDefenceTower;
             case None:
             default:
                 Log.e("IOW", "Cannot specify TextureBitmap for RenderableObjectType " + type);

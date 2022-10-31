@@ -32,6 +32,10 @@ public class UnitFactory {
         return new Building(UnitType.AirDefence, new Cell(x, y), WeaponFactory.create(UnitType.AirDefence), 5);
     }
 
+    public static Unit ShipDefence(int x, int y){
+        return new Building(UnitType.ShipDefence, new Cell(x, y), WeaponFactory.create(UnitType.ShipDefence), 5);
+    }
+
     public static Unit Bomber(){
         return new Plane(UnitType.Bomber, 5, 2f, 0.3f);
     }

@@ -17,5 +17,5 @@ public enum RenderableObjectType {
     Bomb,
     AirDefence,
     AirDefenceTower,
-    BigPit, BigBang, None
+    BigPit, BigBang, ShipDefence, ShipDefenceTower, None
 }

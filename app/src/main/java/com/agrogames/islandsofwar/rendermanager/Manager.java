@@ -46,7 +46,7 @@ public class Manager implements RenderManager {
         });
 
         this.engine = new com.agrogames.islandsofwar.engine.impl.Engine(new Unit[]{
-                UnitFactory.Tank(14, 10),
+                UnitFactory.Tank(14, 11),
                 UnitFactory.Tank(15, 10),
                 UnitFactory.Tank(15, 9),
                 UnitFactory.Tank(15, 11),
@@ -59,6 +59,10 @@ public class Manager implements RenderManager {
                 UnitFactory.Tank(17, 11),
                 UnitFactory.Tank(20, 10),
                 UnitFactory.AirDefence(15, 12),
+                UnitFactory.ShipDefence(8, 13),
+                UnitFactory.ShipDefence(18, 12),
+                UnitFactory.ShipDefence(17, 8),
+                UnitFactory.ShipDefence(14, 10),
         }, new Unit[]{
                 ts
         }, Map.fromAssets(context, "map1.txt").getMap());

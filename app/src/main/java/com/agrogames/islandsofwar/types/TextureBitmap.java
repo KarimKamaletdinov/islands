@@ -37,7 +37,8 @@ public enum TextureBitmap {
     BomberPictureSelected("bomber-picture-selected.png"),
     Bomb("bomb.png"),
     TransportShipTower("transport-ship-tower.png"),
-    TransportShipBullet("transport-ship-bullet.png");
+    TransportShipBullet("transport-ship-bullet.png"),
+    ShipDefenceTower("ship-defence-tower.png");
 
     public final String name;
 
