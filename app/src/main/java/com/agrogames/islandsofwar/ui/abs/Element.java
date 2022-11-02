@@ -1,6 +1,5 @@
 package com.agrogames.islandsofwar.ui.abs;
 
-import com.agrogames.islandsofwar.types.TextureBitmap;
 
 import java.util.concurrent.Callable;
 
@@ -15,8 +14,8 @@ public interface Element {
     float getWidth();
     void setHeight(float height);
     float getHeight();
-    void setTexture(TextureBitmap texture);
-    TextureBitmap getTexture();
+    void setTexture(String texture);
+    String getTexture();
     void setVisible(boolean visible);
     boolean getVisible();
     void onClick(Callable<Void> listener);

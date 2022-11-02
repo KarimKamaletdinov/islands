@@ -5,7 +5,7 @@ import com.agrogames.islandsofwar.engine.abs.common.Point;
 public interface RenderableObject {
     Point getLocation();
     float getRotation();
-    RenderableObjectTypeConvertable getType();
+    String getTexture();
     default float timeSinceDestroyed(){
         return 0;
     }

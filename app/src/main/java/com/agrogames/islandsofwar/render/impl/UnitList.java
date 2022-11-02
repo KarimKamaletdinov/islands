@@ -1,10 +1,10 @@
 package com.agrogames.islandsofwar.render.impl;
 
+import android.os.Build;
+
+import com.agrogames.islandsofwar.engine.abs.common.Cell;
 import com.agrogames.islandsofwar.engine.abs.transport.TransportUnit;
-import com.agrogames.islandsofwar.engine.abs.weapon.Weapon;
-import com.agrogames.islandsofwar.factories.WeaponFactory;
-import com.agrogames.islandsofwar.types.GameObjectTypeMapper;
-import com.agrogames.islandsofwar.types.TextureBitmap;
+import com.agrogames.islandsofwar.engine.abs.weapon.IWeapon;
 import com.agrogames.islandsofwar.ui.abs.Element;
 import com.agrogames.islandsofwar.ui.abs.ElementType;
 import com.agrogames.islandsofwar.ui.abs.UI;
@@ -37,7 +37,7 @@ public class UnitList {
         }
         float y = 7.5f;
         for (TransportUnit unit : unitTypes){
-            Element button = ui.createElement(ElementType.Button, x, y, 1.2f, 1.2f, TextureBitmap.ButtonBackground);
+            Element button = ui.createElement(ElementType.Button, x, y, 1.2f, 1.2f, "button_background");
             button.onClick(() -> {
                 if(currentUnit == null || currentUnit != unit) {
                     clearUnits();
@@ -52,19 +52,18 @@ public class UnitList {
             });
             elements.add(button);
 
-            Element e = ui.createElement(ElementType.Button, x, y, -1, -1,
-                    GameObjectTypeMapper.convert(unit.type.toRenderableObjectType(),
-                            unit.equals(currentUnit)
-                                    ? ObjectState.Selected
-                                    : ObjectState.Picture));
+            Element e = ui.createElement(ElementType.Button, x, y, -1, -1, TextureMapper.join(unit.example.getTexture(),
+                    unit == currentUnit ? "selected" : "normal"));
             e.setRenderInBorders(false);
             elements.add(e);
 
-            for (Weapon weapon : WeaponFactory.create(unit.type)){
-                Element e1 = ui.createElement(ElementType.Button, x + weapon.getRelativeLocation().x, y + weapon.getRelativeLocation().y, -1, -1,
-                        GameObjectTypeMapper.convert(weapon.getType().toRenderableObjectType(), ObjectState.Normal));
-                e1.setRenderInBorders(false);
-                elements.add(e1);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                for (IWeapon weapon : unit.create.apply(new Cell(0, 0)).getWeapons()){
+                    Element e1 = ui.createElement(ElementType.Button, x + weapon.getRelativeLocation().x, y + weapon.getRelativeLocation().y, -1, -1,
+                            TextureMapper.join(weapon.getTexture()));
+                    e1.setRenderInBorders(false);
+                    elements.add(e1);
+                }
             }
             y -= 1;
         }

@@ -13,10 +13,9 @@ import com.agrogames.islandsofwar.engine.abs.map.MapObject;
 import com.agrogames.islandsofwar.engine.abs.map.MapProvider;
 import com.agrogames.islandsofwar.engine.abs.movable.MovableObject;
 import com.agrogames.islandsofwar.engine.abs.transport.TransportUnit;
-import com.agrogames.islandsofwar.engine.abs.unit.UnitAdder;
-import com.agrogames.islandsofwar.factories.UnitFactory;
-import com.agrogames.islandsofwar.types.UnitType;
-import com.agrogames.islandsofwar.engine.abs.weapon.Weapon;
+import com.agrogames.islandsofwar.engine.abs.unit.IUnit;
+import com.agrogames.islandsofwar.engine.abs.unit.IUnitAdder;
+import com.agrogames.islandsofwar.engine.abs.weapon.IWeapon;
 import com.agrogames.islandsofwar.engine.impl.navigator.Navigator;
 import com.agrogames.islandsofwar.map.abs.MapParams;
 import com.agrogames.islandsofwar.map.impl.Water;
@@ -32,20 +31,20 @@ public class SmallShip extends Unit{
     private boolean isMoving;
     public TransportUnit unit;
 
-    public SmallShip(UnitType type, Cell location, Weapon[] weapons, int health, float speed, float rotationSpeed) {
-        super(type, location, weapons, health, speed, rotationSpeed);
+    public SmallShip(String texture, Cell location, IWeapon[] weapons, int health, float speed, float rotationSpeed) {
+        super(texture, location, weapons, health, speed, rotationSpeed);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
-    public void update(MapProvider provider, BulletAdder bulletAdder, UnitAdder unitAdder, AnotherAdder anotherAdder, float deltaTime) {
+    public void update(MapProvider provider, BulletAdder bulletAdder, IUnitAdder unitAdder, AnotherAdder anotherAdder, float deltaTime) {
         if(goal != null){
             buildRoute(provider.getAll(), goal);
             goal = null;
         }
         rotate(deltaTime);
         move(provider.getAll(), unitAdder, deltaTime);
-        for (Weapon weapon: getWeapons()){
+        for (IWeapon weapon: getWeapons()){
             weapon.update(provider, bulletAdder, unitAdder, anotherAdder, deltaTime);
         }
     }
@@ -72,7 +71,7 @@ public class SmallShip extends Unit{
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private void move(MapObject[] all, UnitAdder adder, float deltaTime){
+    private void move(MapObject[] all, IUnitAdder adder, float deltaTime){
         if(route.isEmpty()){
             isMoving = false;
             return;
@@ -102,7 +101,8 @@ public class SmallShip extends Unit{
         location = next;
     }
 
-    private void stop(Cell taken, MapObject[] all, UnitAdder adder){
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void stop(Cell taken, MapObject[] all, IUnitAdder adder){
         boolean isTakingMoving = false;
         boolean stoppedOnUnit = false;
         for (MapObject object: all){
@@ -125,18 +125,10 @@ public class SmallShip extends Unit{
         }
     }
 
-    private void land(UnitAdder adder, Cell cell){
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void land(IUnitAdder adder, Cell cell){
         if(unit == null) return;
-        com.agrogames.islandsofwar.engine.abs.unit.Unit u = null;
-        switch (unit.type){
-            case Tank:
-                u = UnitFactory.Tank(cell.x, cell.y);
-                break;
-            case RocketLauncher:
-                u = UnitFactory.RocketLauncher(cell.x, cell.y);
-                break;
-        }
-        if(u == null) return;
+        IUnit u = unit.create.apply(cell);
         if(!route.isEmpty() && !cell.equals(route.firstElement())){
             ((MovableObject)u).setGoal(route.firstElement());
         }

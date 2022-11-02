@@ -1,32 +1,31 @@
 package com.agrogames.islandsofwar.engine.impl.another;
 
 import com.agrogames.islandsofwar.engine.abs.another.AnotherAdder;
+import com.agrogames.islandsofwar.engine.abs.another.IGraphicsObject;
 import com.agrogames.islandsofwar.engine.abs.bullet.BulletAdder;
 import com.agrogames.islandsofwar.engine.abs.common.Point;
 import com.agrogames.islandsofwar.engine.abs.map.MapProvider;
-import com.agrogames.islandsofwar.engine.abs.unit.UnitAdder;
-import com.agrogames.islandsofwar.types.AnotherObjectType;
-import com.agrogames.islandsofwar.types.BulletType;
+import com.agrogames.islandsofwar.engine.abs.unit.IUnitAdder;
 
-public class AnotherObject implements com.agrogames.islandsofwar.engine.abs.another.AnotherObject {
+public class GraphicsObject implements IGraphicsObject {
     private final Point location;
     private final float rotation;
-    private final AnotherObjectType type;
-    private final com.agrogames.islandsofwar.engine.abs.another.AnotherObject next;
+    private final String texture;
+    private final IGraphicsObject next;
     private final float lifeTime;
     private float timeSinceCreated;
     private boolean remove;
 
-    public AnotherObject(Point location, float rotation, AnotherObjectType type, com.agrogames.islandsofwar.engine.abs.another.AnotherObject next, float lifeTime) {
+    public GraphicsObject(String texture, Point location, float rotation, IGraphicsObject next, float lifeTime) {
         this.location = location;
         this.rotation = rotation;
-        this.type = type;
+        this.texture = texture;
         this.next = next;
         this.lifeTime = lifeTime;
     }
 
-    public AnotherObject(Point location, float rotation, AnotherObjectType type, float lifeTime) {
-        this(location, rotation, type, null, lifeTime);
+    public GraphicsObject(String texture, Point location, float rotation, float lifeTime) {
+        this(texture, location, rotation, null, lifeTime);
     }
 
     @Override
@@ -45,12 +44,12 @@ public class AnotherObject implements com.agrogames.islandsofwar.engine.abs.anot
     }
 
     @Override
-    public AnotherObjectType getType() {
-        return type;
+    public String getTexture() {
+        return texture;
     }
 
     @Override
-    public void update(MapProvider provider, BulletAdder bulletAdder, UnitAdder unitAdder, AnotherAdder anotherAdder, float deltaTime) {
+    public void update(MapProvider provider, BulletAdder bulletAdder, IUnitAdder unitAdder, AnotherAdder anotherAdder, float deltaTime) {
         timeSinceCreated += deltaTime;
 
         if(timeSinceCreated >= lifeTime && !remove){

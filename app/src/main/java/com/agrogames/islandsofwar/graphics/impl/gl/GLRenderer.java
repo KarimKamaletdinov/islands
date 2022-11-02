@@ -62,12 +62,9 @@ public class GLRenderer implements GLSurfaceView.Renderer {
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
         Matrix.setLookAtM(viewMatrix, 0, 0, 0, 3, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
         Matrix.multiplyMM(vPMatrix, 0, projectionMatrix, 0, viewMatrix, 0);
+        drawTextureService.mProgram = mProgram;
+        drawTextureService.vPMatrix = vPMatrix;
         manager.render(drawTextureService);
-        Texture[] textures = drawTextureService.GetTextures();
-        for (Texture texture: textures) {
-            texture.Render(mProgram, vPMatrix);
-        }
-
     }
 
     public void onSurfaceChanged(GL10 unused, int width, int height) {

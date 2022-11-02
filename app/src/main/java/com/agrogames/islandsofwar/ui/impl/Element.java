@@ -2,7 +2,6 @@ package com.agrogames.islandsofwar.ui.impl;
 
 import android.util.Log;
 
-import com.agrogames.islandsofwar.types.TextureBitmap;
 import com.agrogames.islandsofwar.ui.abs.ElementType;
 
 import java.util.concurrent.Callable;
@@ -13,7 +12,7 @@ public class Element implements com.agrogames.islandsofwar.ui.abs.Element {
     private float y;
     private float width;
     private float height;
-    private TextureBitmap texture;
+    private String texture;
     private Callable<Void> listener;
     private boolean visible;
     private boolean renderInBorders;
@@ -69,12 +68,12 @@ public class Element implements com.agrogames.islandsofwar.ui.abs.Element {
     }
 
     @Override
-    public void setTexture(TextureBitmap texture) {
+    public void setTexture(String texture) {
         this.texture = texture;
     }
 
     @Override
-    public TextureBitmap getTexture() {
+    public String getTexture() {
         return texture;
     }
 

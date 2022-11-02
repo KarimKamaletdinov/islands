@@ -1,16 +1,19 @@
 package com.agrogames.islandsofwar.engine.impl.unit;
 
+import com.agrogames.islandsofwar.engine.abs.unit.IUnit;
+import com.agrogames.islandsofwar.engine.abs.unit.IUnitAdder;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class UnitAdder implements com.agrogames.islandsofwar.engine.abs.unit.UnitAdder {
-    private final List<com.agrogames.islandsofwar.engine.abs.unit.Unit > units = new ArrayList<>();
+public class UnitAdder implements IUnitAdder {
+    private final List<IUnit> units = new ArrayList<>();
     @Override
-    public void addUnit(com.agrogames.islandsofwar.engine.abs.unit.Unit unit) {
+    public void addUnit(IUnit unit) {
         units.add(unit);
     }
 
-    public List<com.agrogames.islandsofwar.engine.abs.unit.Unit> getUnits(){
+    public List<IUnit> getUnits(){
         return units;
     }
 }

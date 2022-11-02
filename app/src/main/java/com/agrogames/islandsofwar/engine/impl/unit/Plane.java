@@ -2,27 +2,32 @@ package com.agrogames.islandsofwar.engine.impl.unit;
 
 import com.agrogames.islandsofwar.common.M;
 import com.agrogames.islandsofwar.engine.abs.another.AnotherAdder;
-import com.agrogames.islandsofwar.engine.abs.bullet.Bullet;
+import com.agrogames.islandsofwar.engine.abs.bullet.IBullet;
 import com.agrogames.islandsofwar.engine.abs.bullet.BulletAdder;
 import com.agrogames.islandsofwar.engine.abs.common.Cell;
 import com.agrogames.islandsofwar.engine.abs.common.Point;
 import com.agrogames.islandsofwar.engine.abs.map.MapProvider;
-import com.agrogames.islandsofwar.engine.abs.unit.UnitAdder;
-import com.agrogames.islandsofwar.engine.abs.weapon.Weapon;
-import com.agrogames.islandsofwar.factories.BulletFactory;
+import com.agrogames.islandsofwar.engine.abs.unit.IUnitAdder;
+import com.agrogames.islandsofwar.engine.abs.weapon.IWeapon;
 import com.agrogames.islandsofwar.map.abs.MapParams;
-import com.agrogames.islandsofwar.types.UnitType;
 
 import java.util.Stack;
 
 public class Plane extends Unit{
+    private final int bombCount;
+    private final String bombTexture;
+    private final int bombPower;
+
     private Cell goal;
     private Direction direction;
-    private Stack<Bullet> bombs;
+    private Stack<IBullet> bombs;
     private Float timeFromLastBomb = null;
 
-    public Plane(UnitType type, int health, float speed, float rotationSpeed) {
-        super(type, new Cell(-1, -1), new Weapon[0], health, speed, rotationSpeed);
+    public Plane(String texture, int health, float speed, float rotationSpeed, int bombCount, String bombTexture, int bombPower) {
+        super(texture, new Cell(-1, -1), new IWeapon[0], health, speed, rotationSpeed);
+        this.bombCount = bombCount;
+        this.bombTexture = bombTexture;
+        this.bombPower = bombPower;
     }
 
     @Override
@@ -53,7 +58,7 @@ public class Plane extends Unit{
         return 4;
     }
     @Override
-    public void update(MapProvider provider, BulletAdder bulletAdder, UnitAdder unitAdder, AnotherAdder anotherAdder, float deltaTime) {
+    public void update(MapProvider provider, BulletAdder bulletAdder, IUnitAdder unitAdder, AnotherAdder anotherAdder, float deltaTime) {
         if(goal == null) return;
         if(timeFromLastBomb != null) {
             bomb(bulletAdder);
@@ -79,13 +84,13 @@ public class Plane extends Unit{
     private void bomb(BulletAdder bulletAdder){
         if(bombs == null) {
             bombs = new Stack<>();
-            for(Bullet b : BulletFactory.createBombs(this)){
-                bombs.push(b);
+            for(int i = 0; i < bombCount; i++){
+                IBullet b = new com.agrogames.islandsofwar.engine.impl.bullet.Bullet(bombTexture, location, 0.4f, bombPower, 0.1f, 2, 1, this, true);
             }
         }
         if(timeFromLastBomb >= 0.4f && !bombs.isEmpty()){
             timeFromLastBomb -= 0.4f;
-            Bullet b = bombs.pop();
+            IBullet b = bombs.pop();
             switch (direction){
                 case Up:
                     b.setGoal(new Point(location.x, location.y + 0.5f));

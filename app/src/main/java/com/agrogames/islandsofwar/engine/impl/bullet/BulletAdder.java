@@ -1,18 +1,18 @@
 package com.agrogames.islandsofwar.engine.impl.bullet;
 
-import com.agrogames.islandsofwar.engine.abs.bullet.Bullet;
+import com.agrogames.islandsofwar.engine.abs.bullet.IBullet;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class BulletAdder implements com.agrogames.islandsofwar.engine.abs.bullet.BulletAdder {
-    private final List<Bullet> bullets = new ArrayList<>();
+    private final List<IBullet> bullets = new ArrayList<>();
     @Override
-    public void addBullet(Bullet bullet) {
+    public void addBullet(IBullet bullet) {
         bullets.add(bullet);
     }
 
-    public List<Bullet> getBullets(){
+    public List<IBullet> getBullets(){
         return bullets;
     }
 }

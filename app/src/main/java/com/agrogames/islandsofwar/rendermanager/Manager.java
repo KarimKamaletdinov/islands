@@ -6,13 +6,8 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import com.agrogames.islandsofwar.engine.abs.Engine;
-import com.agrogames.islandsofwar.engine.abs.common.Cell;
 import com.agrogames.islandsofwar.engine.abs.common.Point;
-import com.agrogames.islandsofwar.engine.abs.movable.MovableObject;
-import com.agrogames.islandsofwar.engine.abs.transport.TransportUnit;
-import com.agrogames.islandsofwar.engine.abs.unit.Unit;
-import com.agrogames.islandsofwar.engine.impl.unit.Plane;
-import com.agrogames.islandsofwar.types.UnitType;
+import com.agrogames.islandsofwar.engine.abs.unit.IUnit;
 import com.agrogames.islandsofwar.factories.UnitFactory;
 import com.agrogames.islandsofwar.graphics.abs.TextureDrawer;
 import com.agrogames.islandsofwar.graphics.abs.RenderManager;
@@ -34,36 +29,35 @@ public class Manager implements RenderManager {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public Manager(Context context) {
-        Unit ts = UnitFactory.TransportShip(1, 1, new TransportUnit[]{
-                new TransportUnit(UnitType.Tank),
-                new TransportUnit(UnitType.Tank),
-                new TransportUnit(UnitType.Tank),
-                new TransportUnit(UnitType.Tank),
-                new TransportUnit(UnitType.Tank),
-                new TransportUnit(UnitType.Tank),
-                new TransportUnit(UnitType.Tank),
-                new TransportUnit(UnitType.RocketLauncher),
-        });
+        IUnit ts = UnitFactory.byTexture("transport_ship", 1, 1,
+                "tank",
+                "tank",
+                "tank",
+                "tank",
+                "tank",
+                "tank",
+                "tank",
+                "rocket_launcher");
 
-        this.engine = new com.agrogames.islandsofwar.engine.impl.Engine(new Unit[]{
-                UnitFactory.Tank(14, 11),
-                UnitFactory.Tank(15, 10),
-                UnitFactory.Tank(15, 9),
-                UnitFactory.Tank(15, 11),
-                UnitFactory.Tank(16, 10),
-                UnitFactory.Tank(16, 9),
-                UnitFactory.RocketLauncher(16, 11),
-                UnitFactory.RocketLauncher(16, 12),
-                UnitFactory.Tank(17, 10),
-                UnitFactory.Tank(17, 9),
-                UnitFactory.Tank(17, 11),
-                UnitFactory.Tank(20, 10),
-                UnitFactory.AirDefence(15, 12),
-                UnitFactory.ShipDefence(8, 13),
-                UnitFactory.ShipDefence(18, 12),
-                UnitFactory.ShipDefence(17, 8),
-                UnitFactory.ShipDefence(14, 10),
-        }, new Unit[]{
+        this.engine = new com.agrogames.islandsofwar.engine.impl.Engine(new IUnit[]{
+                UnitFactory.byTexture("tank", 14, 11),
+                UnitFactory.byTexture("tank", 15, 10),
+                UnitFactory.byTexture("tank", 15, 9),
+                UnitFactory.byTexture("tank", 15, 11),
+                UnitFactory.byTexture("tank", 16, 10),
+                UnitFactory.byTexture("tank", 16, 9),
+                UnitFactory.byTexture("rocket_launcher", 16, 11),
+                UnitFactory.byTexture("rocket_launcher", 16, 12),
+                UnitFactory.byTexture("tank", 17, 10),
+                UnitFactory.byTexture("tank", 17, 9),
+                UnitFactory.byTexture("tank", 17, 11),
+                UnitFactory.byTexture("tank", 20, 10),
+                UnitFactory.byTexture("air_defence", 15, 12),
+                UnitFactory.byTexture("ship_defence", 8, 13),
+                UnitFactory.byTexture("ship_defence", 18, 12),
+                UnitFactory.byTexture("ship_defence", 17, 8),
+                UnitFactory.byTexture("ship_defence", 14, 10),
+        }, new IUnit[]{
                 ts
         }, Map.fromAssets(context, "map1.txt").getMap());
         this.renderer = new com.agrogames.islandsofwar.render.impl.Renderer(new Presenter(this.engine), new UI());

@@ -2,9 +2,9 @@ package com.agrogames.islandsofwar.rendermanager;
 
 import com.agrogames.islandsofwar.engine.abs.Engine;
 import com.agrogames.islandsofwar.engine.abs.GameState;
-import com.agrogames.islandsofwar.engine.abs.bullet.Bullet;
+import com.agrogames.islandsofwar.engine.abs.bullet.IBullet;
 import com.agrogames.islandsofwar.engine.abs.renderable.RenderableObject;
-import com.agrogames.islandsofwar.engine.abs.unit.Unit;
+import com.agrogames.islandsofwar.engine.abs.unit.IUnit;
 
 public class Presenter implements com.agrogames.islandsofwar.render.abs.Presenter {
     private final Engine engine;
@@ -14,12 +14,12 @@ public class Presenter implements com.agrogames.islandsofwar.render.abs.Presente
     }
 
     @Override
-    public Unit[] getProtectors() {
+    public IUnit[] getProtectors() {
         return engine.getProtectors();
     }
 
     @Override
-    public Unit[] getAttackers() {
+    public IUnit[] getAttackers() {
         return engine.getAttackers();
     }
 
@@ -29,12 +29,12 @@ public class Presenter implements com.agrogames.islandsofwar.render.abs.Presente
     }
 
     @Override
-    public Bullet[] getProtectorsBullets() {
+    public IBullet[] getProtectorsBullets() {
         return engine.getProtectorsBullets();
     }
 
     @Override
-    public Bullet[] getAttackersBullets() {
+    public IBullet[] getAttackersBullets() {
         return engine.getAttackersBullets();
     }
 
@@ -44,7 +44,7 @@ public class Presenter implements com.agrogames.islandsofwar.render.abs.Presente
     }
 
     @Override
-    public void addPlane(Unit plane){
+    public void addPlane(IUnit plane){
         engine.addPlane(plane);
     }
 }

@@ -14,10 +14,10 @@ import com.agrogames.islandsofwar.engine.abs.map.MapProvider;
 import com.agrogames.islandsofwar.engine.abs.movable.MovableObject;
 import com.agrogames.islandsofwar.engine.abs.transport.Transport;
 import com.agrogames.islandsofwar.engine.abs.transport.TransportUnit;
-import com.agrogames.islandsofwar.engine.abs.unit.UnitAdder;
+import com.agrogames.islandsofwar.engine.abs.unit.IUnit;
+import com.agrogames.islandsofwar.engine.abs.unit.IUnitAdder;
 import com.agrogames.islandsofwar.factories.UnitFactory;
-import com.agrogames.islandsofwar.types.UnitType;
-import com.agrogames.islandsofwar.engine.abs.weapon.Weapon;
+import com.agrogames.islandsofwar.engine.abs.weapon.IWeapon;
 import com.agrogames.islandsofwar.engine.impl.navigator.BigShipNavigator;
 import com.agrogames.islandsofwar.map.abs.MapParams;
 import com.agrogames.islandsofwar.map.impl.Water;
@@ -33,8 +33,8 @@ public class BigShip extends Unit implements Transport {
     private final List<TransportUnit> units = new ArrayList<>();
     private final List<Pair<TransportUnit, Cell>> toAdd = new ArrayList<>();
 
-    public BigShip(UnitType type, Cell location, Weapon[] weapons, int health, float speed, float rotationSpeed, TransportUnit[] units, int minDamage) {
-        super(type, location, weapons, health, speed, rotationSpeed);
+    public BigShip(String texture, Cell location, IWeapon[] weapons, int health, float speed, float rotationSpeed, TransportUnit[] units, int minDamage) {
+        super(texture, location, weapons, health, speed, rotationSpeed);
         this.minDamage = minDamage;
         Collections.addAll(this.units, units);
     }
@@ -90,8 +90,8 @@ public class BigShip extends Unit implements Transport {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
-    public void update(MapProvider provider, BulletAdder bulletAdder, UnitAdder unitAdder, AnotherAdder anotherAdder, float deltaTime) {
-        for (Weapon weapon: getWeapons()){
+    public void update(MapProvider provider, BulletAdder bulletAdder, IUnitAdder unitAdder, AnotherAdder anotherAdder, float deltaTime) {
+        for (IWeapon weapon: getWeapons()){
             weapon.update(provider, bulletAdder, unitAdder, anotherAdder, deltaTime);
         }
 
@@ -101,7 +101,7 @@ public class BigShip extends Unit implements Transport {
             if(Arrays.stream(provider.getAll()).noneMatch(
                     x -> Arrays.asList(x.getTerritory()).contains(c) && !(x instanceof Water))){
                 Pair<TransportUnit, Cell> u = (Pair<TransportUnit, Cell>)o;
-                com.agrogames.islandsofwar.engine.abs.unit.Unit lc = UnitFactory.LandingCraft(l.x + 1, l.y + 1);
+                IUnit lc = UnitFactory.byTexture("landing_craft", l.x + 1, l.y + 1);
                 ((SmallShip)lc).unit = u.first;
                 ((MovableObject)lc).setGoal(u.second);
                 unitAdder.addUnit(lc);

@@ -2,7 +2,6 @@ package com.agrogames.islandsofwar.ui.impl;
 
 import android.util.Pair;
 
-import com.agrogames.islandsofwar.types.TextureBitmap;
 import com.agrogames.islandsofwar.graphics.abs.TextureDrawer;
 import com.agrogames.islandsofwar.ui.abs.Element;
 import com.agrogames.islandsofwar.ui.abs.ElementType;
@@ -13,7 +12,7 @@ import java.util.List;
 public class UI implements com.agrogames.islandsofwar.ui.abs.UI {
     private final List<Element> elements = new ArrayList<>();
     @Override
-    public Element createElement(ElementType type, float x, float y, float width, float height, TextureBitmap texture) {
+    public Element createElement(ElementType type, float x, float y, float width, float height, String texture) {
         Element element = new com.agrogames.islandsofwar.ui.impl.Element();
         element.setType(type);
         element.setX(x);

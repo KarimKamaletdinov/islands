@@ -1,17 +1,14 @@
 package com.agrogames.islandsofwar.engine.impl.unit;
 
-import com.agrogames.islandsofwar.engine.abs.bullet.BulletAdder;
 import com.agrogames.islandsofwar.engine.abs.common.Cell;
 import com.agrogames.islandsofwar.engine.abs.common.Point;
-import com.agrogames.islandsofwar.engine.abs.map.MapProvider;
-import com.agrogames.islandsofwar.engine.abs.unit.UnitAdder;
-import com.agrogames.islandsofwar.types.UnitType;
 import com.agrogames.islandsofwar.engine.abs.movable.MovableObject;
-import com.agrogames.islandsofwar.engine.abs.weapon.Weapon;
+import com.agrogames.islandsofwar.engine.abs.unit.IUnit;
+import com.agrogames.islandsofwar.engine.abs.weapon.IWeapon;
 import com.agrogames.islandsofwar.engine.abs.gamevalue.IntValue;
 
-abstract class Unit implements com.agrogames.islandsofwar.engine.abs.unit.Unit, MovableObject {
-    private final UnitType type;
+abstract class Unit implements IUnit, MovableObject {
+    private final String texture;
     protected final IntValue health;
     protected final float speed;
     protected final float rotationSpeed;
@@ -19,25 +16,25 @@ abstract class Unit implements com.agrogames.islandsofwar.engine.abs.unit.Unit, 
     protected float rotation;
     protected float goalRotation;
     protected int minDamage = 0;
-    private final Weapon[] weapons;
+    private final IWeapon[] weapons;
     protected float timeSinceDestroyed;
 
-    protected Unit(UnitType type, Cell location, Weapon[] weapons, int health, float speed, float rotationSpeed) {
-        this.type = type;
+    protected Unit(String texture, Cell location, IWeapon[] weapons, int health, float speed, float rotationSpeed) {
+        this.texture = texture;
         this.health = new IntValue(health);
         this.weapons = weapons;
         this.location = new Point(location);
         this.speed = speed;
         this.rotationSpeed = rotationSpeed;
 
-        for (Weapon weapon: weapons){
+        for (IWeapon weapon: weapons){
             weapon.setOwner(this);
         }
     }
 
     @Override
-    public UnitType getType() {
-        return type;
+    public String getTexture() {
+        return texture;
     }
 
     @Override
@@ -57,7 +54,7 @@ abstract class Unit implements com.agrogames.islandsofwar.engine.abs.unit.Unit, 
         return location;
     }
 
-    public Weapon[] getWeapons(){
+    public IWeapon[] getWeapons(){
         return weapons;
     }
 

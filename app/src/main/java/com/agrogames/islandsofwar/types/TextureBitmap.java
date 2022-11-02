@@ -1,5 +1,5 @@
 package com.agrogames.islandsofwar.types;
-
+/*
 public enum TextureBitmap {
     Tank("tank.png"),
     TankSelected("tank-selected.png"),
@@ -45,4 +45,4 @@ public enum TextureBitmap {
     TextureBitmap(String name){
         this.name = name;
     }
-}
+}*/

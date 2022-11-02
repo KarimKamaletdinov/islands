@@ -5,22 +5,22 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import com.agrogames.islandsofwar.engine.abs.another.AnotherAdder;
+import com.agrogames.islandsofwar.engine.abs.bullet.IBullet;
 import com.agrogames.islandsofwar.engine.abs.renderable.RenderableObject;
-import com.agrogames.islandsofwar.factories.AnotherObjectFactory;
+import com.agrogames.islandsofwar.factories.UnitFactory;
 import com.agrogames.islandsofwar.map.impl.Water;
-import com.agrogames.islandsofwar.types.BulletType;
 import com.agrogames.islandsofwar.engine.abs.common.Cell;
 import com.agrogames.islandsofwar.engine.abs.common.Point;
 import com.agrogames.islandsofwar.engine.abs.bullet.BulletAdder;
 import com.agrogames.islandsofwar.engine.abs.map.MapObject;
-import com.agrogames.islandsofwar.engine.abs.unit.Unit;
+import com.agrogames.islandsofwar.engine.abs.unit.IUnit;
 import com.agrogames.islandsofwar.engine.abs.map.MapProvider;
-import com.agrogames.islandsofwar.engine.abs.unit.UnitAdder;
+import com.agrogames.islandsofwar.engine.abs.unit.IUnitAdder;
 
 import java.util.Arrays;
 
-public class Bullet implements com.agrogames.islandsofwar.engine.abs.bullet.Bullet {
-    private final BulletType type;
+public class Bullet implements IBullet {
+    private final String texture;
     private Point location;
     private float rotation;
     private final float speed;
@@ -28,15 +28,15 @@ public class Bullet implements com.agrogames.islandsofwar.engine.abs.bullet.Bull
     private final float longRange;
     private final int flightHeight;
     private final int targetHeight;
-    private final Unit owner;
+    private final IUnit owner;
     private final boolean bang;
     private boolean isFlying = true;
     private float flewDistance;
     private Cell goal;
 
-    public Bullet(BulletType type, Point location, float speed, int power, float longRange, int flightHeight, int targetHeight, Unit owner, boolean bang) {
+    public Bullet(String texture, Point location, float speed, int power, float longRange, int flightHeight, int targetHeight, IUnit owner, boolean bang) {
         this.longRange = longRange;
-        this.type = type;
+        this.texture = texture;
         this.location = location;
         this.speed = speed;
         this.power = power;
@@ -47,8 +47,8 @@ public class Bullet implements com.agrogames.islandsofwar.engine.abs.bullet.Bull
     }
 
     @Override
-    public BulletType getType() {
-        return type;
+    public String getTexture() {
+        return texture;
     }
 
     @Override
@@ -68,18 +68,18 @@ public class Bullet implements com.agrogames.islandsofwar.engine.abs.bullet.Bull
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
-    public void update(MapProvider provider, BulletAdder bulletAdder, UnitAdder unitAdder, AnotherAdder anotherAdder, float deltaTime) {
+    public void update(MapProvider provider, BulletAdder bulletAdder, IUnitAdder unitAdder, AnotherAdder anotherAdder, float deltaTime) {
         move(deltaTime);
         MapObject[] all = provider.getAll();
         MapObject enemy = enemyAt(new Cell((int) location.x + 1, (int) location.y + 1), all, flightHeight);
         if(enemy != null){
-            if(enemy instanceof Unit) ((Unit)enemy).loseHealth(power);
+            if(enemy instanceof IUnit) ((IUnit)enemy).loseHealth(power);
             stop(provider, anotherAdder);
         }
         else if(new Cell((int) location.x + 1, (int) location.y + 1).equals(goal)){
             MapObject e2 = enemyAt(new Cell((int) location.x + 1, (int) location.y + 1), all, targetHeight);
             if(e2 != null){
-                if(e2 instanceof Unit) ((Unit)e2).loseHealth(power);
+                if(e2 instanceof IUnit) ((IUnit)e2).loseHealth(power);
             }
             stop(provider, anotherAdder);
         }
@@ -93,7 +93,7 @@ public class Bullet implements com.agrogames.islandsofwar.engine.abs.bullet.Bull
         isFlying = false;
         if(bang && Arrays.stream(provider.getAll()).noneMatch(o ->
                 Arrays.asList(o.getTerritory()).contains(new Cell(location)) && o instanceof Water) && targetHeight == 1){
-            adder.addAnother(AnotherObjectFactory.bang(this));
+            adder.addAnother(UnitFactory.graphicsByTexture("bang", getLocation(), getRotation()));
         }
     }
 

@@ -30,7 +30,7 @@ public class BitmapProvider {
 
     private Bitmap loadFromFile(String name){
         try {
-            return BitmapFactory.decodeStream(context.getAssets().open("textures/" + name));
+            return BitmapFactory.decodeStream(context.getAssets().open("textures/" + name + ".png"));
         } catch (IOException e) {
             Log.e("IOW", "Cannot load bitmap with name " + name);
             return Bitmap.createBitmap(new int[]{Color.RED}, 1, 1, Bitmap.Config.RGB_565);

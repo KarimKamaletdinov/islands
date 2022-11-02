@@ -3,8 +3,8 @@ package com.agrogames.islandsofwar.engine.abs.updatable;
 import com.agrogames.islandsofwar.engine.abs.another.AnotherAdder;
 import com.agrogames.islandsofwar.engine.abs.bullet.BulletAdder;
 import com.agrogames.islandsofwar.engine.abs.map.MapProvider;
-import com.agrogames.islandsofwar.engine.abs.unit.UnitAdder;
+import com.agrogames.islandsofwar.engine.abs.unit.IUnitAdder;
 
 public interface UpdatableObject {
-    void update(MapProvider provider, BulletAdder bulletAdder, UnitAdder unitAdder, AnotherAdder anotherAdder, float deltaTime);
+    void update(MapProvider provider, BulletAdder bulletAdder, IUnitAdder unitAdder, AnotherAdder anotherAdder, float deltaTime);
 }
