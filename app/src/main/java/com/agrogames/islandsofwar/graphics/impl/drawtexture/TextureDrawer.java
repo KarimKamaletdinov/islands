@@ -6,6 +6,7 @@ import android.util.Pair;
 
 import androidx.annotation.RequiresApi;
 
+import com.agrogames.islandsofwar.graphics.impl.bitmap.BitmapDescriptor;
 import com.agrogames.islandsofwar.graphics.impl.bitmap.BitmapProvider;
 import com.agrogames.islandsofwar.graphics.impl.gl.Texture;
 
@@ -30,24 +31,24 @@ public class TextureDrawer implements com.agrogames.islandsofwar.graphics.abs.Te
 
     @Override
     public void drawTexture(float x, float y, String bitmap, float width, float height, float rotation) {
-        textures.add(new Texture(x + currentX, y + currentY, bitmapProvider.load(bitmap), width, height, rotation));
+        textures.add(new Texture(x + currentX, y + currentY, bitmapProvider.load(bitmap).id, width, height, rotation));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     public Pair<Float, Float> drawTexture(float x, float y, String bitmap, float rotation) {
-        Bitmap b = bitmapProvider.load(bitmap);
-        float width = b.getWidth() / 50f;
-        float height = b.getHeight() / 50f;
-        textures.add(new Texture(x + currentX, y + currentY, b, width, height, rotation));
+        BitmapDescriptor b = bitmapProvider.load(bitmap);
+        float width = b.width / 50f;
+        float height = b.height / 50f;
+        textures.add(new Texture(x + currentX, y + currentY, b.id, width, height, rotation));
         return new Pair<>(width, height);
     }
 
     @Override
     public Pair<Float, Float> getSize(String bitmap) {
-        Bitmap b = bitmapProvider.load(bitmap);
-        float width = b.getWidth() / 50f;
-        float height = b.getHeight() / 50f;
+        BitmapDescriptor b = bitmapProvider.load(bitmap);
+        float width = b.width / 50f;
+        float height = b.height / 50f;
         return new Pair<>(width, height);
     }
 

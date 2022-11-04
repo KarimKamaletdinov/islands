@@ -24,14 +24,16 @@ public class GLRenderer implements GLSurfaceView.Renderer {
     private String vertexShaderCode;
     private String fragmentShaderCode;
 
+    @androidx.annotation.NonNull
+    private final Context context;
     private final RenderManager manager;
-    private final TextureDrawer drawTextureService;
+    private TextureDrawer textureDrawer;
     private int width;
     private int height;
 
     public GLRenderer(Context context, RenderManager manager) {
+        this.context = context;
         this.manager = manager;
-        drawTextureService = new TextureDrawer(new BitmapProvider(context));
         try {
             vertexShaderCode = new Scanner(context.getAssets().open("shaders/vertex.vert")).useDelimiter("\\A").next();
             fragmentShaderCode = new Scanner(context.getAssets().open("shaders/fragment.frag")).useDelimiter("\\A").next();
@@ -54,6 +56,7 @@ public class GLRenderer implements GLSurfaceView.Renderer {
         GLES20.glAttachShader(mProgram, fragmentShader);
         GLES20.glLinkProgram(mProgram);
         GLES20.glClearColor(95 / 255f, 177 / 255f, 222 / 255f, 1.0f);
+        textureDrawer = new TextureDrawer(new BitmapProvider(context, mProgram));
     }
 
     public void onDrawFrame(GL10 unused) {
@@ -62,8 +65,8 @@ public class GLRenderer implements GLSurfaceView.Renderer {
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
         Matrix.setLookAtM(viewMatrix, 0, 0, 0, 3, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
         Matrix.multiplyMM(vPMatrix, 0, projectionMatrix, 0, viewMatrix, 0);
-        manager.render(drawTextureService);
-        Texture[] textures = drawTextureService.GetTextures();
+        manager.render(textureDrawer);
+        Texture[] textures = textureDrawer.GetTextures();
         for (Texture texture: textures) {
             texture.render(mProgram, vPMatrix);
         }

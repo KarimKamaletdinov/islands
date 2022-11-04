@@ -107,7 +107,7 @@
         "speed": 4,
         "flight_height": 4,
         "target_height": 4,
-        "bang": true
+        "bang": false
       }
     },
     {

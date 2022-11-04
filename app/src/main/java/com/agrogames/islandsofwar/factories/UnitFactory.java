@@ -84,7 +84,7 @@ public class UnitFactory {
                         (float) json.getDouble("speed"),
                         (float) json.getDouble("rotation_speed"),
                         json.getInt("bomb_count"),
-                        bomb.getString("texture"),
+                        "bullets/" + bomb.getString("texture"),
                         bomb.getInt("power")
                 );
             default:

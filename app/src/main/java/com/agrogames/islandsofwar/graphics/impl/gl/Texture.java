@@ -16,9 +16,9 @@ public class Texture {
     public final float rotation;
     public final FloatBuffer vertexBuffer;
     public final float[] rotationMatrix;
-    private final Bitmap textureBitmap;
+    private final int textureBitmap;
 
-    public Texture(float x, float y, Bitmap bitmap, float width, float height, float rotation) {
+    public Texture(float x, float y, int bitmap, float width, float height, float rotation) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -55,11 +55,7 @@ public class Texture {
         GLES20.glUseProgram(mProgram);
         int textureUniformHandle = GLES20.glGetUniformLocation(mProgram, "u_Texture");
         GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
-        int[] textureUnit = { 1 };
-        GLES20.glGenTextures(textureUnit.length, textureUnit, 0);
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureUnit[0]);
-        GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, textureBitmap, 0);
-        GLES20.glGenerateMipmap(GLES20.GL_TEXTURE_2D);
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureBitmap);
         GLES20.glUniform1i(textureUniformHandle, 0);
 
         int vPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "uMVPMatrix");
@@ -96,6 +92,6 @@ public class Texture {
 
         GLES20.glDisableVertexAttribArray(positionHandle);
         GLES20.glDisableVertexAttribArray(texturePositionHandle);
-        GLES20.glDeleteTextures(textureUnit.length, textureUnit, 0);
+        //GLES20.glDeleteTextures(textureUnit.length, textureUnit, 0);
     }
 }

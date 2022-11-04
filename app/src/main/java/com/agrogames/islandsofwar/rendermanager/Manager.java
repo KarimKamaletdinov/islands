@@ -26,7 +26,6 @@ public class Manager implements RenderManager {
     private final Engine engine;
     private final Renderer renderer;
     private LocalTime previous;
-    private LocalTime renderPrevious;
     private boolean start = false;
     private Point touch;
     private Point move;
@@ -90,27 +89,6 @@ public class Manager implements RenderManager {
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void render(TextureDrawer drawer) {
-        LocalTime now = LocalTime.now();
-        if (renderPrevious == null) {
-            renderPrevious = now;
-        }
-        float deltaTime = ((float)renderPrevious.until(now, ChronoUnit.MICROS)) / 1000000f;
-        //if(deltaTime > 0.1f) deltaTime = 0.1f;
-        renderPrevious = now;
-        deltaTimes.add(deltaTime);
-        if(deltaTimes.size() >= 100){
-            float sum = 0;
-            float max = 0;
-            float min = 0;
-            for (float n: deltaTimes) {
-                sum += n;
-                if(n > max) max = n;
-                if(n < min) min = n;
-            }
-            sum /= deltaTimes.size();
-            Log.i("IOW", "Medium deltaTime:" + sum + "; maximum: " + max + "; minimum: " + min);
-            deltaTimes.clear();
-        }
         start = true;
         renderer.render(drawer, touch, move, previousMove);
         touch = null;
