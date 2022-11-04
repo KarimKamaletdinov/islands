@@ -17,7 +17,7 @@ import com.agrogames.islandsofwar.engine.impl.bullet.BulletAdder;
 import com.agrogames.islandsofwar.engine.impl.map.MapProvider;
 import com.agrogames.islandsofwar.engine.impl.unit.LandUnit;
 import com.agrogames.islandsofwar.engine.impl.unit.UnitAdder;
-import com.agrogames.islandsofwar.factories.UnitFactory;
+import com.agrogames.islandsofwar.factories.Factory;
 import com.agrogames.islandsofwar.map.impl.Water;
 
 import java.util.ArrayList;
@@ -109,7 +109,7 @@ public class Engine implements com.agrogames.islandsofwar.engine.abs.Engine {
             if(unit.getHealth().current <= 0){
                 if(unit instanceof LandUnit){
                     protectors.remove(unit);
-                    otherObjects.add(UnitFactory.graphicsByTexture("bang", unit.getLocation(), unit.getRotation()));
+                    otherObjects.add(Factory.getGraphics("bang", unit.getLocation(), unit.getRotation()));
                 } else {
                     if(!destroyed.contains(unit)) destroyed.add(unit);
                 }
@@ -119,7 +119,7 @@ public class Engine implements com.agrogames.islandsofwar.engine.abs.Engine {
             if(unit.getHealth().current <= 0){
                 if(unit instanceof LandUnit){
                     attackers.remove(unit);
-                    otherObjects.add(UnitFactory.graphicsByTexture("bang", unit.getLocation(), unit.getRotation()));
+                    otherObjects.add(Factory.getGraphics("bang", unit.getLocation(), unit.getRotation()));
                 } else {
                     if(!destroyed.contains(unit)) destroyed.add(unit);
                 }
@@ -130,7 +130,7 @@ public class Engine implements com.agrogames.islandsofwar.engine.abs.Engine {
                 destroyed.remove(unit);
                 attackers.remove(unit);
                 if(Arrays.stream(mapObjects).noneMatch(c -> c instanceof Water && Arrays.asList(c.getTerritory()).contains(new Cell(unit.getLocation())))){
-                    otherObjects.add(UnitFactory.graphicsByTexture("bigBang", unit.getLocation(), unit.getRotation()));
+                    otherObjects.add(Factory.getGraphics("bigBang", unit.getLocation(), unit.getRotation()));
                 }
                 for (Cell cell : unit.getTerritory()){
                     for(IUnit u : protectors.stream().filter(c -> Arrays.asList(c.getTerritory()).contains(cell)).toArray(IUnit[]::new)){

@@ -1,0 +1,93 @@
+{
+  "units": [
+    {
+      "name": "tank",
+      "type": "land",
+      "weapons": ["medium"],
+      "health": 10,
+      "speed": 1,
+      "rotation_speed": 0.5
+    },
+    {
+      "name": "rocket_launcher",
+      "texture": "truck",
+      "type": "land",
+      "weapons": ["rocket_launcher"],
+      "health": 5,
+      "speed": 0.8,
+      "rotation_speed": 0.3
+    },
+    {
+      "name": "transport_ship",
+      "type": "big_ship",
+      "weapons": [
+        {"name":  "ship", "location": {"x": 1, "y": 0}},
+        {"name":  "ship", "location": {"x": 2, "y": 0}}
+      ],
+      "health": 100,
+      "speed": 1,
+      "rotation_speed": 0.1,
+      "min_damage": 10
+    },
+    {
+      "name": "bomber",
+      "type": "plane",
+      "health": 10,
+      "speed": 3,
+      "rotation_speed": 0.1,
+      "bomb_count": 4,
+      "bomb": {
+        "texture": "bomb",
+        "power": 15
+      }
+    }
+  ],
+  "weapons": [
+    {
+      "name": "medium",
+      "reload": 2,
+      "range": 6,
+      "rotation_speed": 0.8,
+      "bullet_starts": [{"x": 0, "y": 0}],
+      "bullet": {
+        "name": "standard",
+        "damage": 2,
+        "speed": 5,
+        "flight_height": 1,
+        "target_height": 1,
+        "bang": false
+      }
+    },
+    {
+      "name": "rocket_launcher",
+      "reload": 2,
+      "range": 6,
+      "rotation_speed": 0.8,
+      "bullet_starts": [{"x": 0, "y": 0}],
+      "bullet": {
+        "name": "rocket",
+        "damage": 2,
+        "speed": 5,
+        "flight_height": 1,
+        "target_height": 1,
+        "bang": false
+      }
+    },
+    {
+      "name": "ship",
+      "reload": 2,
+      "range": 6,
+      "rotation_speed": 0.8,
+      "bullet_starts": [{"x": 0, "y": 0}],
+      "bullet": {
+        "name": "standard",
+        "damage": 2,
+        "speed": 5,
+        "flight_height": 1,
+        "target_height": 1,
+        "bang": false
+      }
+    }
+  ],
+    "graphics": []
+}

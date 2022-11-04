@@ -37,7 +37,7 @@ public class UnitList {
         }
         float y = 7.5f;
         for (TransportUnit unit : unitTypes){
-            Element button = ui.createElement(ElementType.Button, x, y, 1.2f, 1.2f, "button_background");
+            Element button = ui.createElement(ElementType.Button, x, y, 1.2f, 1.2f, "ui/button_background");
             button.onClick(() -> {
                 if(currentUnit == null || currentUnit != unit) {
                     clearUnits();

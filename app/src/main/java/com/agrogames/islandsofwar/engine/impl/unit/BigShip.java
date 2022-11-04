@@ -16,7 +16,7 @@ import com.agrogames.islandsofwar.engine.abs.transport.Transport;
 import com.agrogames.islandsofwar.engine.abs.transport.TransportUnit;
 import com.agrogames.islandsofwar.engine.abs.unit.IUnit;
 import com.agrogames.islandsofwar.engine.abs.unit.IUnitAdder;
-import com.agrogames.islandsofwar.factories.UnitFactory;
+import com.agrogames.islandsofwar.factories.Factory;
 import com.agrogames.islandsofwar.engine.abs.weapon.IWeapon;
 import com.agrogames.islandsofwar.engine.impl.navigator.BigShipNavigator;
 import com.agrogames.islandsofwar.map.abs.MapParams;
@@ -101,7 +101,7 @@ public class BigShip extends Unit implements Transport {
             if(Arrays.stream(provider.getAll()).noneMatch(
                     x -> Arrays.asList(x.getTerritory()).contains(c) && !(x instanceof Water))){
                 Pair<TransportUnit, Cell> u = (Pair<TransportUnit, Cell>)o;
-                IUnit lc = UnitFactory.byTexture("landing_craft", l.x + 1, l.y + 1);
+                IUnit lc = Factory.get("landing_craft", l.x + 1, l.y + 1);
                 ((SmallShip)lc).unit = u.first;
                 ((MovableObject)lc).setGoal(u.second);
                 unitAdder.addUnit(lc);

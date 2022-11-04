@@ -7,7 +7,7 @@ import androidx.annotation.RequiresApi;
 import com.agrogames.islandsofwar.engine.abs.another.AnotherAdder;
 import com.agrogames.islandsofwar.engine.abs.bullet.IBullet;
 import com.agrogames.islandsofwar.engine.abs.renderable.RenderableObject;
-import com.agrogames.islandsofwar.factories.UnitFactory;
+import com.agrogames.islandsofwar.factories.Factory;
 import com.agrogames.islandsofwar.map.impl.Water;
 import com.agrogames.islandsofwar.engine.abs.common.Cell;
 import com.agrogames.islandsofwar.engine.abs.common.Point;
@@ -93,7 +93,7 @@ public class Bullet implements IBullet {
         isFlying = false;
         if(bang && Arrays.stream(provider.getAll()).noneMatch(o ->
                 Arrays.asList(o.getTerritory()).contains(new Cell(location)) && o instanceof Water) && targetHeight == 1){
-            adder.addAnother(UnitFactory.graphicsByTexture("bang", getLocation(), getRotation()));
+            adder.addAnother(Factory.getGraphics("bang", getLocation(), getRotation()));
         }
     }
 

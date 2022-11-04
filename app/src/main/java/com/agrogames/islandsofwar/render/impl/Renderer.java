@@ -16,7 +16,7 @@ import com.agrogames.islandsofwar.engine.abs.transport.Transport;
 import com.agrogames.islandsofwar.engine.abs.transport.TransportUnit;
 import com.agrogames.islandsofwar.engine.abs.unit.IUnit;
 import com.agrogames.islandsofwar.engine.abs.weapon.IWeapon;
-import com.agrogames.islandsofwar.factories.UnitFactory;
+import com.agrogames.islandsofwar.factories.Factory;
 import com.agrogames.islandsofwar.graphics.abs.TextureDrawer;
 import com.agrogames.islandsofwar.render.abs.Presenter;
 import com.agrogames.islandsofwar.ui.abs.Element;
@@ -39,7 +39,7 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
     public Renderer(Presenter presenter, UI ui){
         this.presenter = presenter;
         this.ui = ui;
-        cancelButton = ui.createElement(ElementType.Button, 14, 9, 1, 1, "cancel_button");
+        cancelButton = ui.createElement(ElementType.Button, 14, 9, 1, 1, "ui/cancel_button");
         cancelButton.setVisible(false);
 
         landingList = new UnitList(ui, 14);
@@ -54,7 +54,7 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
         planeList = new UnitList(ui, 0);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             planeList.setUnits(new TransportUnit[]{
-                    new TransportUnit(c -> UnitFactory.byTexture("bomber", c.x, c.y))
+                    new TransportUnit(c -> Factory.get("bomber", c.x, c.y))
             });
         }
     }
@@ -70,17 +70,18 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
         for (RenderableObject r: presenter.getOther()){
             renderer.render(r, "destroyed");
         }
-        for (IUnit unit: Arrays.stream(presenter.getAttackers()).filter(c -> c.getHeight() < 3).toArray(IUnit[]::new)){
+        //for (IUnit unit: Arrays.stream(presenter.getAttackers()).filter(c -> c.getHeight() < 3).toArray(IUnit[]::new)){
+        for (IUnit unit: presenter.getAttackers()){
             if(unit == selectedUnit){
                 renderer.render(unit, "selected");
                 drawHealth(drawer, unit);
             } else{
-                float size = renderer.render(unit);
+                float size = renderer.render(unit, "normal");
                 selectable.add(new Pair<>(unit, size));
             }
         }
         for (IUnit unit: presenter.getProtectors()){
-            renderer.render(unit);
+            renderer.render(unit, "normal");
         }
 
         for (IBullet bullet: presenter.getAttackersBullets()){

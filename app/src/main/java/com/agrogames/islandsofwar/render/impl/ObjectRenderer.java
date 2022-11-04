@@ -14,12 +14,16 @@ public class ObjectRenderer {
     }
 
     public float render(RenderableObject object){
-        return render(object, TextureMapper.join(object.getTexture()));
+        return simpleRender(object, TextureMapper.join(object.getTexture()));
     }
 
     public float render(RenderableObject object, String state){
+        return simpleRender(object, TextureMapper.join(object.getTexture(), state));
+    }
+
+    private float simpleRender(RenderableObject object, String texture){
         Point location = object.getLocation();
-        Pair<Float, Float> size = drawer.drawTexture(location.x, location.y, TextureMapper.join(object.getTexture(), state), object.getRotation());
+        Pair<Float, Float> size = drawer.drawTexture(location.x, location.y, texture, object.getRotation());
         return size.first > size.second ? size.first : size.second;
     }
 }
