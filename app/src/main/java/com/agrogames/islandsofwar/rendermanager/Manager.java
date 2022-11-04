@@ -37,15 +37,15 @@ public class Manager implements RenderManager {
     public Manager(Context context) {
         Factory.load(context);
 
-        IUnit ts = Factory.get("transport_ship", 1, 1//,
-                //"tank",
-                //"tank",
-                //"tank",
-                //"tank",
-                //"tank",
-                //"tank",
-                //"tank",
-                //"rocket_launcher"
+        IUnit ts = Factory.get("transport_ship", 1, 1,
+                "tank",
+                "tank",
+                "tank",
+                "tank",
+                "tank",
+                "tank",
+                "tank",
+                "rocket_launcher"
         );
 
         this.engine = new com.agrogames.islandsofwar.engine.impl.Engine(new IUnit[]{
@@ -60,12 +60,12 @@ public class Manager implements RenderManager {
                 Factory.get("tank", 17, 10),
                 Factory.get("tank", 17, 9),
                 Factory.get("tank", 17, 11),
-                Factory.get("tank", 20, 10),/*
-                UnitFactory.byTexture("air_defence", 15, 12),
-                UnitFactory.byTexture("ship_defence", 8, 13),
-                UnitFactory.byTexture("ship_defence", 18, 12),
-                UnitFactory.byTexture("ship_defence", 17, 8),
-                UnitFactory.byTexture("ship_defence", 14, 10),*/
+                Factory.get("tank", 20, 10),
+                Factory.get("air_defence", 15, 12),
+                Factory.get("ship_defence", 8, 13),
+                Factory.get("ship_defence", 18, 12),
+                Factory.get("ship_defence", 17, 8),
+                Factory.get("ship_defence", 14, 10),
         }, new IUnit[]{
                 ts
         }, Map.fromAssets(context, "map1.txt").getMap());
@@ -100,11 +100,15 @@ public class Manager implements RenderManager {
         deltaTimes.add(deltaTime);
         if(deltaTimes.size() >= 100){
             float sum = 0;
+            float max = 0;
+            float min = 0;
             for (float n: deltaTimes) {
                 sum += n;
+                if(n > max) max = n;
+                if(n < min) min = n;
             }
             sum /= deltaTimes.size();
-            Log.i("IOW", "Medium deltaTime:" + sum);
+            Log.i("IOW", "Medium deltaTime:" + sum + "; maximum: " + max + "; minimum: " + min);
             deltaTimes.clear();
         }
         start = true;

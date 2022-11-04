@@ -86,6 +86,7 @@ public class Plane extends Unit{
             bombs = new Stack<>();
             for(int i = 0; i < bombCount; i++){
                 IBullet b = new com.agrogames.islandsofwar.engine.impl.bullet.Bullet(bombTexture, location, 0.4f, bombPower, 0.1f, 2, 1, this, true);
+                bombs.push(b);
             }
         }
         if(timeFromLastBomb >= 0.4f && !bombs.isEmpty()){

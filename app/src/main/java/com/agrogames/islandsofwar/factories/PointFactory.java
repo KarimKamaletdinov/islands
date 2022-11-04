@@ -16,6 +16,6 @@ public class PointFactory {
     }
 
     public static Point point(JSONObject json) throws JSONException{
-        return new Point(json.getInt("x"), json.getInt("y"));
+        return new Point((float)json.getDouble("x"), (float) json.getDouble("y"));
     }
 }

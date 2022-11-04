@@ -45,13 +45,13 @@ public class GraphicsFactory {
 
     private static IGraphicsObject graphics(JSONObject json, Point location, float rotation) throws JSONException{
         if(json.has("next")){
-            return new GraphicsObject("graphics/" + json.getString("texture"), location,
+            return new GraphicsObject("graphics/" + json.getString("name"), location,
                     rotation,
                     getGraphics(json.getString("next"), location, rotation),
-                    (float) json.getDouble("life_time"));
+                    (float) json.getDouble("lifetime"));
         }
-        return new GraphicsObject(json.getString("texture"), location,
+        return new GraphicsObject("graphics/" + json.getString("name"), location,
                 rotation,
-                (float) json.getDouble("life_time"));
+                (float) json.getDouble("lifetime"));
     }
 }

@@ -63,15 +63,18 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
     @Override
     public void render(TextureDrawer drawer, Point touch, Point move, Point previousMove) {
         MapScroller.start(drawer);
-        drawer.drawTexture(15f, 10, "background", 30, 20, 0);
+        drawer.drawTexture(15f, 10, "other/background", 30, 20, 0);
         selectable.clear();
         ObjectRenderer renderer = new ObjectRenderer(drawer);
 
         for (RenderableObject r: presenter.getOther()){
-            renderer.render(r, "destroyed");
+            if(r instanceof IUnit)
+                renderer.render(r, "destroyed");
+            else
+                renderer.render(r);
         }
-        //for (IUnit unit: Arrays.stream(presenter.getAttackers()).filter(c -> c.getHeight() < 3).toArray(IUnit[]::new)){
-        for (IUnit unit: presenter.getAttackers()){
+        for (IUnit unit: Arrays.stream(presenter.getAttackers()).filter(c -> c.getHeight() < 3).toArray(IUnit[]::new)){
+        //for (IUnit unit: presenter.getAttackers()){
             if(unit == selectedUnit){
                 renderer.render(unit, "selected");
                 drawHealth(drawer, unit);
@@ -102,7 +105,7 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
             }
         }
         for (IUnit unit: Arrays.stream(presenter.getAttackers()).filter(c -> c.getHeight() >= 3).toArray(IUnit[]::new)){
-            renderer.render(unit);
+            renderer.render(unit, "normal");
         }
         MapScroller.finish(drawer);
 
@@ -116,9 +119,9 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
         }
 
         if(presenter.getState() == GameState.Win)
-            drawer.drawTexture(7.5f, 5f, "win", 0);
+            drawer.drawTexture(7.5f, 5f, "other/win", 0);
         else if(presenter.getState() == GameState.Defeat)
-            drawer.drawTexture(7.5f, 5f, "defeat", 0);
+            drawer.drawTexture(7.5f, 5f, "other/defeat", 0);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -163,8 +166,8 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
     private void drawHealth(TextureDrawer drawer, IUnit unit){
         Point l = unit.getLocation();
         IntValue health = unit.getHealth();
-        drawer.drawTexture(l.x, l.y + 1, "red", health.start / 15f, 0.1f, 0);
-        drawer.drawTexture(l.x - (health.start - health.current) / 30f, l.y + 1, "green",
+        drawer.drawTexture(l.x, l.y + 1, "other/red", health.start / 15f, 0.1f, 0);
+        drawer.drawTexture(l.x - (health.start - health.current) / 30f, l.y + 1, "other/green",
                 health.current / 15f, 0.1f, 0);
     }
 }

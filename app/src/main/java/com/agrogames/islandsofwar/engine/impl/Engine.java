@@ -130,7 +130,7 @@ public class Engine implements com.agrogames.islandsofwar.engine.abs.Engine {
                 destroyed.remove(unit);
                 attackers.remove(unit);
                 if(Arrays.stream(mapObjects).noneMatch(c -> c instanceof Water && Arrays.asList(c.getTerritory()).contains(new Cell(unit.getLocation())))){
-                    otherObjects.add(Factory.getGraphics("bigBang", unit.getLocation(), unit.getRotation()));
+                    otherObjects.add(Factory.getGraphics("big_bang", unit.getLocation(), unit.getRotation()));
                 }
                 for (Cell cell : unit.getTerritory()){
                     for(IUnit u : protectors.stream().filter(c -> Arrays.asList(c.getTerritory()).contains(cell)).toArray(IUnit[]::new)){

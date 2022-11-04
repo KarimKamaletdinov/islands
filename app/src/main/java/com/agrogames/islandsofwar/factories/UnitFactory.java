@@ -10,6 +10,7 @@ import com.agrogames.islandsofwar.engine.abs.transport.TransportUnit;
 import com.agrogames.islandsofwar.engine.abs.unit.IUnit;
 import com.agrogames.islandsofwar.engine.abs.weapon.IWeapon;
 import com.agrogames.islandsofwar.engine.impl.unit.BigShip;
+import com.agrogames.islandsofwar.engine.impl.unit.Building;
 import com.agrogames.islandsofwar.engine.impl.unit.LandUnit;
 import com.agrogames.islandsofwar.engine.impl.unit.Plane;
 import com.agrogames.islandsofwar.engine.impl.unit.SmallShip;
@@ -47,6 +48,13 @@ public class UnitFactory {
                         json.getInt("health"),
                         (float) json.getDouble("speed"),
                         (float) json.getDouble("rotation_speed")
+                );
+            case "building":
+                return new Building(
+                        "units/" + (json.has("texture") ? json.getString("texture") : json.getString("name")),
+                        location,
+                        WeaponFactory.weapons(json.getJSONArray("weapons")),
+                        json.getInt("health")
                 );
             case "big_ship":
                 return new BigShip(

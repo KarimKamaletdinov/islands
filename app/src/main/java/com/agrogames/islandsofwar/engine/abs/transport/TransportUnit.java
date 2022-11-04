@@ -20,4 +20,17 @@ public class TransportUnit {
         this.create = create;
         example = create.apply(new Cell(-1, -1));
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TransportUnit that = (TransportUnit) o;
+        return Objects.equals(example.getTexture(), that.example.getTexture());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(example.getTexture());
+    }
 }

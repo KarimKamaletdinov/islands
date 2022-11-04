@@ -52,8 +52,8 @@ public class UnitList {
             });
             elements.add(button);
 
-            Element e = ui.createElement(ElementType.Button, x, y, -1, -1, TextureMapper.join(unit.example.getTexture(),
-                    unit == currentUnit ? "selected" : "normal"));
+            Element e = ui.createElement(ElementType.Button, x, y, 1.2f, 1.2f, TextureMapper.join(unit.example.getTexture(),
+                    unit.equals(currentUnit) ? "selected" : "normal"));
             e.setRenderInBorders(false);
             elements.add(e);
 

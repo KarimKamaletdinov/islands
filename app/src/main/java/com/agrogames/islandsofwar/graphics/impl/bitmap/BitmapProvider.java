@@ -33,6 +33,7 @@ public class BitmapProvider {
             return BitmapFactory.decodeStream(context.getAssets().open("textures/" + name + ".png"));
         } catch (IOException e) {
             Log.e("IOW", "Cannot load bitmap with name " + name);
+            e.printStackTrace();
             return Bitmap.createBitmap(new int[]{Color.RED}, 1, 1, Bitmap.Config.RGB_565);
         }
     }
