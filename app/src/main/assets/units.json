@@ -52,7 +52,8 @@
       "bomb_count": 4,
       "bomb": {
         "texture": "bomb",
-        "power": 15
+        "power": 15,
+        "range": 1.5
       }
     },
     {
@@ -92,7 +93,8 @@
         "speed": 2,
         "flight_height": 3,
         "target_height": 1,
-        "bang": true
+        "bang": true,
+        "bang_range": 0.8
       }
     },
     {
@@ -122,7 +124,7 @@
         "speed": 7,
         "flight_height": 1,
         "target_height": 1,
-        "bang": true
+        "bang": false
       }
     },
     {

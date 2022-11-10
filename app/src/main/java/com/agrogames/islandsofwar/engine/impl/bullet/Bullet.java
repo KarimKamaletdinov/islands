@@ -17,7 +17,9 @@ import com.agrogames.islandsofwar.engine.abs.unit.IUnit;
 import com.agrogames.islandsofwar.engine.abs.map.MapProvider;
 import com.agrogames.islandsofwar.engine.abs.unit.IUnitAdder;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Bullet implements IBullet {
     private final String texture;
@@ -30,11 +32,12 @@ public class Bullet implements IBullet {
     private final int targetHeight;
     private final IUnit owner;
     private final boolean bang;
+    private final float bangRange;
     private boolean isFlying = true;
     private float flewDistance;
     private Cell goal;
 
-    public Bullet(String texture, Point location, float speed, int power, float longRange, int flightHeight, int targetHeight, IUnit owner, boolean bang) {
+    public Bullet(String texture, Point location, float speed, int power, float longRange, int flightHeight, int targetHeight, IUnit owner, boolean bang, float bangRange) {
         this.longRange = longRange;
         this.texture = texture;
         this.location = location;
@@ -44,6 +47,7 @@ public class Bullet implements IBullet {
         this.targetHeight = targetHeight;
         this.owner = owner;
         this.bang = bang;
+        this.bangRange = bangRange;
     }
 
     @Override
@@ -71,19 +75,18 @@ public class Bullet implements IBullet {
     public void update(MapProvider provider, BulletAdder bulletAdder, IUnitAdder unitAdder, AnotherAdder anotherAdder, float deltaTime) {
         move(deltaTime);
         MapObject[] all = provider.getAll();
-        MapObject enemy = enemyAt(new Cell((int) location.x + 1, (int) location.y + 1), all, flightHeight);
-        if(enemy != null){
-            if(enemy instanceof IUnit) ((IUnit)enemy).loseHealth(power);
-            stop(provider, anotherAdder);
-        }
-        else if(new Cell((int) location.x + 1, (int) location.y + 1).equals(goal)){
-            MapObject e2 = enemyAt(new Cell((int) location.x + 1, (int) location.y + 1), all, targetHeight);
-            if(e2 != null){
-                if(e2 instanceof IUnit) ((IUnit)e2).loseHealth(power);
+        MapObject[] enemies = enemyAt(new Cell((int) location.x + 1, (int) location.y + 1), all, flightHeight);
+        if(enemies.length != 0){
+            for(MapObject enemy : enemies){
+                if(enemy instanceof IUnit) ((IUnit)enemy).loseHealth(power);
+                stop(provider, anotherAdder);
             }
-            stop(provider, anotherAdder);
         }
-        else if(flewDistance >= longRange){
+        else if(new Cell((int) location.x + 1, (int) location.y + 1).equals(goal) || flewDistance >= longRange){
+            MapObject[] e2 = enemyAt(new Cell((int) location.x + 1, (int) location.y + 1), all, targetHeight);
+            for(MapObject enemy : e2){
+                if(enemy instanceof IUnit) ((IUnit)enemy).loseHealth(power);
+            }
             stop(provider, anotherAdder);
         }
     }
@@ -104,25 +107,40 @@ public class Bullet implements IBullet {
         flewDistance += speed * deltaTime;
     }
 
-    private MapObject enemyAt(Cell cell, MapObject[] enemies, int height){
-        for (MapObject object : enemies){
-            if(object != owner && object.getHeight() == height){
-                Cell[] territory = object.getTerritory();
-                for (Cell c : territory){
-                    if(cell.equals(c)){
-                        return object;
+    private MapObject[] enemyAt(Cell cell, MapObject[] enemies, int height){
+        if (bang) {
+            List<MapObject> e = new ArrayList<>();
+            for (MapObject object : enemies){
+                if(object != owner && object.getHeight() == height){
+                    Cell[] territory = object.getTerritory();
+                    for (Cell c : territory){
+                        if(cell.equals(c)){
+                            if(!e.contains(object)) e.add(object);
+                        }
+                    }
+                    if(object instanceof RenderableObject){
+                        Point l = ((RenderableObject) object).getLocation();
+                        if(l.x - bangRange < location.x && l.x + bangRange > location.x &&
+                                l.y - bangRange < location.y && l.y + bangRange > location.y){
+                            if(!e.contains(object)) e.add(object);
+                        }
                     }
                 }
-                if(bang && object instanceof RenderableObject){
-                    Point l = ((RenderableObject) object).getLocation();
-                    if(l.x - 0.8f < location.x && l.x + 0.8f > location.x &&
-                            l.y - 0.8f < location.y && l.y + 0.8f > location.y){
-                        return object;
+            }
+            return e.toArray(new MapObject[0]);
+        } else {
+            for (MapObject object : enemies){
+                if(object != owner && object.getHeight() == height){
+                    Cell[] territory = object.getTerritory();
+                    for (Cell c : territory){
+                        if(cell.equals(c)){
+                            return new MapObject[]{object};
+                        }
                     }
                 }
             }
         }
-        return null;
+        return new MapObject[0];
     }
 
     @Override

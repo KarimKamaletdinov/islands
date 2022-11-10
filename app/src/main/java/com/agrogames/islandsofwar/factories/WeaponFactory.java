@@ -41,7 +41,7 @@ public class WeaponFactory {
                 Log.e("IOW","Error in JSON schema", e);
             }
         }
-        return new Weapon(new Point(-1, -1), 0, "ERROR", 0, 0, new Point[0], "ERROR", 0, 0, 0, 0, false);
+        return new Weapon(new Point(-1, -1), 0, "ERROR", 0, 0, new Point[0], "ERROR", 0, 0, 0, 0, false, 0);
     }
 
     public static IWeapon[] weapons(JSONArray json) throws JSONException {
@@ -72,7 +72,7 @@ public class WeaponFactory {
                 (float) bullet.getDouble("speed"),
                 bullet.getInt("flight_height"),
                 bullet.getInt("target_height"),
-                bullet.getBoolean("bang")
-        );
+                bullet.getBoolean("bang"),
+                bullet.getBoolean("bang") ? (float) bullet.getDouble("bang_range") : 0);
     }
 }

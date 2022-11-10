@@ -35,6 +35,7 @@ public class Weapon implements IWeapon {
     private final int targetHeight;
     private final Point[] bulletsStarts;
     private final boolean bang;
+    private final float bangRange;
     private final String bulletTexture;
 
     private float fromLastReload = 0;
@@ -43,13 +44,14 @@ public class Weapon implements IWeapon {
     private IUnit owner;
 
     public Weapon(Point relativeLocation, float reload, String texture, float longRange,
-                  float rotationSpeed, Point[] bulletsStarts, String bulletTexture, int damage, float speed, int flightHeight, int targetHeight, boolean bang) {
+                  float rotationSpeed, Point[] bulletsStarts, String bulletTexture, int damage, float speed, int flightHeight, int targetHeight, boolean bang, float bangRange) {
         this.relativeLocation = relativeLocation;
         this.reload = reload;
         this.texture = texture;
         this.longRange = longRange;
         this.rotationSpeed = rotationSpeed;
         this.bulletTexture = bulletTexture;
+        this.bangRange = bangRange;
         this.damage = damage * bulletsStarts.length;
         this.speed = speed;
         this.flightHeight = flightHeight;
@@ -120,8 +122,8 @@ public class Weapon implements IWeapon {
                 : new Point(enemy.getTerritory()[0]);
 
         for(Point start : this.getBulletStarts()) {
-            IBullet bullet = new Bullet(this.bulletTexture, start, this.speed, this.damage,
-                    this.longRange, this.flightHeight, this.targetHeight, this.owner, this.bang);
+            IBullet bullet = new Bullet(bulletTexture, start, speed, damage, longRange,
+                    flightHeight, targetHeight, owner, bang, bangRange);
             bullet.setGoal(enemyLocation);
             bulletAdder.addBullet(bullet);
         }

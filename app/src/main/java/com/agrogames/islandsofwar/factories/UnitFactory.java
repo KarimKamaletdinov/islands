@@ -85,8 +85,8 @@ public class UnitFactory {
                         (float) json.getDouble("rotation_speed"),
                         json.getInt("bomb_count"),
                         "bullets/" + bomb.getString("texture"),
-                        bomb.getInt("power")
-                );
+                        bomb.getInt("power"),
+                        bomb.getInt("range"));
             default:
                 throw new JSONException("Unknown type of Unit: " + json.getString("type"));
         }

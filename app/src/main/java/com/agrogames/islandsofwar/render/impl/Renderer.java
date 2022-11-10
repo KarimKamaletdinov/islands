@@ -159,7 +159,7 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
         } else if(planeList.getCurrentUnit() != null){
             IUnit bomber = planeList.getCurrentUnit().create.apply(new Cell(-1, -1));
             MovableObject mo = (MovableObject) bomber;
-            mo.setGoal(new Cell(touch));
+            mo.setGoal(new Cell(new Point(touch.x + 1, touch.y + 1)));
             presenter.addPlane(bomber);
             planeList.clearUnits();
         } else if(selectedUnit != null){

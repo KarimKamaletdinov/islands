@@ -17,17 +17,19 @@ public class Plane extends Unit{
     private final int bombCount;
     private final String bombTexture;
     private final int bombPower;
+    private final float bombRange;
 
     private Cell goal;
     private Direction direction;
     private Stack<IBullet> bombs;
     private Float timeFromLastBomb = null;
 
-    public Plane(String texture, int health, float speed, float rotationSpeed, int bombCount, String bombTexture, int bombPower) {
+    public Plane(String texture, int health, float speed, float rotationSpeed, int bombCount, String bombTexture, int bombPower, float bombRange) {
         super(texture, new Cell(-1, -1), new IWeapon[0], health, speed, rotationSpeed);
         this.bombCount = bombCount;
         this.bombTexture = bombTexture;
         this.bombPower = bombPower;
+        this.bombRange = bombRange;
     }
 
     @Override
@@ -85,7 +87,7 @@ public class Plane extends Unit{
         if(bombs == null) {
             bombs = new Stack<>();
             for(int i = 0; i < bombCount; i++){
-                IBullet b = new com.agrogames.islandsofwar.engine.impl.bullet.Bullet(bombTexture, location, 0.4f, bombPower, 0.1f, 2, 1, this, true);
+                IBullet b = new com.agrogames.islandsofwar.engine.impl.bullet.Bullet(bombTexture, location, 0.4f, bombPower, 0.1f, 2, 1, this, true, bombRange);
                 bombs.push(b);
             }
         }
