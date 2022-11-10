@@ -43,8 +43,8 @@ public class MapScroller {
         if(currentZoom < 0.5f) currentZoom = 0.5f;
 
         Point middle = M.middle(zoom1, zoom2);
-        currentX = -(-currentX + 7.5f / oldZoom- 7.5f / currentZoom);
-        currentY = -(-currentY + 5f / oldZoom - 5f / currentZoom);
+        currentX = -(-currentX + middle.x / oldZoom - middle.x / currentZoom);
+        currentY = -(-currentY + middle.y / oldZoom - middle.y / currentZoom);
         if(currentX > 0) currentX = 0;
         if(currentY > 0) currentY = 0;
         if(currentX < -MapParams.Width + 15) currentX = -MapParams.Width + 15;
