@@ -7,5 +7,6 @@ public interface TextureDrawer {
     void drawTexture(float x, float y, String bitmap, float width, float height, float rotation);
     Pair<Float, Float> drawTexture(float x, float y, String bitmap, float rotation);
     Pair<Float, Float> getSize(String bitmap);
+    void scale(float currentZoom);
 }
 

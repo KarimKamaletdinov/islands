@@ -61,7 +61,8 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
-    public void render(TextureDrawer drawer, Point touch, Point move, Point previousMove) {
+    public void render(TextureDrawer drawer, Point touch, Point move, Point previousMove,
+                       Point zoom1, Point zoom2, Point previousZoom1, Point previousZoom2) {
         MapScroller.start(drawer);
         drawer.drawTexture(15f, 10, "other/background", 30, 20, 0);
         selectable.clear();
@@ -117,6 +118,10 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
         if(move != null && previousMove != null){
             MapScroller.scroll(move.x - previousMove.x, move.y - previousMove.y);
         }
+        if(zoom1 != null && zoom2 != null && previousZoom1 != null && previousZoom2 != null){
+            MapScroller.zoom(zoom1, zoom2, previousZoom1, previousZoom2);
+        }
+
 
         if(presenter.getState() == GameState.Win)
             drawer.drawTexture(7.5f, 5f, "other/win", 0);

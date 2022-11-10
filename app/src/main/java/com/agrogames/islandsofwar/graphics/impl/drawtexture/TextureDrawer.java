@@ -16,22 +16,17 @@ import java.util.List;
 public class TextureDrawer implements com.agrogames.islandsofwar.graphics.abs.TextureDrawer {
     private final List<Texture> textures = new ArrayList<>();
     private final BitmapProvider bitmapProvider;
-    private int currentX;
-    private int currentY;
+    private float currentX;
+    private float currentY;
+    private float currentZoom = 1;
 
     public TextureDrawer(BitmapProvider bitmapProvider) {
         this.bitmapProvider = bitmapProvider;
     }
 
     @Override
-    public void translate(float x, float y) {
-        currentX += x;
-        currentY += y;
-    }
-
-    @Override
     public void drawTexture(float x, float y, String bitmap, float width, float height, float rotation) {
-        textures.add(new Texture(x + currentX, y + currentY, bitmapProvider.load(bitmap).id, width, height, rotation));
+        textures.add(new Texture(x * currentZoom + currentX, y * currentZoom + currentY, bitmapProvider.load(bitmap).id, width * currentZoom, height * currentZoom, rotation));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
@@ -40,7 +35,7 @@ public class TextureDrawer implements com.agrogames.islandsofwar.graphics.abs.Te
         BitmapDescriptor b = bitmapProvider.load(bitmap);
         float width = b.width / 50f;
         float height = b.height / 50f;
-        textures.add(new Texture(x + currentX, y + currentY, b.id, width, height, rotation));
+        textures.add(new Texture(x * currentZoom + currentX, y * currentZoom + currentY, b.id, width * currentZoom, height * currentZoom, rotation));
         return new Pair<>(width, height);
     }
 
@@ -50,6 +45,17 @@ public class TextureDrawer implements com.agrogames.islandsofwar.graphics.abs.Te
         float width = b.width / 50f;
         float height = b.height / 50f;
         return new Pair<>(width, height);
+    }
+
+    @Override
+    public void translate(float x, float y) {
+        currentX += x;
+        currentY += y;
+    }
+
+    @Override
+    public void scale(float zoom) {
+        currentZoom *= zoom;
     }
 
     public Texture[] GetTextures(){

@@ -30,6 +30,10 @@ public class Manager implements RenderManager {
     private Point touch;
     private Point move;
     private Point previousMove;
+    private Point zoom1;
+    private Point previousZoom1;
+    private Point zoom2;
+    private Point previousZoom2;
     private final List<Float> deltaTimes = new ArrayList<>();
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -90,10 +94,14 @@ public class Manager implements RenderManager {
     @Override
     public void render(TextureDrawer drawer) {
         start = true;
-        renderer.render(drawer, touch, move, previousMove);
+        renderer.render(drawer, touch, move, previousMove, zoom1, zoom2, previousZoom1, previousZoom2);
         touch = null;
         previousMove = move;
+        previousZoom1 = zoom1;
+        previousZoom2 = zoom2;
         move = null;
+        zoom1 = null;
+        zoom2 = null;
     }
 
     @Override
@@ -104,5 +112,11 @@ public class Manager implements RenderManager {
     @Override
     public void onMove(float x, float y) {
         move = new Point(x, y);
+    }
+
+    @Override
+    public void onZoom(float x1, float y1, float x2, float y2) {
+        zoom1 = new Point(x1, y1);
+        zoom2 = new Point(x2, y2);
     }
 }

@@ -81,19 +81,31 @@ public class GLRenderer implements GLSurfaceView.Renderer {
         Matrix.frustumM(projectionMatrix, 0, -ratio, ratio, -1, 1, 3, 7);
     }
 
-    public void onTouch(float x, float y){
-        manager.onTouch((x - (width - height * 1.5f) / 2) / height * 10f, 10f - (y / height * 10f));
-    }
-
-    public void onMove(float x, float y){
-        manager.onMove((x - (width - height * 1.5f) / 2) / height * 10f, 10f - (y / height * 10f));
-    }
-
     public static int loadShader(int type, String shaderCode){
         int shader = GLES20.glCreateShader(type);
         GLES20.glShaderSource(shader, shaderCode);
         GLES20.glCompileShader(shader);
         //String log = GLES20.glGetShaderInfoLog(shader);
         return shader;
+    }
+
+    public void onTouch(float x, float y){
+        manager.onTouch(convertX(x), convertY(y));
+    }
+
+    public void onMove(float x, float y){
+        manager.onMove(convertX(x), convertY(y));
+    }
+
+    public void onZoom(float x1, float y1, float x2, float y2) {
+        manager.onZoom(convertX(x1), convertY(y1), convertX(x2), convertY(y2));
+    }
+
+    private float convertX(float x){
+        return (x - (width - height * 1.5f) / 2) / height * 10f;
+    }
+
+    private float convertY(float y){
+        return 10f - (y / height * 10f);
     }
 }
