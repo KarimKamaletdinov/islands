@@ -1,11 +1,15 @@
 package com.agrogames.islandsofwar.rendermanager;
 
 import android.content.Context;
+import android.content.res.AssetFileDescriptor;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
+import com.agrogames.islandsofwar.activity.MainActivity;
 import com.agrogames.islandsofwar.engine.abs.Engine;
 import com.agrogames.islandsofwar.engine.abs.common.Point;
 import com.agrogames.islandsofwar.engine.abs.unit.IUnit;
@@ -16,6 +20,7 @@ import com.agrogames.islandsofwar.map.impl.Map;
 import com.agrogames.islandsofwar.render.abs.Renderer;
 import com.agrogames.islandsofwar.ui.impl.UI;
 
+import java.io.IOException;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -34,12 +39,12 @@ public class Manager implements RenderManager {
     private Point previousZoom1;
     private Point zoom2;
     private Point previousZoom2;
-    private final List<Float> deltaTimes = new ArrayList<>();
+    private final Context c;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public Manager(Context context) {
         Factory.load(context);
-
+        c = context;
         IUnit ts = Factory.get("transport_ship", 1, 1,
                 "tank",
                 "tank",
@@ -107,6 +112,15 @@ public class Manager implements RenderManager {
     @Override
     public void onTouch(float x, float y) {
         touch = new Point(x, y);
+        if (c instanceof MainActivity){
+            MainActivity m = (MainActivity) c;
+                //afd = getAssets().openFd("sounds/sample1.mp3");
+                //mediaPlayer.setDataSource(afd.getFileDescriptor());
+                //m.mediaPlayer.prepare();
+            AudioManager audioManager = (AudioManager) c.getSystemService(Context.AUDIO_SERVICE);
+            float volume = (float)audioManager.getStreamVolume(AudioManager.STREAM_MUSIC) / (float)audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+            m.soundPool.play(m.sound, volume, volume, 0, 0, 1);
+        }
     }
 
     @Override
