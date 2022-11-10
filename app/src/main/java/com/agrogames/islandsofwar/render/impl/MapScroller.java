@@ -31,7 +31,7 @@ public class MapScroller {
         if(currentX > 0) currentX = 0;
         if(currentY > 0) currentY = 0;
         if(currentX < -MapParams.Width + 15) currentX = -MapParams.Width + 15;
-        if(currentY < -MapParams.Height + 10) currentY = -MapParams.Height + 10;
+        if(currentY < -MapParams.Height + 8) currentY = -MapParams.Height + 8;
     }
 
     public static void zoom(Point zoom1, Point zoom2, Point previousZoom1, Point previousZoom2) {
@@ -45,9 +45,6 @@ public class MapScroller {
         Point middle = M.middle(zoom1, zoom2);
         currentX = -(-currentX + middle.x / oldZoom - middle.x / currentZoom);
         currentY = -(-currentY + middle.y / oldZoom - middle.y / currentZoom);
-        if(currentX > 0) currentX = 0;
-        if(currentY > 0) currentY = 0;
-        if(currentX < -MapParams.Width + 15) currentX = -MapParams.Width + 15;
-        if(currentY < -MapParams.Height + 10) currentY = -MapParams.Height + 10;
+        scroll(0, 0);
     }
 }
