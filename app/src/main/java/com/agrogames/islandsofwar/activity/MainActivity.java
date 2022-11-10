@@ -50,6 +50,10 @@ public class MainActivity extends AppCompatActivity {
                 .setMaxStreams(3)
                 .setAudioAttributes(audioAttributes)
                 .build();
-        sound = soundPool.load(this, getResources().getIdentifier("sample1", "raw", "com.agrogames.islandsofwar"), 1);
+        try {
+            sound = soundPool.load(getAssets().openFd("sounds/landing.aac"), 1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
