@@ -43,8 +43,7 @@ public class BitmapProvider {
     }
 
     public BitmapDescriptor load(String name){
-        BitmapDescriptor b = cachedBitmaps.get(name + ".png");
-        return b;
+        return cachedBitmaps.get(name + ".png");
     }
 
     private List<String> loadFolder(Context context, String name) throws IOException{

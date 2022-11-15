@@ -4,7 +4,7 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
-import com.agrogames.islandsofwar.engine.abs.another.AnotherAdder;
+import com.agrogames.islandsofwar.engine.abs.graphics.GraphicsAdder;
 import com.agrogames.islandsofwar.engine.abs.bullet.IBullet;
 import com.agrogames.islandsofwar.engine.abs.renderable.RenderableObject;
 import com.agrogames.islandsofwar.factories.Factory;
@@ -23,6 +23,7 @@ import java.util.List;
 
 public class Bullet implements IBullet {
     private final String texture;
+    private final String creationSound;
     private Point location;
     private float rotation;
     private final float speed;
@@ -37,7 +38,8 @@ public class Bullet implements IBullet {
     private float flewDistance;
     private Cell goal;
 
-    public Bullet(String texture, Point location, float speed, int power, float longRange, int flightHeight, int targetHeight, IUnit owner, boolean bang, float bangRange) {
+    public Bullet(String texture, String creationSound, Point location, float speed, int power, float longRange, int flightHeight, int targetHeight, IUnit owner, boolean bang, float bangRange) {
+        this.creationSound = creationSound;
         this.longRange = longRange;
         this.texture = texture;
         this.location = location;
@@ -72,31 +74,33 @@ public class Bullet implements IBullet {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
-    public void update(MapProvider provider, BulletAdder bulletAdder, IUnitAdder unitAdder, AnotherAdder anotherAdder, float deltaTime) {
+    public void update(MapProvider provider, BulletAdder bulletAdder, IUnitAdder unitAdder, GraphicsAdder graphicsAdder, float deltaTime) {
         move(deltaTime);
         MapObject[] all = provider.getAll();
         MapObject[] enemies = enemyAt(new Cell((int) location.x + 1, (int) location.y + 1), all, flightHeight);
         if(enemies.length != 0){
             for(MapObject enemy : enemies){
                 if(enemy instanceof IUnit) ((IUnit)enemy).loseHealth(power);
-                stop(provider, anotherAdder);
+                stop(provider, graphicsAdder);
+                graphicsAdder.addGraphics(Factory.getGraphics("hit", getLocation(), getRotation()));
             }
         }
         else if(new Cell((int) location.x + 1, (int) location.y + 1).equals(goal) || flewDistance >= longRange){
             MapObject[] e2 = enemyAt(new Cell((int) location.x + 1, (int) location.y + 1), all, targetHeight);
             for(MapObject enemy : e2){
                 if(enemy instanceof IUnit) ((IUnit)enemy).loseHealth(power);
+                graphicsAdder.addGraphics(Factory.getGraphics("hit", getLocation(), getRotation()));
             }
-            stop(provider, anotherAdder);
+            stop(provider, graphicsAdder);
         }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private void stop(MapProvider provider, AnotherAdder adder){
+    private void stop(MapProvider provider, GraphicsAdder adder){
         isFlying = false;
         if(bang && Arrays.stream(provider.getAll()).noneMatch(o ->
                 Arrays.asList(o.getTerritory()).contains(new Cell(location)) && o instanceof Water) && targetHeight == 1){
-            adder.addAnother(Factory.getGraphics("bang", getLocation(), getRotation()));
+            adder.addGraphics(Factory.getGraphics("bang", getLocation(), getRotation()));
         }
     }
 
@@ -152,5 +156,10 @@ public class Bullet implements IBullet {
             rotation += Math.PI;
         }
         this.goal = new Cell(goal);
+    }
+
+    @Override
+    public String getCreationSound() {
+        return creationSound;
     }
 }

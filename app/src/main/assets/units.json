@@ -78,7 +78,8 @@
         "speed": 5,
         "flight_height": 1,
         "target_height": 1,
-        "bang": false
+        "bang": false,
+        "creation_sound": "shot"
       }
     },
     {
@@ -94,7 +95,8 @@
         "flight_height": 3,
         "target_height": 1,
         "bang": true,
-        "bang_range": 0.8
+        "bang_range": 0.8,
+        "creation_sound": "rocket_start"
       }
     },
     {
@@ -109,7 +111,8 @@
         "speed": 4,
         "flight_height": 4,
         "target_height": 4,
-        "bang": false
+        "bang": false,
+        "creation_sound": "rocket_start"
       }
     },
     {
@@ -124,7 +127,8 @@
         "speed": 7,
         "flight_height": 1,
         "target_height": 1,
-        "bang": false
+        "bang": false,
+        "creation_sound": "shot"
       }
     },
     {
@@ -142,7 +146,8 @@
         "speed": 7,
         "flight_height": 2,
         "target_height": 1,
-        "bang": false
+        "bang": false,
+        "creation_sound": "shot"
       }
     }
   ],
@@ -150,7 +155,8 @@
     {
       "name": "bang",
       "lifetime": 3,
-      "next": "pit"
+      "next": "pit",
+      "spawn_sound": "bang"
     },
     {
       "name": "pit",
@@ -159,11 +165,17 @@
     {
       "name": "big_bang",
       "lifetime": 3,
-      "next": "big_pit"
+      "next": "big_pit",
+      "spawn_sound": "bang"
     },
     {
       "name": "big_pit",
       "lifetime": 120
+    },
+    {
+      "name": "hit",
+      "lifetime": 1,
+      "spawn_sound": "hit"
     }
   ]
 }

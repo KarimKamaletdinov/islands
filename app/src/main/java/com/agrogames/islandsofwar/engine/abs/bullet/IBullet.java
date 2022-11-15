@@ -7,4 +7,6 @@ import com.agrogames.islandsofwar.engine.abs.updatable.UpdatableObject;
 public interface IBullet extends RenderableObject, UpdatableObject {
     void setGoal(Point goal);
     boolean hasStopped();
+
+    String getCreationSound();
 }

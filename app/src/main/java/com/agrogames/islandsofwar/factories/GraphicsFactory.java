@@ -2,9 +2,9 @@ package com.agrogames.islandsofwar.factories;
 
 import android.util.Log;
 
-import com.agrogames.islandsofwar.engine.abs.another.IGraphicsObject;
+import com.agrogames.islandsofwar.engine.abs.graphics.IGraphicsObject;
 import com.agrogames.islandsofwar.engine.abs.common.Point;
-import com.agrogames.islandsofwar.engine.impl.another.GraphicsObject;
+import com.agrogames.islandsofwar.engine.impl.graphics.GraphicsObject;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,7 +24,7 @@ public class GraphicsFactory {
                 Log.e("IOW","Error in JSON schema", e);
             }
         }
-        return new GraphicsObject("ERROR", new Point(-1, -1), 0, 0);
+        return new GraphicsObject("ERROR", new Point(-1, -1), 0, 0, "ERROR");
     }
 
     private static JSONObject getJSONGraphics(String name){
@@ -45,13 +45,18 @@ public class GraphicsFactory {
 
     private static IGraphicsObject graphics(JSONObject json, Point location, float rotation) throws JSONException{
         if(json.has("next")){
-            return new GraphicsObject("graphics/" + json.getString("name"), location,
+            return new GraphicsObject(
+                    "graphics/" + json.getString("name"),
+                    location,
                     rotation,
+                    json.optString("spawn_sound"),
                     getGraphics(json.getString("next"), location, rotation),
                     (float) json.getDouble("lifetime"));
         }
-        return new GraphicsObject("graphics/" + json.getString("name"), location,
+        return new GraphicsObject("graphics/" + json.getString("name"),
+                location,
                 rotation,
-                (float) json.getDouble("lifetime"));
+                (float) json.getDouble("lifetime"),
+                json.optString("spawn_sound"));
     }
 }

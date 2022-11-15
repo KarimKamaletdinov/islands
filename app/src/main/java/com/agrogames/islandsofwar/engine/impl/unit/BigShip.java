@@ -6,7 +6,7 @@ import android.util.Pair;
 import androidx.annotation.RequiresApi;
 
 import com.agrogames.islandsofwar.common.M;
-import com.agrogames.islandsofwar.engine.abs.another.AnotherAdder;
+import com.agrogames.islandsofwar.engine.abs.graphics.GraphicsAdder;
 import com.agrogames.islandsofwar.engine.abs.bullet.BulletAdder;
 import com.agrogames.islandsofwar.engine.abs.common.Cell;
 import com.agrogames.islandsofwar.engine.abs.common.Point;
@@ -90,9 +90,9 @@ public class BigShip extends Unit implements Transport {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
-    public void update(MapProvider provider, BulletAdder bulletAdder, IUnitAdder unitAdder, AnotherAdder anotherAdder, float deltaTime) {
+    public void update(MapProvider provider, BulletAdder bulletAdder, IUnitAdder unitAdder, GraphicsAdder graphicsAdder, float deltaTime) {
         for (IWeapon weapon: getWeapons()){
-            weapon.update(provider, bulletAdder, unitAdder, anotherAdder, deltaTime);
+            weapon.update(provider, bulletAdder, unitAdder, graphicsAdder, deltaTime);
         }
 
         for (Object o : toAdd.toArray()){

@@ -5,7 +5,7 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import com.agrogames.islandsofwar.common.M;
-import com.agrogames.islandsofwar.engine.abs.another.AnotherAdder;
+import com.agrogames.islandsofwar.engine.abs.graphics.GraphicsAdder;
 import com.agrogames.islandsofwar.engine.abs.common.Cell;
 import com.agrogames.islandsofwar.engine.abs.common.Point;
 import com.agrogames.islandsofwar.engine.abs.bullet.BulletAdder;
@@ -37,6 +37,7 @@ public class Weapon implements IWeapon {
     private final boolean bang;
     private final float bangRange;
     private final String bulletTexture;
+    private final String bulletCreationSound;
 
     private float fromLastReload = 0;
     private float relativeRotation;
@@ -44,7 +45,7 @@ public class Weapon implements IWeapon {
     private IUnit owner;
 
     public Weapon(Point relativeLocation, float reload, String texture, float longRange,
-                  float rotationSpeed, Point[] bulletsStarts, String bulletTexture, int damage, float speed, int flightHeight, int targetHeight, boolean bang, float bangRange) {
+                  float rotationSpeed, Point[] bulletsStarts, String bulletTexture, int damage, float speed, int flightHeight, int targetHeight, boolean bang, float bangRange, String bulletCreationSound) {
         this.relativeLocation = relativeLocation;
         this.reload = reload;
         this.texture = texture;
@@ -52,6 +53,7 @@ public class Weapon implements IWeapon {
         this.rotationSpeed = rotationSpeed;
         this.bulletTexture = bulletTexture;
         this.bangRange = bangRange;
+        this.bulletCreationSound = bulletCreationSound;
         this.damage = damage * bulletsStarts.length;
         this.speed = speed;
         this.flightHeight = flightHeight;
@@ -91,7 +93,7 @@ public class Weapon implements IWeapon {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
-    public void update(MapProvider provider, BulletAdder bulletAdder, IUnitAdder unitAdder, AnotherAdder anotherAdder, float deltaTime) {
+    public void update(MapProvider provider, BulletAdder bulletAdder, IUnitAdder unitAdder, GraphicsAdder graphicsAdder, float deltaTime) {
         Point location = getLocation();
         Stream<IUnit> enemies = Arrays.stream(provider.getEnemies());
         IUnit[] near = enemies.filter(this::isNear).filter(e -> isAvailable(e, provider.getAll()))
@@ -122,7 +124,7 @@ public class Weapon implements IWeapon {
                 : new Point(enemy.getTerritory()[0]);
 
         for(Point start : this.getBulletStarts()) {
-            IBullet bullet = new Bullet(bulletTexture, start, speed, damage, longRange,
+            IBullet bullet = new Bullet(bulletTexture, bulletCreationSound, start, speed, damage, longRange,
                     flightHeight, targetHeight, owner, bang, bangRange);
             bullet.setGoal(enemyLocation);
             bulletAdder.addBullet(bullet);

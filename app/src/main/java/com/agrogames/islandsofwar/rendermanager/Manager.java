@@ -1,11 +1,8 @@
 package com.agrogames.islandsofwar.rendermanager;
 
 import android.content.Context;
-import android.content.res.AssetFileDescriptor;
 import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.os.Build;
-import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -18,14 +15,11 @@ import com.agrogames.islandsofwar.graphics.abs.TextureDrawer;
 import com.agrogames.islandsofwar.graphics.abs.RenderManager;
 import com.agrogames.islandsofwar.map.impl.Map;
 import com.agrogames.islandsofwar.render.abs.Renderer;
+import com.agrogames.islandsofwar.sounds.impl.SoundPlayerImpl;
 import com.agrogames.islandsofwar.ui.impl.UI;
 
-import java.io.IOException;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class Manager implements RenderManager {
     private final Engine engine;
@@ -76,7 +70,7 @@ public class Manager implements RenderManager {
                 Factory.get("ship_defence", 14, 10),
         }, new IUnit[]{
                 ts
-        }, Map.fromAssets(context, "map1.txt").getMap());
+        }, Map.fromAssets(context, "map1.txt").getMap(), new SoundPlayerImpl(context));
         this.renderer = new com.agrogames.islandsofwar.render.impl.Renderer(new Presenter(this.engine), new UI());
 
         new Thread(() -> {
@@ -111,7 +105,7 @@ public class Manager implements RenderManager {
 
     @Override
     public void onTouch(float x, float y) {
-        touch = new Point(x, y);
+        touch = new Point(x, y);/*
         if (c instanceof MainActivity){
             MainActivity m = (MainActivity) c;
                 //afd = getAssets().openFd("sounds/sample1.mp3");
@@ -120,7 +114,7 @@ public class Manager implements RenderManager {
             AudioManager audioManager = (AudioManager) c.getSystemService(Context.AUDIO_SERVICE);
             float volume = (float)audioManager.getStreamVolume(AudioManager.STREAM_MUSIC) / (float)audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
             m.soundPool.play(m.sound, volume, volume, 0, 0, 1);
-        }
+        }*/
     }
 
     @Override

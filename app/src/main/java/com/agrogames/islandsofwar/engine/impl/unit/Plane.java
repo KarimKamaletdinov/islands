@@ -1,7 +1,7 @@
 package com.agrogames.islandsofwar.engine.impl.unit;
 
 import com.agrogames.islandsofwar.common.M;
-import com.agrogames.islandsofwar.engine.abs.another.AnotherAdder;
+import com.agrogames.islandsofwar.engine.abs.graphics.GraphicsAdder;
 import com.agrogames.islandsofwar.engine.abs.bullet.IBullet;
 import com.agrogames.islandsofwar.engine.abs.bullet.BulletAdder;
 import com.agrogames.islandsofwar.engine.abs.common.Cell;
@@ -60,7 +60,7 @@ public class Plane extends Unit{
         return 4;
     }
     @Override
-    public void update(MapProvider provider, BulletAdder bulletAdder, IUnitAdder unitAdder, AnotherAdder anotherAdder, float deltaTime) {
+    public void update(MapProvider provider, BulletAdder bulletAdder, IUnitAdder unitAdder, GraphicsAdder graphicsAdder, float deltaTime) {
         if(goal == null) return;
         if(timeFromLastBomb != null) {
             bomb(bulletAdder);
@@ -87,7 +87,7 @@ public class Plane extends Unit{
         if(bombs == null) {
             bombs = new Stack<>();
             for(int i = 0; i < bombCount; i++){
-                IBullet b = new com.agrogames.islandsofwar.engine.impl.bullet.Bullet(bombTexture, location, 0.4f, bombPower, 0.1f, 2, 1, this, true, bombRange);
+                IBullet b = new com.agrogames.islandsofwar.engine.impl.bullet.Bullet(bombTexture, null, location, 0.4f, bombPower, 0.1f, 2, 1, this, true, bombRange);
                 bombs.push(b);
             }
         }

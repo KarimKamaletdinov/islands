@@ -1,30 +1,17 @@
 package com.agrogames.islandsofwar.factories;
 
 import android.content.Context;
-import android.os.Build;
 import android.util.Log;
 
-import androidx.annotation.RequiresApi;
-
-import com.agrogames.islandsofwar.engine.abs.another.IGraphicsObject;
-import com.agrogames.islandsofwar.engine.abs.common.Cell;
+import com.agrogames.islandsofwar.engine.abs.graphics.IGraphicsObject;
 import com.agrogames.islandsofwar.engine.abs.common.Point;
-import com.agrogames.islandsofwar.engine.abs.transport.TransportUnit;
 import com.agrogames.islandsofwar.engine.abs.unit.IUnit;
-import com.agrogames.islandsofwar.engine.abs.weapon.IWeapon;
-import com.agrogames.islandsofwar.engine.impl.unit.BigShip;
-import com.agrogames.islandsofwar.engine.impl.unit.LandUnit;
-import com.agrogames.islandsofwar.engine.impl.unit.Plane;
-import com.agrogames.islandsofwar.engine.impl.unit.SmallShip;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Scanner;
 
 public class Factory {

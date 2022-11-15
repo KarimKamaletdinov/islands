@@ -6,19 +6,20 @@ import android.util.Log;
 import androidx.annotation.RequiresApi;
 
 import com.agrogames.islandsofwar.engine.abs.GameState;
-import com.agrogames.islandsofwar.engine.abs.another.IGraphicsObject;
+import com.agrogames.islandsofwar.engine.abs.graphics.IGraphicsObject;
 import com.agrogames.islandsofwar.engine.abs.common.Cell;
 import com.agrogames.islandsofwar.engine.abs.bullet.IBullet;
 import com.agrogames.islandsofwar.engine.abs.renderable.RenderableObject;
 import com.agrogames.islandsofwar.engine.abs.unit.IUnit;
 import com.agrogames.islandsofwar.engine.abs.map.MapObject;
-import com.agrogames.islandsofwar.engine.impl.another.AnotherAdder;
+import com.agrogames.islandsofwar.engine.impl.graphics.GraphicsAdder;
 import com.agrogames.islandsofwar.engine.impl.bullet.BulletAdder;
 import com.agrogames.islandsofwar.engine.impl.map.MapProvider;
 import com.agrogames.islandsofwar.engine.impl.unit.LandUnit;
 import com.agrogames.islandsofwar.engine.impl.unit.UnitAdder;
 import com.agrogames.islandsofwar.factories.Factory;
 import com.agrogames.islandsofwar.map.impl.Water;
+import com.agrogames.islandsofwar.sounds.abs.SoundPlayer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,9 +33,11 @@ public class Engine implements com.agrogames.islandsofwar.engine.abs.Engine {
     private final List<IBullet> attackersBullets = new ArrayList<>();
     private final List<IGraphicsObject> otherObjects = new ArrayList<>();
     private final MapObject[] mapObjects;
+    private final SoundPlayer soundPlayer;
     private GameState state = GameState.Game;
 
-    public Engine(IUnit[] protectors, IUnit[] attackers, MapObject[] mapObjects){
+    public Engine(IUnit[] protectors, IUnit[] attackers, MapObject[] mapObjects, SoundPlayer soundPlayer){
+        this.soundPlayer = soundPlayer;
         this.protectors.addAll(Arrays.asList(protectors));
         this.attackers.addAll(Arrays.asList(attackers));
         this.mapObjects = mapObjects;
@@ -53,20 +56,20 @@ public class Engine implements com.agrogames.islandsofwar.engine.abs.Engine {
         IBullet[] protectorsBulletsCopy = protectorsBullets.toArray(new IBullet[0]);
         IBullet[] attackersBulletsCopy = attackersBullets.toArray(new IBullet[0]);
 
-        AnotherAdder anotherAdder = new AnotherAdder();
+        GraphicsAdder graphicsAdder = new GraphicsAdder(soundPlayer);
         MapProvider provider1 = new MapProvider(protectorsCopy, attackersCopy, mapObjects);
-        BulletAdder bulletAdder1 = new BulletAdder();
-        UnitAdder unitAdder1 = new UnitAdder();
+        BulletAdder bulletAdder1 = new BulletAdder(soundPlayer);
+        UnitAdder unitAdder1 = new UnitAdder(soundPlayer);
         for (IUnit unit : protectorsCopy) {
             try{
-                unit.update(provider1, bulletAdder1, unitAdder1, anotherAdder, deltaTime);
+                unit.update(provider1, bulletAdder1, unitAdder1, graphicsAdder, deltaTime);
             }catch (Exception e){
                 Log.e("IOW", "An exception has occurred during Update", e);
             }
         }
         for (IBullet bullet : protectorsBulletsCopy) {
             try{
-                bullet.update(provider1, bulletAdder1, unitAdder1, anotherAdder, deltaTime);
+                bullet.update(provider1, bulletAdder1, unitAdder1, graphicsAdder, deltaTime);
             }catch (Exception e){
                 Log.e("IOW", "An exception has occurred during Update", e);
             }
@@ -75,24 +78,24 @@ public class Engine implements com.agrogames.islandsofwar.engine.abs.Engine {
             unit.addTsd(deltaTime);
         }
         for (IGraphicsObject another : otherObjects.toArray(new IGraphicsObject[0])){
-            another.update(provider1, bulletAdder1, unitAdder1, anotherAdder, deltaTime);
+            another.update(provider1, bulletAdder1, unitAdder1, graphicsAdder, deltaTime);
         }
         protectorsBullets.addAll(bulletAdder1.getBullets());
         protectors.addAll(unitAdder1.getUnits());
 
-        BulletAdder bulletAdder2 = new BulletAdder();
+        BulletAdder bulletAdder2 = new BulletAdder(soundPlayer);
         MapProvider provider2 = new MapProvider(attackersCopy, protectorsCopy, mapObjects);
-        UnitAdder unitAdder2 = new UnitAdder();
+        UnitAdder unitAdder2 = new UnitAdder(soundPlayer);
         for (IUnit unit : attackersCopy) {
             try{
-                unit.update(provider2, bulletAdder2, unitAdder2, anotherAdder, deltaTime);
+                unit.update(provider2, bulletAdder2, unitAdder2, graphicsAdder, deltaTime);
             }catch (Exception e){
                 Log.e("IOW", "An exception has occurred during Update", e);
             }
         }
         for (IBullet bullet : attackersBulletsCopy) {
             try{
-                bullet.update(provider2, bulletAdder2, unitAdder2, anotherAdder, deltaTime);
+                bullet.update(provider2, bulletAdder2, unitAdder2, graphicsAdder, deltaTime);
             }catch (Exception e){
                 Log.e("IOW", "An exception has occurred during Update", e);
             }
@@ -100,7 +103,7 @@ public class Engine implements com.agrogames.islandsofwar.engine.abs.Engine {
         attackersBullets.addAll(bulletAdder2.getBullets());
         attackers.addAll(unitAdder2.getUnits());
 
-        otherObjects.addAll(anotherAdder.getAnotherObjects());
+        otherObjects.addAll(graphicsAdder.getAnotherObjects());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
