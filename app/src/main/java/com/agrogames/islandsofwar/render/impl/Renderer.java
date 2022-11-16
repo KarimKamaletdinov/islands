@@ -19,6 +19,7 @@ import com.agrogames.islandsofwar.engine.abs.weapon.IWeapon;
 import com.agrogames.islandsofwar.factories.Factory;
 import com.agrogames.islandsofwar.graphics.abs.TextureDrawer;
 import com.agrogames.islandsofwar.render.abs.Presenter;
+import com.agrogames.islandsofwar.sounds.abs.SoundPlayer;
 import com.agrogames.islandsofwar.ui.abs.Element;
 import com.agrogames.islandsofwar.ui.abs.ElementType;
 import com.agrogames.islandsofwar.ui.abs.UI;
@@ -61,7 +62,7 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
-    public void render(TextureDrawer drawer, Point touch, Point move, Point previousMove,
+    public void render(TextureDrawer drawer, SoundPlayer soundPlayer, Point touch, Point move, Point previousMove,
                        Point zoom1, Point zoom2, Point previousZoom1, Point previousZoom2) {
         MapScroller.start(drawer);
         drawer.drawTexture(15f, 10, "other/background", 30, 20, 0);
@@ -113,7 +114,7 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
         if(touch == null) {
             ui.render(drawer, null, null);
         } else if(!ui.render(drawer, touch.x, touch.y)){
-            onTouch(MapScroller.convert(touch));
+            onTouch(MapScroller.convert(touch), soundPlayer);
         }
         if(move != null && previousMove != null){
             MapScroller.scroll(move.x - previousMove.x, move.y - previousMove.y);
@@ -130,7 +131,7 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void onTouch(Point touch) {
+    public void onTouch(Point touch,SoundPlayer soundPlayer) {
         IUnit su = selectable.stream()
                 .filter(u -> u.first.getLocation().x + u.second / 2 > touch.x &&
                         u.first.getLocation().x - u.second / 2 < touch.x &&
@@ -165,6 +166,9 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
         } else if(selectedUnit != null){
             MovableObject mo = (MovableObject) selectedUnit;
             mo.setGoal(new Cell(touch));
+            if(mo.getTexture().equals("units/transport_ship")){
+                soundPlayer.playSound("waves");
+            }
         }
     }
 
