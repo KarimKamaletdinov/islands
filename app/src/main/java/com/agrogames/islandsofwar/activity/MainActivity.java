@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
 
     public SoundPool soundPool;
     public int sound;
+    private Manager manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +26,8 @@ public class MainActivity extends AppCompatActivity {
 
         android.opengl.GLSurfaceView gLView = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            gLView = new GLSurfaceView(this, new Manager(this));
+            manager = new Manager(this);
+            gLView = new GLSurfaceView(this, manager);
         }
         setContentView(gLView);
 
@@ -33,23 +35,11 @@ public class MainActivity extends AppCompatActivity {
         int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
+    }
 
-        //mediaPlayer = MediaPlayer.create(this, getResources().getIdentifier("sample1", "raw", "com.agrogames.islandsofwar"));
-        /*
-        AudioAttributes audioAttributes = new AudioAttributes
-                .Builder()
-                .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION)
-                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                .build();
-        soundPool = new SoundPool
-                .Builder()
-                .setMaxStreams(3)
-                .setAudioAttributes(audioAttributes)
-                .build();
-        try {
-            sound = soundPool.load(getAssets().openFd("sounds/audiomass-output.mp3"), 1);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
+    @Override
+    public void onBackPressed() {
+        manager.stop();
+        super.onBackPressed();
     }
 }

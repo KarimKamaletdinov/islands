@@ -1,10 +1,13 @@
 package com.agrogames.islandsofwar.sounds.impl;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.util.Log;
+
+import androidx.preference.PreferenceManager;
 
 import com.agrogames.islandsofwar.sounds.abs.SoundPlayer;
 
@@ -15,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 public class SoundPlayerImpl implements SoundPlayer {
+    private boolean enabled;
     private final SoundPool soundPool;
     private final AudioManager audioManager;
     private final Map<String, Integer> sounds = new HashMap<>();
@@ -31,6 +35,8 @@ public class SoundPlayerImpl implements SoundPlayer {
                 .setAudioAttributes(audioAttributes)
                 .build();
         audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        enabled = prefs.getBoolean("sound", true);
 
         try {
             String[] s = loadFolder(context, "sounds").toArray(new String[0]);
@@ -44,6 +50,7 @@ public class SoundPlayerImpl implements SoundPlayer {
 
     @Override
     public void playSound(String soundName) {
+        if(!enabled) return;
         new Thread(() -> {
             float volume = (float)audioManager.getStreamVolume(AudioManager.STREAM_MUSIC) / (float)audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
             Integer soundID = sounds.get("sounds/" + soundName + ".mp3");
@@ -69,5 +76,10 @@ public class SoundPlayerImpl implements SoundPlayer {
 
     private int loadFile(Context context, String name) throws IOException{
         return soundPool.load(context.getAssets().openFd(name), 1);
+    }
+
+    @Override
+    public void disable(){
+        enabled = false;
     }
 }

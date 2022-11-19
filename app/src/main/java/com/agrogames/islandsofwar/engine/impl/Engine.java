@@ -33,7 +33,7 @@ public class Engine implements com.agrogames.islandsofwar.engine.abs.Engine {
     private final List<IBullet> attackersBullets = new ArrayList<>();
     private final List<IGraphicsObject> otherObjects = new ArrayList<>();
     private final MapObject[] mapObjects;
-    private final SoundPlayer soundPlayer;
+    private SoundPlayer soundPlayer;
     private GameState state = GameState.Game;
 
     public Engine(IUnit[] protectors, IUnit[] attackers, MapObject[] mapObjects, SoundPlayer soundPlayer){
@@ -202,5 +202,10 @@ public class Engine implements com.agrogames.islandsofwar.engine.abs.Engine {
     @Override
     public void addPlane(IUnit plane) {
         attackers.add(plane);
+    }
+
+    @Override
+    public void setSoundPlayer(SoundPlayer soundPlayer) {
+        this.soundPlayer = soundPlayer;
     }
 }
