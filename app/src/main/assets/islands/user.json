@@ -1,0 +1,16 @@
+{
+  "name": "Karim",
+  "ship": {
+    "name": "transport_ship",
+    "content": [
+      "tank",
+      "tank",
+      "tank",
+      "tank",
+      "tank",
+      "tank",
+      "tank",
+      "rocket_launcher"
+    ]
+  }
+}

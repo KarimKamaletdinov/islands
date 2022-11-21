@@ -25,9 +25,9 @@ import java.util.List;
 public class UnitFactory {
     public static final List<JSONObject> units = new ArrayList<>();
 
-    public static IUnit get(String name, int x, int y, String... contentTextures){
+    public static IUnit get(String name, int x, int y, String... contentUnits){
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            JSONObject[] content = Arrays.stream(contentTextures).map(UnitFactory::getJSONUnit).toArray(JSONObject[]::new);
+            JSONObject[] content = Arrays.stream(contentUnits).map(UnitFactory::getJSONUnit).toArray(JSONObject[]::new);
             try {
                 return unit(getJSONUnit(name), new Cell(x, y), content);
             } catch (JSONException e) {

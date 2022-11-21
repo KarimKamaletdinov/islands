@@ -8,9 +8,12 @@ import androidx.annotation.RequiresApi;
 import com.agrogames.islandsofwar.engine.abs.Engine;
 import com.agrogames.islandsofwar.engine.abs.common.Point;
 import com.agrogames.islandsofwar.engine.abs.unit.IUnit;
+import com.agrogames.islandsofwar.engine.impl.EngineFactory;
 import com.agrogames.islandsofwar.factories.Factory;
 import com.agrogames.islandsofwar.graphics.abs.TextureDrawer;
 import com.agrogames.islandsofwar.graphics.abs.RenderManager;
+import com.agrogames.islandsofwar.islands.impl.LocalIslandProvider;
+import com.agrogames.islandsofwar.islands.impl.LocalUserProvider;
 import com.agrogames.islandsofwar.map.impl.Map;
 import com.agrogames.islandsofwar.render.abs.Renderer;
 import com.agrogames.islandsofwar.sounds.impl.SoundPlayerImpl;
@@ -51,27 +54,8 @@ public class Manager implements RenderManager {
 
         soundPlayer = new SoundPlayerImpl(context);
         if(engine == null){
-            engine = new com.agrogames.islandsofwar.engine.impl.Engine(new IUnit[]{
-                    Factory.get("tank", 14, 11),
-                    Factory.get("tank", 15, 10),
-                    Factory.get("tank", 15, 9),
-                    Factory.get("tank", 15, 11),
-                    Factory.get("tank", 16, 10),
-                    Factory.get("tank", 16, 9),
-                    Factory.get("rocket_launcher", 16, 11),
-                    Factory.get("rocket_launcher", 16, 12),
-                    Factory.get("tank", 17, 10),
-                    Factory.get("tank", 17, 9),
-                    Factory.get("tank", 17, 11),
-                    Factory.get("tank", 20, 10),
-                    Factory.get("air_defence", 15, 12),
-                    Factory.get("ship_defence", 8, 13),
-                    Factory.get("ship_defence", 18, 12),
-                    Factory.get("ship_defence", 17, 8),
-                    Factory.get("ship_defence", 14, 10),
-            }, new IUnit[]{
-                    ts
-            }, Map.fromAssets(context, "map1.txt").getMap(), soundPlayer);
+            engine = new EngineFactory(new LocalIslandProvider(context), new LocalUserProvider(context))
+                    .create(1, soundPlayer);
             new Thread(() -> {
                 while (true){
                     if(start){
