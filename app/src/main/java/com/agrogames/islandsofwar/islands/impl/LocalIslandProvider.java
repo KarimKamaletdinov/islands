@@ -6,11 +6,12 @@ import androidx.annotation.NonNull;
 
 import com.agrogames.islandsofwar.islands.abs.Island;
 import com.agrogames.islandsofwar.islands.abs.IslandProvider;
-import com.agrogames.islandsofwar.map.impl.Map;
 
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class LocalIslandProvider implements IslandProvider {
@@ -33,15 +34,15 @@ public class LocalIslandProvider implements IslandProvider {
     private Island[] getIslands(String prefix) {
         try {
             String[] islandFiles = context.getAssets().list("islands");
-            Island[] islands = new Island[islandFiles.length];
+            List<Island> islands = new ArrayList<>();
             for (int i = 0, islandFilesLength = islandFiles.length; i < islandFilesLength; i++) {
                 String file = islandFiles[i];
                 if (file.startsWith(prefix)) {
-                    islands[i] = IslandFactory.parse(context,
-                            new Scanner(context.getAssets().open("islands/" + file)).useDelimiter("\\A").next());
+                    islands.add(IslandFactory.parse(context, Integer.parseInt(file.substring(1, file.length() - 5)),
+                            new Scanner(context.getAssets().open("islands/" + file)).useDelimiter("\\A").next()));
                 }
             }
-            return islands;
+            return islands.toArray(new Island[0]);
         } catch (IOException | JSONException e) {
             e.printStackTrace();
         }
@@ -51,23 +52,23 @@ public class LocalIslandProvider implements IslandProvider {
     @Override
     public Island getMyById(int id) {
         try {
-            return IslandFactory.parse(context,
+            return IslandFactory.parse(context, id,
                     new Scanner(context.getAssets().open("islands/m" + id + ".json")).useDelimiter("\\A").next());
         } catch (JSONException | IOException e) {
             e.printStackTrace();
         }
-        return new Island(null, null);
+        return new Island(id, null, null);
     }
 
     @Override
     public Island getAttackableById(int id) {
         try {
-            return IslandFactory.parse(context,
+            return IslandFactory.parse(context, id,
                     new Scanner(context.getAssets().open("islands/e" + id + ".json")).useDelimiter("\\A").next());
         } catch (JSONException | IOException e) {
             e.printStackTrace();
         }
-        return new Island(null, null);
+        return new Island(id, null, null);
     }
 
 }

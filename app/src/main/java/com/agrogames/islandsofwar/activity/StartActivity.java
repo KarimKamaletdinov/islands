@@ -22,8 +22,9 @@ public class StartActivity extends AppCompatActivity {
                 | View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
         findViewById(R.id.play).setOnClickListener((e) -> {
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, SelectIslandActivity.class);
             intent.putExtra("CallingActivity", "StartActivity");
+            intent.putExtra("id", 1);
             startActivity(intent);
         });
         findViewById(R.id.settings_button).setOnClickListener((e) -> {

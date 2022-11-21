@@ -27,20 +27,26 @@ import com.agrogames.islandsofwar.ui.abs.UI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer {
     private final Presenter presenter;
     private final UI ui;
     private IUnit selectedUnit;
+    private Callable<Void> back;
     private final List<Pair<IUnit, Float>> selectable = new ArrayList<>();
     private final Element cancelButton;
+    private final boolean runEngine;
     private final UnitList landingList;
     private final UnitList planeList;
 
-    public Renderer(Presenter presenter, UI ui){
+    public Renderer(Presenter presenter, UI ui, boolean runEngine, Callable<Void> right,
+                    Callable<Void> left, Callable<Void> attack, Callable<Void> back){
         this.presenter = presenter;
         this.ui = ui;
         cancelButton = ui.createElement(ElementType.Button, 14, 9, 1, 1, "ui/cancel_button");
+        this.runEngine = runEngine;
+        this.back = back;
         cancelButton.setVisible(false);
 
         landingList = new UnitList(ui, 14);
@@ -53,10 +59,26 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
         });
 
         planeList = new UnitList(ui, 0);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && runEngine) {
             planeList.setUnits(new TransportUnit[]{
                     new TransportUnit(c -> Factory.get("bomber", c.x, c.y))
             });
+        }
+        if(!runEngine){
+            MapScroller.reset();
+            MapScroller.scroll(-7.5f, -5);
+            if(right != null){
+                Element rightButton = ui.createElement(ElementType.Button, 14, 1, 1, 1, "ui/right_button");
+                rightButton.onClick(right);
+            }
+            if(left != null){
+                Element leftButton = ui.createElement(ElementType.Button, 1, 1, 1, 1, "ui/left_button");
+                leftButton.onClick(left);
+            }
+            if(attack != null){
+                Element attackButton = ui.createElement(ElementType.Button, 7.5f, 1, 4, 1, "ui/attack_button");
+                attackButton.onClick(attack);
+            }
         }
     }
 
@@ -128,10 +150,18 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
             drawer.drawTexture(7.5f, 5f, "other/win", 0);
         else if(presenter.getState() == GameState.Defeat)
             drawer.drawTexture(7.5f, 5f, "other/defeat", 0);
+
+        if((presenter.getState() == GameState.Win || presenter.getState() == GameState.Defeat) &&
+            back != null){
+            Element backButton = ui.createElement(ElementType.Button, 7.5f, 1, 4, 1, "ui/back_button");
+            backButton.onClick(back);
+            back = null;
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void onTouch(Point touch,SoundPlayer soundPlayer) {
+        if(!runEngine) return;
         IUnit su = selectable.stream()
                 .filter(u -> u.first.getLocation().x + u.second / 2 > touch.x &&
                         u.first.getLocation().x - u.second / 2 < touch.x &&

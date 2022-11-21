@@ -11,11 +11,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class IslandFactory {
-    public static Island parse(Context context, String text) throws JSONException {
+    public static Island parse(Context context, int id, String text) throws JSONException {
         JSONObject json = new JSONObject(text);
         Map map = Map.fromAssets(context, "map" + json.getInt("map_id") + ".txt");
         JSONArray unitsJson = json.getJSONArray("units");
@@ -43,6 +40,6 @@ public class IslandFactory {
                 units[i].loseHealth(units[i].getHealth().start - unit.getInt("health"));
             }
         }
-        return new Island(map, units);
+        return new Island(id, map, units);
     }
 }

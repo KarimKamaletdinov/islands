@@ -23,18 +23,21 @@ public class Factory {
             JSONObject json = new JSONObject(text);
 
             JSONArray u = json.getJSONArray("units");
+            UnitFactory.units.clear();
             for (int i = 0; i < u.length(); i++){
                 JSONObject unit = u.getJSONObject(i);
                 UnitFactory.units.add(unit);
             }
 
             JSONArray w = json.getJSONArray("weapons");
+            WeaponFactory.weapons.clear();
             for (int i = 0; i < w.length(); i++){
                 JSONObject weapon = w.getJSONObject(i);
                 WeaponFactory.weapons.add(weapon);
             }
 
             JSONArray g = json.getJSONArray("graphics");
+            GraphicsFactory.graphics.clear();
             for (int i = 0; i < g.length(); i++){
                 JSONObject gr = g.getJSONObject(i);
                 GraphicsFactory.graphics.add(gr);

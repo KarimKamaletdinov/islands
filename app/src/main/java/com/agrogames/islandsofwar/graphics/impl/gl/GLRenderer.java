@@ -26,7 +26,7 @@ public class GLRenderer implements GLSurfaceView.Renderer {
 
     @androidx.annotation.NonNull
     private final Context context;
-    private final RenderManager manager;
+    private RenderManager manager;
     private TextureDrawer textureDrawer;
     private int width;
     private int height;
@@ -99,6 +99,10 @@ public class GLRenderer implements GLSurfaceView.Renderer {
 
     public void onZoom(float x1, float y1, float x2, float y2) {
         manager.onZoom(convertX(x1), convertY(y1), convertX(x2), convertY(y2));
+    }
+
+    public void setManager(RenderManager m){
+        manager = m;
     }
 
     private float convertX(float x){

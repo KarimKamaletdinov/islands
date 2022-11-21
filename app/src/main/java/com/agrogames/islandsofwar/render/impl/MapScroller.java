@@ -20,6 +20,12 @@ public class MapScroller {
         drawer.scale(1 / currentZoom);
     }
 
+    public static void reset(){
+        currentX = 0;
+        currentY = 0;
+        currentZoom = 1;
+    }
+
     public static Point convert(Point point){
         return new Point(point.x / currentZoom - currentX, point.y / currentZoom - currentY);
     }

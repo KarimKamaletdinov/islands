@@ -7,12 +7,14 @@ import com.agrogames.islandsofwar.graphics.abs.RenderManager;
 
 public class GLSurfaceView extends android.opengl.GLSurfaceView {
 
+    private final GLRenderer renderer;
+
     public GLSurfaceView(Context context, RenderManager manager){
         super(context);
 
         setEGLContextClientVersion(2);
 
-        GLRenderer renderer = new GLRenderer(context, manager);
+        renderer = new GLRenderer(context, manager);
         setOnTouchListener((v, e) -> {
             v.performClick();
             if(e.getAction() == MotionEvent.ACTION_UP){
@@ -28,6 +30,10 @@ public class GLSurfaceView extends android.opengl.GLSurfaceView {
         });
 
         setRenderer(renderer);
+    }
+
+    public void setManager(RenderManager m){
+        renderer.setManager(m);
     }
 }
 

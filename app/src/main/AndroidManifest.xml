@@ -48,6 +48,12 @@
             android:screenOrientation="landscape"
             android:theme="@style/Theme.IslandsOfWar.NoActionBar">
         </activity>
+        <activity
+            android:name=".activity.SelectIslandActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.IslandsOfWar.NoActionBar">
+        </activity>
     </application>
 
 </manifest>
