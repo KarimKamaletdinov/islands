@@ -193,4 +193,9 @@ public class SmallShip extends Unit{
     public void setGoal(Cell goal) {
         this.goal = goal;
     }
+
+    @Override
+    public Cell[] getRoute() {
+        return route.toArray(new Cell[0]);
+    }
 }

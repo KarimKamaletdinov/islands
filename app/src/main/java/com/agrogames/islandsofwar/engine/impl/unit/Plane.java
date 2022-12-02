@@ -144,6 +144,14 @@ public class Plane extends Unit{
         this.goal = goal;
     }
 
+    @Override
+    public Cell[] getRoute() {
+        return new Cell[]{
+                new Cell(location),
+                goal
+        };
+    }
+
     private enum Direction{
         Up, Right, Down, Left
     }

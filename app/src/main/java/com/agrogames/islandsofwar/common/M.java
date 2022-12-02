@@ -23,7 +23,9 @@ public class M {
     }
 
     public static float dist(Point a, Point b){
-        return sqrt(module(a.x - b.x) + module(a.y) - b.y);
+        float w = module(a.x - b.x);
+        float h = module(a.y) - b.y;
+        return sqrt(w * w + h * h);
     }
 
     public static Point middle(Point a, Point b){

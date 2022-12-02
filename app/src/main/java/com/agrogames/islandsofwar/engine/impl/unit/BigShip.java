@@ -88,6 +88,11 @@ public class BigShip extends Unit implements Transport {
         }
     }
 
+    @Override
+    public Cell[] getRoute() {
+        return route.toArray(new Cell[0]);
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void update(MapProvider provider, BulletAdder bulletAdder, IUnitAdder unitAdder, GraphicsAdder graphicsAdder, float deltaTime) {

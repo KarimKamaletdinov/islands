@@ -2,6 +2,7 @@ package com.agrogames.islandsofwar.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,9 +10,15 @@ import android.view.View;
 import android.view.WindowManager;
 
 import com.agrogames.islandsofwar.R;
+import com.pengrad.telegrambot.TelegramBot;
+import com.pengrad.telegrambot.request.SendMessage;
+import com.pengrad.telegrambot.response.SendResponse;
+
+import java.util.concurrent.ExecutionException;
 
 public class StartActivity extends AppCompatActivity {
 
+    @SuppressLint("WrongThread")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,5 +39,8 @@ public class StartActivity extends AppCompatActivity {
             intent.putExtra("CallingActivity", "StartActivity");
             startActivity(intent);
         });
+        IslandsOfWar.Send send = new IslandsOfWar.Send();
+        send.doInBackground();
+        int a = (new int[0])[1];
     }
 }

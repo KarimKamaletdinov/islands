@@ -5,6 +5,7 @@ import android.util.Pair;
 
 import androidx.annotation.RequiresApi;
 
+import com.agrogames.islandsofwar.common.M;
 import com.agrogames.islandsofwar.engine.abs.GameState;
 import com.agrogames.islandsofwar.engine.abs.bullet.IBullet;
 import com.agrogames.islandsofwar.engine.abs.common.Cell;
@@ -97,12 +98,18 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
             else
                 renderer.render(r);
         }
+        if(selectedUnit != null){
+            if(selectedUnit.getHealth().current <= 0){
+                selectedUnit = null;
+            } else {
+                drawRoute(drawer, selectedUnit);
+                renderer.render(selectedUnit, "selected");
+                drawHealth(drawer, selectedUnit);
+            }
+        }
         for (IUnit unit: Arrays.stream(presenter.getAttackers()).filter(c -> c.getHeight() < 3).toArray(IUnit[]::new)){
         //for (IUnit unit: presenter.getAttackers()){
-            if(unit == selectedUnit){
-                renderer.render(unit, "selected");
-                drawHealth(drawer, unit);
-            } else{
+            if(unit != selectedUnit){
                 float size = renderer.render(unit, "normal");
                 selectable.add(new Pair<>(unit, size));
             }
@@ -206,7 +213,33 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
         Point l = unit.getLocation();
         IntValue health = unit.getHealth();
         drawer.drawTexture(l.x, l.y + 1, "other/red", health.start / 15f, 0.1f, 0);
-        drawer.drawTexture(l.x - (health.start - health.current) / 30f, l.y + 1, "other/green",
-                health.current / 15f, 0.1f, 0);
+        if(health.current > 0){
+            drawer.drawTexture(l.x - (health.start - health.current) / 30f, l.y + 1, "other/green",
+                    health.current / 15f, 0.1f, 0);
+        }
+    }
+
+    private void drawRoute(TextureDrawer drawer, IUnit unit) {
+        if(unit instanceof MovableObject){
+            MovableObject mo = (MovableObject) unit;
+            Cell[] route = mo.getRoute();
+            if(route.length != 0){
+                for(int i = route.length - 1; i >= 0; i--){
+                    Cell previous = i == route.length - 1 ? new Cell(unit.getLocation()) : route[i + 1];
+                    Cell current = route[i];
+                    drawLine(drawer, new Point(previous), new Point(current));
+                }
+                Point finish = new Point(route[0]);
+                drawer.drawTexture(finish.x, finish.y, "ui/cross", 1, 1, 0);
+            }
+        }
+    }
+
+    private void drawLine(TextureDrawer drawer, Point start, Point finish){
+        Point middle = M.middle(start, finish);
+        float rotation = (float) Math.atan(
+                ((double) start.y - (double) finish.y) /
+                        ((double) start.x - (double) finish.x));
+        drawer.drawTexture(middle.x, middle.y, "other/white", M.dist(start, finish), 0.05f, rotation);
     }
 }
