@@ -7,10 +7,12 @@ public class Island {
     public final int id;
     public final Map map;
     public final IUnit[] owners;
+    public final IUnit attacker;
 
-    public Island(int id, Map map, IUnit[] owners) {
+    public Island(int id, Map map, IUnit[] owners, IUnit attacker) {
         this.id = id;
         this.map = map;
         this.owners = owners;
+        this.attacker = attacker;
     }
 }

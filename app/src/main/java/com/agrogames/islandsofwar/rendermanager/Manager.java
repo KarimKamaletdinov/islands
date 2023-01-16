@@ -1,9 +1,6 @@
 package com.agrogames.islandsofwar.rendermanager;
 
 import android.content.Context;
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
 
 import com.agrogames.islandsofwar.engine.abs.Engine;
 import com.agrogames.islandsofwar.engine.abs.common.Point;
@@ -12,7 +9,6 @@ import com.agrogames.islandsofwar.factories.Factory;
 import com.agrogames.islandsofwar.graphics.abs.TextureDrawer;
 import com.agrogames.islandsofwar.graphics.abs.RenderManager;
 import com.agrogames.islandsofwar.islands.impl.LocalIslandProvider;
-import com.agrogames.islandsofwar.islands.impl.LocalUserProvider;
 import com.agrogames.islandsofwar.render.abs.Renderer;
 import com.agrogames.islandsofwar.sounds.impl.SoundPlayerImpl;
 import com.agrogames.islandsofwar.ui.impl.UI;
@@ -38,13 +34,12 @@ public class Manager implements RenderManager {
     private Point zoom2;
     private Point previousZoom2;
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public Manager(Context context, int islandId, boolean runEngine, Callable<Void> right,
                    Callable<Void> left, Callable<Void> attack, Callable<Void> back) {
         Factory.load(context);
 
         soundPlayer = new SoundPlayerImpl(context);
-        engine = new EngineFactory(new LocalIslandProvider(context), new LocalUserProvider(context))
+        engine = new EngineFactory(new LocalIslandProvider(context))
                 .create(islandId, soundPlayer);
         if(runEngine){
             new Thread(() -> {
@@ -74,10 +69,9 @@ public class Manager implements RenderManager {
             }
         }, 3000, 10000);
         this.renderer = new com.agrogames.islandsofwar.render.impl.Renderer(new Presenter(engine),
-                new UI(), runEngine, right, left, attack, back);
+                new UI(), runEngine, right, left, attack, back, true);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void render(TextureDrawer drawer) {
         start = true;

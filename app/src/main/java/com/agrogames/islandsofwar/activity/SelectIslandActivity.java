@@ -13,7 +13,6 @@ import com.agrogames.islandsofwar.factories.Factory;
 import com.agrogames.islandsofwar.graphics.impl.gl.GLSurfaceView;
 import com.agrogames.islandsofwar.islands.abs.Island;
 import com.agrogames.islandsofwar.islands.impl.LocalIslandProvider;
-import com.agrogames.islandsofwar.islands.impl.LocalUserProvider;
 import com.agrogames.islandsofwar.rendermanager.Manager;
 
 public class SelectIslandActivity extends AppCompatActivity {
@@ -42,31 +41,29 @@ public class SelectIslandActivity extends AppCompatActivity {
     }
 
     private void startView(int id) {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            manager = new Manager(this,
-                    id,
-                    false,
-                    id == ids[ids.length - 1] ? null : () -> {
-                        startView(ids[Arr.indexOf(ids, id) + 1]);
-                        return null;
-                    },
-                    id == ids[0] ? null : () -> {
-                        startView(ids[Arr.indexOf(ids, id) - 1]);
-                        return null;
-                    },
-                    () -> {
-                        Intent intent = new Intent(this, MainActivity.class);
-                        intent.putExtra("CallingActivity", "StartActivity");
-                        intent.putExtra("id", id);
-                        startActivity(intent);
-                        return null;
-                    }, null);
-            if(gLView == null){
-                gLView = new GLSurfaceView(this, manager);
-                setContentView(gLView);
-            } else {
-                gLView.setManager(manager);
-            }
+        manager = new Manager(this,
+                id,
+                false,
+                id == ids[ids.length - 1] ? null : () -> {
+                    startView(ids[Arr.indexOf(ids, id) + 1]);
+                    return null;
+                },
+                id == ids[0] ? null : () -> {
+                    startView(ids[Arr.indexOf(ids, id) - 1]);
+                    return null;
+                },
+                () -> {
+                    Intent intent = new Intent(this, MainActivity.class);
+                    intent.putExtra("CallingActivity", "StartActivity");
+                    intent.putExtra("id", id);
+                    startActivity(intent);
+                    return null;
+                }, null);
+        if(gLView == null){
+            gLView = new GLSurfaceView(this, manager);
+            setContentView(gLView);
+        } else {
+            gLView.setManager(manager);
         }
     }
 

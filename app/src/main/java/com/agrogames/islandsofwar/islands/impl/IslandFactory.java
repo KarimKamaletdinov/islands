@@ -22,7 +22,7 @@ public class IslandFactory {
             if(unit.has("content")){
                 JSONArray contentJson = unit.getJSONArray("content");
                 String[] content = new String[contentJson.length()];
-                for (int j = 0; j < unitsJson.length(); j++) {
+                for (int j = 0; j < contentJson.length(); j++) {
                     content[j] = contentJson.getString(j);
                 }
                 units[i]  = UnitFactory.get(
@@ -40,6 +40,17 @@ public class IslandFactory {
                 units[i].loseHealth(units[i].getHealth().start - unit.getInt("health"));
             }
         }
-        return new Island(id, map, units);
+        JSONObject a = json.getJSONObject("ship");
+        JSONArray contentJson = a.getJSONArray("content");
+        String[] content = new String[contentJson.length()];
+        for (int j = 0; j < contentJson.length(); j++) {
+            content[j] = contentJson.getString(j);
+        }
+        IUnit attacker  = UnitFactory.get(
+                a.getString("name"),
+                1,
+                1,
+                content);
+        return new Island(id, map, units, attacker);
     }
 }

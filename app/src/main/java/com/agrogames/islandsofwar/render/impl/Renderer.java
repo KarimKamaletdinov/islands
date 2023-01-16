@@ -35,6 +35,7 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
     private final UI ui;
     private IUnit selectedUnit;
     private Callable<Void> back;
+    private final boolean cheat;
     private final List<Pair<IUnit, Float>> selectable = new ArrayList<>();
     private final Element cancelButton;
     private final boolean runEngine;
@@ -42,12 +43,13 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
     private final UnitList planeList;
 
     public Renderer(Presenter presenter, UI ui, boolean runEngine, Callable<Void> right,
-                    Callable<Void> left, Callable<Void> attack, Callable<Void> back){
+                    Callable<Void> left, Callable<Void> attack, Callable<Void> back, boolean cheat){
         this.presenter = presenter;
         this.ui = ui;
         cancelButton = ui.createElement(ElementType.Button, 14, 9, 1, 1, "ui/cancel_button");
         this.runEngine = runEngine;
         this.back = back;
+        this.cheat = cheat;
         cancelButton.setVisible(false);
 
         landingList = new UnitList(ui, 14);
@@ -60,7 +62,7 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
         });
 
         planeList = new UnitList(ui, 0);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && runEngine) {
+        if (runEngine) {
             planeList.setUnits(new TransportUnit[]{
                     new TransportUnit(c -> Factory.get("bomber", c.x, c.y))
             });
@@ -83,7 +85,6 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void render(TextureDrawer drawer, SoundPlayer soundPlayer, Point touch, Point move, Point previousMove,
                        Point zoom1, Point zoom2, Point previousZoom1, Point previousZoom2) {
@@ -166,7 +167,6 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public void onTouch(Point touch,SoundPlayer soundPlayer) {
         if(!runEngine) return;
         IUnit su = selectable.stream()
@@ -199,7 +199,7 @@ public class Renderer implements com.agrogames.islandsofwar.render.abs.Renderer 
             MovableObject mo = (MovableObject) bomber;
             mo.setGoal(new Cell(new Point(touch.x + 1, touch.y + 1)));
             presenter.addPlane(bomber);
-            planeList.clearUnits();
+            if(!cheat) planeList.clearUnits();
         } else if(selectedUnit != null){
             MovableObject mo = (MovableObject) selectedUnit;
             mo.setGoal(new Cell(touch));

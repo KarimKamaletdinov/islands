@@ -10,8 +10,6 @@
       "tank",
       "tank",
       "tank",
-      "rocket_launcher",
-      "rocket_launcher",
       "rocket_launcher"
     ]
   },
@@ -57,16 +55,6 @@
       "y": 12
     },
     {
-      "name": "rocket_launcher",
-      "x": 18,
-      "y": 11
-    },
-    {
-      "name": "rocket_launcher",
-      "x": 19,
-      "y": 12
-    },
-    {
       "name": "tank",
       "x": 17,
       "y": 11
@@ -87,47 +75,27 @@
       "y": 10
     },
     {
-      "name": "tank",
-      "x": 10,
-      "y": 11
-    },
-    {
-      "name": "tank",
-      "x": 10,
-      "y": 10
-    },
-    {
-      "name": "tank",
-      "x": 11,
-      "y": 9
-    },
-    {
-      "name": "tank",
-      "x": 11,
-      "y": 10
-    },
-    {
-      "name": "air_defence",
+      "name": "rocket_launcher",
       "x": 15,
       "y": 12
     },
     {
-      "name": "ship_defence",
+      "name": "rocket_launcher",
       "x": 8,
       "y": 13
     },
     {
-      "name": "ship_defence",
+      "name": "rocket_launcher",
       "x": 18,
       "y": 12
     },
     {
-      "name": "ship_defence",
+      "name": "rocket_launcher",
       "x": 17,
       "y": 8
     },
     {
-      "name": "ship_defence",
+      "name": "rocket_launcher",
       "x": 14,
       "y": 10
     }

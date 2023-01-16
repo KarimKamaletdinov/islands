@@ -10,8 +10,6 @@
       "tank",
       "tank",
       "tank",
-      "rocket_launcher",
-      "rocket_launcher",
       "rocket_launcher"
     ]
   },
@@ -54,16 +52,6 @@
     {
       "name": "rocket_launcher",
       "x": 16,
-      "y": 12
-    },
-    {
-      "name": "rocket_launcher",
-      "x": 18,
-      "y": 11
-    },
-    {
-      "name": "rocket_launcher",
-      "x": 19,
       "y": 12
     },
     {

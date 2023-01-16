@@ -55,7 +55,7 @@ public class SoundPlayerImpl implements SoundPlayer {
             float volume = (float)audioManager.getStreamVolume(AudioManager.STREAM_MUSIC) / (float)audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
             Integer soundID = sounds.get("sounds/" + soundName + ".mp3");
             if(soundID != null){
-                soundPool.play(soundID, volume, volume, 0, 0, 1);
+                soundPool.play(soundID, volume * 2, volume * 2, 0, 0, 1);
             } else {
                  Log.e("IOW", "Unknown sound file: " + soundName);
             }

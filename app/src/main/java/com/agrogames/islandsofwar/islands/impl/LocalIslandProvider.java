@@ -35,8 +35,7 @@ public class LocalIslandProvider implements IslandProvider {
         try {
             String[] islandFiles = context.getAssets().list("islands");
             List<Island> islands = new ArrayList<>();
-            for (int i = 0, islandFilesLength = islandFiles.length; i < islandFilesLength; i++) {
-                String file = islandFiles[i];
+            for (String file : islandFiles) {
                 if (file.startsWith(prefix)) {
                     islands.add(IslandFactory.parse(context, Integer.parseInt(file.substring(1, file.length() - 5)),
                             new Scanner(context.getAssets().open("islands/" + file)).useDelimiter("\\A").next()));
@@ -57,7 +56,7 @@ public class LocalIslandProvider implements IslandProvider {
         } catch (JSONException | IOException e) {
             e.printStackTrace();
         }
-        return new Island(id, null, null);
+        return new Island(id, null, null, null);
     }
 
     @Override
@@ -68,7 +67,7 @@ public class LocalIslandProvider implements IslandProvider {
         } catch (JSONException | IOException e) {
             e.printStackTrace();
         }
-        return new Island(id, null, null);
+        return new Island(id, null, null, null);
     }
 
 }

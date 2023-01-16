@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -14,7 +16,12 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.response.SendResponse;
 
+import java.io.IOException;
 import java.util.concurrent.ExecutionException;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class StartActivity extends AppCompatActivity {
 
@@ -39,8 +46,5 @@ public class StartActivity extends AppCompatActivity {
             intent.putExtra("CallingActivity", "StartActivity");
             startActivity(intent);
         });
-        IslandsOfWar.Send send = new IslandsOfWar.Send();
-        send.doInBackground();
-        int a = (new int[0])[1];
     }
 }
