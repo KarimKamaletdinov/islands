@@ -1,0 +1,90 @@
+{
+  "map_id": 1,
+  "ship": {
+    "name": "transport_ship",
+    "content": [
+      "tank",
+      "tank",
+      "tank",
+      "tank",
+      "tank",
+      "tank",
+      "tank",
+      "rocket_launcher",
+      "rocket_launcher",
+      "rocket_launcher"
+    ]
+  },
+  "units": [
+    {
+      "name": "ship_defence",
+      "x": 14,
+      "y": 11
+    },
+    {
+      "name": "ship_defence",
+      "x": 15,
+      "y": 10
+    },
+    {
+      "name": "ship_defence",
+      "x": 15,
+      "y": 9
+    },
+    {
+      "name": "ship_defence",
+      "x": 15,
+      "y": 11
+    },
+    {
+      "name": "ship_defence",
+      "x": 16,
+      "y": 10
+    },
+    {
+      "name": "ship_defence",
+      "x": 16,
+      "y": 9
+    },
+    {
+      "name": "ship_defence",
+      "x": 16,
+      "y": 11
+    },
+    {
+      "name": "ship_defence",
+      "x": 16,
+      "y": 12
+    },
+    {
+      "name": "ship_defence",
+      "x": 17,
+      "y": 11
+    },
+    {
+      "name": "ship_defence",
+      "x": 17,
+      "y": 10
+    },
+    {
+      "name": "ship_defence",
+      "x": 17,
+      "y": 9
+    },
+    {
+      "name": "ship_defence",
+      "x": 20,
+      "y": 10
+    },
+    {
+      "name": "ship_defence",
+      "x": 10,
+      "y": 11
+    },
+    {
+      "name": "ship_defence",
+      "x": 10,
+      "y": 10
+    }
+  ]
+}
