@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.agrogames.islandsofwar",
+  "applicationId": "ru.agrogames.islandsofwar",
   "variantName": "release",
   "elements": [
     {
