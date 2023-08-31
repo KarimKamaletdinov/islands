@@ -11,7 +11,7 @@ import com.agrogames.islandsofwar.engine.abs.transport.TransportUnit
 import com.agrogames.islandsofwar.engine.abs.unit.IUnit
 import com.agrogames.islandsofwar.engine.impl.Engine
 import com.agrogames.islandsofwar.factories.Factory
-import com.agrogames.islandsofwar.graphics.impl.drawtexture.TextureDrawer
+import com.agrogames.islandsofwar.graphics.drawtexture.TextureDrawer
 import com.agrogames.islandsofwar.sounds.SoundPlayer
 import com.agrogames.islandsofwar.ui.impl.Element
 import com.agrogames.islandsofwar.ui.impl.ElementType

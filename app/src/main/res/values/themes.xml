@@ -16,6 +16,7 @@
     <style name="Theme.IslandsOfWar.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:windowSplashScreenBackground" tools:targetApi="s">#FF5FB1DE</item>
     </style>
     <style name="Theme.IslandsOfWar.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
     <style name="Theme.IslandsOfWar.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>

@@ -1,4 +1,4 @@
-package com.agrogames.islandsofwar.graphics.impl.gl
+package com.agrogames.islandsofwar.graphics.gl
 
 /*
 @SuppressLint("ViewConstructor")

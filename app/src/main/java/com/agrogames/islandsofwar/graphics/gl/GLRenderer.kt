@@ -1,12 +1,12 @@
-package com.agrogames.islandsofwar.graphics.impl.gl
+package com.agrogames.islandsofwar.graphics.gl
 
 import android.content.Context
 import android.opengl.GLES20
 import android.opengl.GLSurfaceView
 import android.opengl.Matrix
 import com.agrogames.islandsofwar.common.mProgram
-import com.agrogames.islandsofwar.graphics.impl.bitmap.BitmapProvider
-import com.agrogames.islandsofwar.graphics.impl.drawtexture.TextureDrawer
+import com.agrogames.islandsofwar.graphics.bitmap.BitmapProvider
+import com.agrogames.islandsofwar.graphics.drawtexture.TextureDrawer
 import com.agrogames.islandsofwar.manager.Manager
 import java.io.IOException
 import java.util.Scanner

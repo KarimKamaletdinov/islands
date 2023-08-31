@@ -2,7 +2,7 @@ package com.agrogames.islandsofwar.render.impl
 
 import com.agrogames.islandsofwar.common.M
 import com.agrogames.islandsofwar.engine.abs.common.Point
-import com.agrogames.islandsofwar.graphics.impl.drawtexture.TextureDrawer
+import com.agrogames.islandsofwar.graphics.drawtexture.TextureDrawer
 import com.agrogames.islandsofwar.map.abs.MapParams
 
 object MapScroller {

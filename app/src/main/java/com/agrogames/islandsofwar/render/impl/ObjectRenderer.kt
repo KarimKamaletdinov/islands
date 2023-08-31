@@ -1,7 +1,7 @@
 package com.agrogames.islandsofwar.render.impl
 
 import com.agrogames.islandsofwar.engine.abs.renderable.RenderableObject
-import com.agrogames.islandsofwar.graphics.impl.drawtexture.TextureDrawer
+import com.agrogames.islandsofwar.graphics.drawtexture.TextureDrawer
 
 class ObjectRenderer(private val drawer: TextureDrawer) {
     fun render(`object`: RenderableObject): Float {

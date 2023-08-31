@@ -1,4 +1,4 @@
-package com.agrogames.islandsofwar.graphics.impl.bitmap
+package com.agrogames.islandsofwar.graphics.bitmap
 
 class BitmapDescriptor {
     var width = 0

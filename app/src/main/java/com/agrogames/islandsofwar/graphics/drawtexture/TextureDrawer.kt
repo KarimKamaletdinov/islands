@@ -1,8 +1,8 @@
-package com.agrogames.islandsofwar.graphics.impl.drawtexture
+package com.agrogames.islandsofwar.graphics.drawtexture
 
 import android.util.Pair
-import com.agrogames.islandsofwar.graphics.impl.bitmap.BitmapProvider
-import com.agrogames.islandsofwar.graphics.impl.gl.Texture
+import com.agrogames.islandsofwar.graphics.bitmap.BitmapProvider
+import com.agrogames.islandsofwar.graphics.gl.Texture
 
 class TextureDrawer {
     private val textures: MutableList<Texture> = ArrayList()

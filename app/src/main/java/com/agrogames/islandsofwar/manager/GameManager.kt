@@ -2,7 +2,7 @@ package com.agrogames.islandsofwar.manager
 
 import com.agrogames.islandsofwar.engine.abs.common.Point
 import com.agrogames.islandsofwar.engine.impl.Engine
-import com.agrogames.islandsofwar.graphics.impl.drawtexture.TextureDrawer
+import com.agrogames.islandsofwar.graphics.drawtexture.TextureDrawer
 import com.agrogames.islandsofwar.render.impl.Renderer
 import com.agrogames.islandsofwar.sounds.SoundPlayer
 import kotlinx.coroutines.DisposableHandle

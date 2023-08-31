@@ -1,6 +1,6 @@
 package com.agrogames.islandsofwar.manager
 
-import com.agrogames.islandsofwar.graphics.impl.drawtexture.TextureDrawer
+import com.agrogames.islandsofwar.graphics.drawtexture.TextureDrawer
 
 interface Manager {
     fun render(textureDrawer: TextureDrawer)

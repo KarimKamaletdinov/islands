@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.preference.PreferenceManager
 import com.agrogames.islandsofwar.common.sound
 import com.agrogames.islandsofwar.engine.abs.common.Point
-import com.agrogames.islandsofwar.graphics.impl.drawtexture.TextureDrawer
+import com.agrogames.islandsofwar.graphics.drawtexture.TextureDrawer
 import com.agrogames.islandsofwar.sounds.SoundPlayer
 import com.agrogames.islandsofwar.ui.impl.Element
 import com.agrogames.islandsofwar.ui.impl.ElementType

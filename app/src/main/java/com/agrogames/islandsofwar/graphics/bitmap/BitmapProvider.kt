@@ -1,4 +1,4 @@
-package com.agrogames.islandsofwar.graphics.impl.bitmap
+package com.agrogames.islandsofwar.graphics.bitmap
 
 import android.content.Context
 import android.graphics.Bitmap

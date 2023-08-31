@@ -1,7 +1,7 @@
 package com.agrogames.islandsofwar.ui.impl
 
 import com.agrogames.islandsofwar.engine.abs.common.Point
-import com.agrogames.islandsofwar.graphics.impl.drawtexture.TextureDrawer
+import com.agrogames.islandsofwar.graphics.drawtexture.TextureDrawer
 
 class UI {
     private val elements: MutableList<Element> = ArrayList()

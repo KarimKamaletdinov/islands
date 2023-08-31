@@ -10,8 +10,8 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.agrogames.islandsofwar.engine.impl.Engine
 import com.agrogames.islandsofwar.factories.Factory
-import com.agrogames.islandsofwar.graphics.impl.bitmap.BitmapProvider
-import com.agrogames.islandsofwar.graphics.impl.gl.GLRenderer
+import com.agrogames.islandsofwar.graphics.bitmap.BitmapProvider
+import com.agrogames.islandsofwar.graphics.gl.GLRenderer
 import com.agrogames.islandsofwar.islands.impl.JsonbinIslandProvider
 import com.agrogames.islandsofwar.manager.GameManager
 import com.agrogames.islandsofwar.manager.IndexManager
@@ -67,8 +67,8 @@ class SelectIslandActivity : AppCompatActivity() {
             }
             true
         }
-        gLView.setRenderer(renderer)
-        setContentView(gLView)
+        //gLView.setRenderer(renderer)
+        //setContentView(gLView)
 
 
         val decorView = window.decorView
