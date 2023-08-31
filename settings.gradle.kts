@@ -16,6 +16,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Islands Of War"
+rootProject.name = "Islands"
 include(":app")
  
