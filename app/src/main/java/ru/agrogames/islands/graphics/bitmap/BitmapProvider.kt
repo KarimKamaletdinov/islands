@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.opengl.GLES20
 import android.opengl.GLUtils
+import android.util.Log
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.json.JSONArray
@@ -72,6 +73,7 @@ object BitmapProvider {
     }
 
     private fun loadFile(context: Context, name: String): Bitmap {
+        Log.e("IOW", name)
         return BitmapFactory.decodeStream(context.assets.open("textures/$name"))
     }
 
