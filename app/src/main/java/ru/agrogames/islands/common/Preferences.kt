@@ -29,3 +29,7 @@ var SharedPreferences.units: MutableMap<String, Int>?
         return result
     }
     set(value) = this.edit().putString("units", JSONObject(value!!.toMap()).toString()).apply()
+
+var SharedPreferences.cheats: Boolean
+    get() = this.getBoolean("cheats", false)
+    set(value) = this.edit().putBoolean("cheats", value).apply()

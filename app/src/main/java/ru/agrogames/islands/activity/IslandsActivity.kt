@@ -8,10 +8,12 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.PreferenceManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import ru.agrogames.islands.common.cheats
 import ru.agrogames.islands.engine.impl.Engine
 import ru.agrogames.islands.factories.Factory
 import ru.agrogames.islands.graphics.bitmap.BitmapProvider
@@ -110,11 +112,12 @@ class IslandsActivity : AppCompatActivity() {
                 Renderer(engine, false,
                     if (currentIsland == attackable.size - 1) null else { -> currentIsland++ },
                     if (currentIsland == 0) null else { -> currentIsland-- },
-                    { currentPage++ }, null, true)
+                    { currentPage++ }, null, false)
             )
 
             Page.Game -> GameManager(true, engine,
-                Renderer(engine, true, null, null, null, { currentPage-- }, true))
+                Renderer(engine, true, null, null, null, { currentPage-- },
+                    PreferenceManager.getDefaultSharedPreferences(this).cheats))
 
             Page.MapEditor -> MapEditorManager(this, attackable[currentIsland].id, {currentPage++}) {currentPage--}
             Page.ShipEditor -> ShipEditorManager(this) { currentPage-- }

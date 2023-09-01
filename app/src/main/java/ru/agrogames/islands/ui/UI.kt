@@ -7,6 +7,7 @@ import java.time.temporal.ChronoUnit
 
 class UI {
     private val elements: MutableList<Element> = ArrayList()
+
     companion object {
         private var fps: Int = 0
     }
