@@ -18,6 +18,12 @@ jobs:
       - name: Change wrapper permissions
         run: chmod +x ./gradlew
 
-      # Create APK Release
-      - name: Build apk release project
-        run: ./gradlew assemble
+      - uses: r0adkll/sign-android-release@v1
+        with:
+          releaseDirectory: app/build/outputs/apk/release
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          alias: ${{ secrets.ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
+        env:
+          BUILD_TOOLS_VERSION: "30.0.2"
