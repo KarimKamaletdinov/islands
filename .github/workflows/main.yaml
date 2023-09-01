@@ -26,3 +26,10 @@ jobs:
           keyPassword: ${{ secrets.KEY_PASSWORD }}
         env:
           BUILD_TOOLS_VERSION: "30.0.2"
+      - run: cp app/build/outputs/apk/release/app-release-unsigned-signed.apk islands.apk
+      - uses: appleboy/discord-action@master
+        with:
+          webhook_id: ${{ secrets.WEBHOOK_ID }}
+          webhook_token: ${{ secrets.WEBHOOK_TOKEN }}
+          file: "./images/message.png"
+          message: "Новая версия 'Островов'"
