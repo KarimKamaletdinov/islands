@@ -46,9 +46,6 @@ class Plane(texture: String, health: Int, speed: Float, rotationSpeed: Float, pr
         if (direction == Direction.Right) location.x += speed * deltaTime else if (direction == Direction.Left) location.x -= speed * deltaTime else if (direction == Direction.Up) location.y += speed * deltaTime else if (direction == Direction.Down) location.y -= speed * deltaTime
         val l = Cell(location)
         if (l == goal && timeFromLastBomb == null) timeFromLastBomb = 0.4f
-        if (l.x > MapParams.width + 5 || l.x < -5 || l.y > MapParams.height + 5 || l.y < -5) {
-            health.current = 0
-        }
     }
 
     private fun bomb(bulletAdder: BulletAdder) {

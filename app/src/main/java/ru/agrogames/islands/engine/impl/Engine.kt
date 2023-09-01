@@ -15,6 +15,7 @@ import ru.agrogames.islands.engine.impl.unit.LandUnit
 import ru.agrogames.islands.engine.impl.unit.UnitAdder
 import ru.agrogames.islands.factories.Factory
 import ru.agrogames.islands.islands.abs.Island
+import ru.agrogames.islands.map.MapParams
 import ru.agrogames.islands.map.Water
 import java.util.LinkedList
 
@@ -49,18 +50,10 @@ class Engine(protectors: List<IUnit>, attackers: List<IUnit>, private val mapObj
         val bulletAdder1 = BulletAdder()
         val unitAdder1 = UnitAdder()
         for (unit in protectorsCopy) {
-            try {
-                unit.update(provider1, bulletAdder1, unitAdder1, graphicsAdder, deltaTime)
-            } catch (e: Exception) {
-                Log.e("IOW", "An exception has occurred during Update", e)
-            }
+            unit.update(provider1, bulletAdder1, unitAdder1, graphicsAdder, deltaTime)
         }
         for (bullet in protectorsBulletsCopy) {
-            try {
-                bullet.update(provider1, bulletAdder1, unitAdder1, graphicsAdder, deltaTime)
-            } catch (e: Exception) {
-                Log.e("IOW", "An exception has occurred during Update", e)
-            }
+            bullet.update(provider1, bulletAdder1, unitAdder1, graphicsAdder, deltaTime)
         }
         for (unit in destroyed.toTypedArray()) {
             unit.addTsd(deltaTime)
@@ -74,18 +67,10 @@ class Engine(protectors: List<IUnit>, attackers: List<IUnit>, private val mapObj
         val provider2 = MapProvider(attackersCopy, protectorsCopy, mapObjects)
         val unitAdder2 = UnitAdder()
         for (unit in attackersCopy) {
-            try {
-                unit.update(provider2, bulletAdder2, unitAdder2, graphicsAdder, deltaTime)
-            } catch (e: Exception) {
-                Log.e("IOW", "An exception has occurred during Update", e)
-            }
+            unit.update(provider2, bulletAdder2, unitAdder2, graphicsAdder, deltaTime)
         }
         for (bullet in attackersBulletsCopy) {
-            try {
-                bullet.update(provider2, bulletAdder2, unitAdder2, graphicsAdder, deltaTime)
-            } catch (e: Exception) {
-                Log.e("IOW", "An exception has occurred during Update", e)
-            }
+            bullet.update(provider2, bulletAdder2, unitAdder2, graphicsAdder, deltaTime)
         }
         attackersBullets.addAll(bulletAdder2.bullets)
         attackers.addAll(unitAdder2.units)
@@ -104,7 +89,11 @@ class Engine(protectors: List<IUnit>, attackers: List<IUnit>, private val mapObj
             }
         }
         for (unit in attackers.toTypedArray()) {
-            if (unit.health.current <= 0) {
+            if(unit.location.x > MapParams.width + 5
+                || unit.location.x < -5 || unit.location.y > MapParams.height + 5
+                || unit.location.y < -5){
+                attackers.remove(unit)
+            } else if (unit.health.current <= 0) {
                 if (unit is LandUnit) {
                     attackers.remove(unit)
                     otherObjects.add(Factory.getGraphics("bang", unit.location, unit.rotation))
@@ -117,7 +106,9 @@ class Engine(protectors: List<IUnit>, attackers: List<IUnit>, private val mapObj
             if (unit.timeSinceDestroyed() >= 3.5f) {
                 destroyed.remove(unit)
                 attackers.remove(unit)
-                if (mapObjects.none { it is Water && it.territory.contains(Cell(unit.location)) }) {
+                if (mapObjects.none { it is Water && it.territory.contains(Cell(unit.location)) }
+                    && unit.location.x > 0 && unit.location.x < MapParams.width
+                    && unit.location.y > 0 && unit.location.y < MapParams.height) {
                     otherObjects.add(Factory.getGraphics("big_bang", unit.location, unit.rotation))
                 }
                 for (cell in unit.territory) {

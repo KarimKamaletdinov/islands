@@ -29,7 +29,7 @@ import kotlin.properties.Delegates
 class IslandsActivity : AppCompatActivity() {
     private lateinit var gLView: GLSurfaceView
     private lateinit var renderer: GLRenderer
-    private var currentPage: Page by Delegates.observable(Page.MapEditor) { _, _, _ -> startView() }
+    private var currentPage: Page by Delegates.observable(Page.Start) { _, _, _ -> startView() }
     private var currentIsland: Int by Delegates.observable(0) { _, _, _ -> startView() }
 
     enum class Page {

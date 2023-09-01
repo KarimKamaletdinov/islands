@@ -9,6 +9,7 @@ import ru.agrogames.islands.engine.abs.common.Cell
 import ru.agrogames.islands.engine.abs.common.Point
 import ru.agrogames.islands.graphics.drawtexture.TextureDrawer
 import ru.agrogames.islands.map.Map
+import ru.agrogames.islands.map.MapParams
 import ru.agrogames.islands.render.MapScroller
 import ru.agrogames.islands.ui.Element
 import ru.agrogames.islands.ui.ElementType
@@ -122,7 +123,8 @@ class MapEditorManager(context: Context, private val islandId: Int, private val 
         else if (!ui.render(textureDrawer, touchPoint)){
             val p = MapScroller.convert(touchPoint!!)
             val c = Cell(p)
-            if(map.map.none { c in it.territory }) {
+            if(map.map.none { c in it.territory } && c.x >= 0 && c.x < MapParams.width
+                    && c.y >= 0 && c.y < MapParams.height) {
                 units[c.x][c.y] = selected
                 preferences.island = units
             }
