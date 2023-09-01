@@ -1,0 +1,23 @@
+#https://discordapp.com/api/webhooks/1147172825946406912/c8zDvmZQB3jII0P-iza3yOJq-r15hjVklHmazmE_Ha2DLS9IlODMMjaE1GIVIsbhCpCm
+name: Build
+on: push
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+          cache: 'gradle'
+      - uses: fwilhe2/setup-kotlin@main
+
+      - name: Change wrapper permissions
+        run: chmod +x ./gradlew
+
+      # Create APK Release
+      - name: Build apk release project
+        run: ./gradlew assemble
