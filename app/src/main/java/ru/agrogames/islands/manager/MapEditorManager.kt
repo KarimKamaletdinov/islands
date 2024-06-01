@@ -4,12 +4,14 @@ import android.content.Context
 import androidx.preference.PreferenceManager
 import org.json.JSONObject
 import ru.agrogames.islands.common.island
+import ru.agrogames.islands.common.map
 import ru.agrogames.islands.common.toStringList
 import ru.agrogames.islands.engine.abs.common.Cell
 import ru.agrogames.islands.engine.abs.common.Point
 import ru.agrogames.islands.graphics.drawtexture.TextureDrawer
 import ru.agrogames.islands.map.Map
 import ru.agrogames.islands.map.MapParams
+import ru.agrogames.islands.map.Water
 import ru.agrogames.islands.render.MapScroller
 import ru.agrogames.islands.ui.Element
 import ru.agrogames.islands.ui.ElementType
@@ -28,7 +30,7 @@ class MapEditorManager(context: Context, private val islandId: Int, private val 
     private val spawnUnitsUi = LinkedList<Element>()
     private val preferences = PreferenceManager.getDefaultSharedPreferences(context)
     private val units = preferences.island
-    private val map = Map.fromJsonBin("map$islandId.txt")
+    private var map = preferences.map
     init {
         ui.createElement(
             Element(
@@ -89,6 +91,42 @@ class MapEditorManager(context: Context, private val islandId: Int, private val 
                 }
             }
         }
+        spawnUnitsUi.add(
+            ui.createElement(
+                Element(ElementType.Button, 14f, 12f - spawnUnits.size, 1.2f, 1.2f,
+                    if (selected == "land") "other/red" else "ui/button_background", {
+                        selected =
+                            if(selected == "land" ) null
+                            else "land"
+                    })
+            )
+        )
+        spawnUnitsUi.add(
+            ui.createElement(
+                Element(
+                    ElementType.Button, 14f, 12f - spawnUnits.size, 0.5f, 0.5f,
+                    "other/land", renderInBorders = false
+                )
+            )
+        )
+        spawnUnitsUi.add(
+            ui.createElement(
+                Element(ElementType.Button, 14f, 11f - spawnUnits.size, 1.2f, 1.2f,
+                    if (selected == "water") "other/red" else "ui/button_background", {
+                        selected =
+                            if(selected == "water" ) null
+                            else "water"
+                    })
+            )
+        )
+        spawnUnitsUi.add(
+            ui.createElement(
+                Element(
+                    ElementType.Button, 14f, 11f - spawnUnits.size, 0.5f, 0.5f,
+                    "other/water", renderInBorders = false
+                )
+            )
+        )
     }
 
     private var touchPoint: Point? = null
@@ -101,7 +139,13 @@ class MapEditorManager(context: Context, private val islandId: Int, private val 
 
     override fun render(textureDrawer: TextureDrawer) {
         MapScroller.start(textureDrawer)
-        textureDrawer.drawTexture(15f, 10f, "imagekit/map$islandId", 30f, 20f, 0f)
+        for (x in 1 ..<MapParams.width) {
+            for (y in 1..<MapParams.height) {
+                if(map.mp.none { it.territory[0] == Cell(x, y) }) {
+                    textureDrawer.drawTexture(x.toFloat(), y.toFloat(), "other/land", 1.4f, 1.4f, 0f)
+                }
+            }
+        }
         for (x in units.withIndex()){
             for(y in x.value.withIndex()){
                 if(y.value != null){
@@ -123,10 +167,22 @@ class MapEditorManager(context: Context, private val islandId: Int, private val 
         else if (!ui.render(textureDrawer, touchPoint)){
             val p = MapScroller.convert(touchPoint!!)
             val c = Cell(p)
-            if(map.map.none { c in it.territory } && c.x >= 0 && c.x < MapParams.width
+            if(selected == "land" && c.x > 1 && c.y > 1 && c.x < MapParams.width && c.y < MapParams.height) {
+                val nm = mutableListOf(*map.mp)
+                nm.removeAll { c in it.territory }
+                map = Map(map.name, nm.toTypedArray())
+                preferences.map = map
+            } else if(map.mp.none { c in it.territory } && c.x >= 0 && c.x < MapParams.width
                     && c.y >= 0 && c.y < MapParams.height) {
-                units[c.x][c.y] = selected
-                preferences.island = units
+                if(selected == "water") {
+                    val nm = mutableListOf(*map.mp)
+                    nm.add(Water(c))
+                    map = Map(map.name, nm.toTypedArray())
+                    preferences.map = map
+                } else {
+                    units[c.x][c.y] = selected
+                    preferences.island = units
+                }
             }
         }
         if (movePoint != null && previousMovePoint != null)

@@ -63,10 +63,10 @@ class Renderer(private val engine: Engine, private val runEngine: Boolean, right
                zoom1: Point?, zoom2: Point?, previousZoom1: Point?, previousZoom2: Point?) {
         MapScroller.start(textureDrawer)
         //textureDrawer.drawTexture(15f, 10f, "imagekit/" + engine.mapName.substringBefore('.'), 30f, 20f, 0f)
-        for (x in 1 ..<MapParams.width) {
+        for (x in 0 ..<MapParams.width) {
             for (y in 1..<MapParams.height) {
                 if(engine.mapObjects.none { it.territory[0] == Cell(x, y) }) {
-                    textureDrawer.drawTexture(x.toFloat(), y.toFloat(), "other/land", 1.5f, 1.3f, 0f)
+                    textureDrawer.drawTexture(x.toFloat() - 0.5f, y.toFloat() - 0.5f, "other/land", 1.4f, 1.4f, 0f)
                 }
             }
         }

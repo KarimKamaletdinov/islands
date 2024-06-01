@@ -6,8 +6,22 @@ import ru.agrogames.islands.common.JsonBin
 import ru.agrogames.islands.engine.abs.common.Cell
 import ru.agrogames.islands.engine.abs.map.MapObject
 
-class Map private constructor(val name: String, val map: Array<MapObject>) {
+class Map (val name: String, val mp: Array<MapObject>) {
 
+    override fun toString(): String {
+        var result = ""
+        for (y in MapParams.height downTo 1) {
+            for (x in 0..<MapParams.width) {
+                result += if(mp.any { it.territory[0] == Cell(x, y) }) {
+                    "w"
+                } else {
+                    " "
+                }
+            }
+            result += "\n"
+        }
+        return result
+    }
     companion object {
         private lateinit var cache: JSONObject
 

@@ -1,9 +1,13 @@
 package ru.agrogames.islands.common
 
+import android.content.Context
 import android.content.SharedPreferences
 import org.json.JSONArray
 import org.json.JSONObject
+import ru.agrogames.islands.islands.abs.Island
 import ru.agrogames.islands.map.MapParams
+import ru.agrogames.islands.map.Map
+import java.util.Scanner
 
 var SharedPreferences.sound
     get() = this.getBoolean("sound", true)
@@ -33,3 +37,28 @@ var SharedPreferences.units: MutableMap<String, Int>?
 var SharedPreferences.cheats: Boolean
     get() = this.getBoolean("cheats", false)
     set(value) = this.edit().putBoolean("cheats", value).apply()
+var SharedPreferences.map: Map
+    get(){
+        return Map.load("", this.getString("map",
+            "wwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n" +
+                "wwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n" +
+                "wwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n" +
+                "wwwwwww      wwwwwwwwwwwwwwwww\n" +
+                "wwwwww         wwwwwwwwwwwwwww\n" +
+                "wwwwww          wwwwwwwwwwwwww\n" +
+                "wwwww                wwwwwwwww\n" +
+                "wwwww                wwwwwwwww\n" +
+                "wwwww                 wwwwwwww\n" +
+                "wwwww                 wwwwwwww\n" +
+                "wwwww                 wwwwwwww\n" +
+                "wwwww                 wwwwwwww\n" +
+                "wwwwww                wwwwwwww\n" +
+                "wwwwwww               wwwwwwww\n" +
+                "wwwwwwww             wwwwwwwww\n" +
+                "wwwwwwwwwww         wwwwwwwwww\n" +
+                "wwwwwwwwwwwwww    wwwwwwwwwwww\n" +
+                "wwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n" +
+                "wwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n" +
+                "wwwwwwwwwwwwwwwwwwwwwwwwwwwwww")!!)
+    }
+    set(value) = this.edit().putString("map", value.toString()).apply()

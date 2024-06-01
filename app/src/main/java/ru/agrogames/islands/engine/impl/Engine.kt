@@ -29,7 +29,7 @@ class Engine(protectors: List<IUnit>, attackers: List<IUnit>, val mapObjects: Ar
     var state = GameState.Game
         private set
 
-    constructor(island: Island) : this(listOf(*island.owners.clone()), listOf(island.attacker), island.map.map)
+    constructor(island: Island) : this(listOf(*island.owners.clone()), listOf(island.attacker), island.map.mp)
     fun update(deltaTime: Float) {
         try {
             updateObjects(deltaTime)
