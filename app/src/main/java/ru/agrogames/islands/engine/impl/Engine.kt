@@ -19,7 +19,7 @@ import ru.agrogames.islands.map.MapParams
 import ru.agrogames.islands.map.Water
 import java.util.LinkedList
 
-class Engine(protectors: List<IUnit>, attackers: List<IUnit>, private val mapObjects: Array<MapObject>, val mapName: String) {
+class Engine(protectors: List<IUnit>, attackers: List<IUnit>, val mapObjects: Array<MapObject>) {
     val protectors: MutableList<IUnit> = LinkedList(protectors)
     val attackers: MutableList<IUnit> = LinkedList(attackers)
     private val destroyed: MutableList<IUnit> = LinkedList()
@@ -29,7 +29,7 @@ class Engine(protectors: List<IUnit>, attackers: List<IUnit>, private val mapObj
     var state = GameState.Game
         private set
 
-    constructor(island: Island) : this(listOf(*island.owners.clone()), listOf(island.attacker), island.map.map, island.map.name)
+    constructor(island: Island) : this(listOf(*island.owners.clone()), listOf(island.attacker), island.map.map)
     fun update(deltaTime: Float) {
         try {
             updateObjects(deltaTime)

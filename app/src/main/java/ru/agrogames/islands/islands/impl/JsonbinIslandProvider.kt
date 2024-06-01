@@ -9,6 +9,7 @@ import ru.agrogames.islands.common.JsonBin
 import ru.agrogames.islands.common.units
 import ru.agrogames.islands.islands.abs.Island
 import ru.agrogames.islands.islands.abs.IslandProvider
+import java.util.Scanner
 
 class JsonbinIslandProvider(private val context: Context) : IslandProvider {
     override val my
@@ -20,9 +21,8 @@ class JsonbinIslandProvider(private val context: Context) : IslandProvider {
     }
     private fun getIslands(): Array<Island> {
         if(jsonCache == null) {
-            val client = OkHttpClient()
-            val response = client.newCall(JsonBin.islands).execute().body!!.string()
-            jsonCache = JSONObject(response).getJSONArray("record")
+            val response = Scanner(context.assets.open("islands.json")).useDelimiter("\\A").next()
+            jsonCache = JSONArray(response)
         }
         return (0 until jsonCache!!.length()).map {
             IslandFactory.parse(

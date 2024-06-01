@@ -12,6 +12,7 @@ import ru.agrogames.islands.engine.abs.unit.IUnit
 import ru.agrogames.islands.engine.impl.Engine
 import ru.agrogames.islands.factories.Factory
 import ru.agrogames.islands.graphics.drawtexture.TextureDrawer
+import ru.agrogames.islands.map.MapParams
 import ru.agrogames.islands.sounds.SoundPlayer
 import ru.agrogames.islands.ui.Element
 import ru.agrogames.islands.ui.ElementType
@@ -61,7 +62,14 @@ class Renderer(private val engine: Engine, private val runEngine: Boolean, right
                movePoint: Point?, previousMovePoint: Point?,
                zoom1: Point?, zoom2: Point?, previousZoom1: Point?, previousZoom2: Point?) {
         MapScroller.start(textureDrawer)
-        textureDrawer.drawTexture(15f, 10f, "imagekit/" + engine.mapName.substringBefore('.'), 30f, 20f, 0f)
+        //textureDrawer.drawTexture(15f, 10f, "imagekit/" + engine.mapName.substringBefore('.'), 30f, 20f, 0f)
+        for (x in 1 ..<MapParams.width) {
+            for (y in 1..<MapParams.height) {
+                if(engine.mapObjects.none { it.territory[0] == Cell(x, y) }) {
+                    textureDrawer.drawTexture(x.toFloat(), y.toFloat(), "other/land", 1.5f, 1.3f, 0f)
+                }
+            }
+        }
         selectable.clear()
         val renderer = ObjectRenderer(textureDrawer)
         for (r in engine.other) {

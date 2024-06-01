@@ -18,7 +18,7 @@ class Map private constructor(val name: String, val map: Array<MapObject>) {
             return load(name, cache.getString(name))
         }
 
-        private fun load(name: String, fileContent: String): Map {
+        fun load(name: String, fileContent: String): Map {
             val map: MutableList<MapObject> = ArrayList()
             val rows = fileContent.split("\n".toRegex()).dropLastWhile { it.isEmpty() }
             for (i in rows.indices) {

@@ -9,7 +9,7 @@ import ru.agrogames.islands.map.Map
 object IslandFactory {
     fun parse(context: Context, id: Int, text: String): Island {
         val json = JSONObject(text)
-        val map: Map = Map.fromJsonBin("map" + json.getInt("map_id") + ".txt")
+        val map: Map = Map.load("", json.getString("map"))
         val unitsJson = json.getJSONArray("units")
         val units = (0 until unitsJson.length()).map {
             val unit = unitsJson.getJSONObject(it)
