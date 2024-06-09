@@ -20,7 +20,8 @@ import ru.agrogames.islands.ui.UI
 import kotlin.math.atan
 
 class Renderer(private val engine: Engine, private val runEngine: Boolean, right: (() -> Unit)?,
-               left: (() -> Unit)?, attack: (() -> Unit)?, private var back: (() -> Unit)?, private val cheat: Boolean) {
+               left: (() -> Unit)?, attack: (() -> Unit)?, private var back: (() -> Unit)?,
+               share: (() -> Unit)?, delete: (() -> Unit)?, private val cheat: Boolean) {
 
     private val ui = UI()
     private var selectedUnit: IUnit? = null
@@ -33,6 +34,7 @@ class Renderer(private val engine: Engine, private val runEngine: Boolean, right
         }, false))
     private val landingList: UnitList = UnitList(ui, 14f)
     private val planeList: UnitList = UnitList(ui, 0f)
+    private var landCells: List<Cell>? = null
 
     init {
         if (runEngine)
@@ -55,6 +57,16 @@ class Renderer(private val engine: Engine, private val runEngine: Boolean, right
                     Element(ElementType.Button, 7.5f, 1f, 4f, 1f, "ui/attack_button",
                     { attack() })
                 )
+            if (share != null)
+                ui.createElement(
+                    Element(ElementType.Button, 1f, 8f, 1f, 1f, "ui/share_button",
+                    { share() })
+                )
+            if (delete != null)
+                ui.createElement(
+                    Element(ElementType.Button, 2.2f, 8f, 1f, 1f, "ui/delete_button",
+                    { delete() })
+                )
         }
     }
 
@@ -62,12 +74,20 @@ class Renderer(private val engine: Engine, private val runEngine: Boolean, right
                movePoint: Point?, previousMovePoint: Point?,
                zoom1: Point?, zoom2: Point?, previousZoom1: Point?, previousZoom2: Point?) {
         MapScroller.start(textureDrawer)
-        //textureDrawer.drawTexture(15f, 10f, "imagekit/" + engine.mapName.substringBefore('.'), 30f, 20f, 0f)
-        for (x in 0 ..<MapParams.width) {
-            for (y in 1..<MapParams.height) {
-                if(engine.mapObjects.none { it.territory[0] == Cell(x, y) }) {
-                    textureDrawer.drawTexture(x.toFloat() - 0.5f, y.toFloat() - 0.5f, "other/land", 1.4f, 1.4f, 0f)
+
+        if(landCells == null) {
+            val m = mutableListOf<Cell>()
+            for (x in 0 ..<MapParams.width) {
+                for (y in 1..<MapParams.height) {
+                    if(engine.mapObjects.none { it.territory[0] == Cell(x, y) }) {
+                        m.add(Cell(x, y))
+                    }
                 }
+            }
+            landCells = m
+        } else {
+            for (c in landCells ?: listOf()){
+                textureDrawer.drawTexture(c.x.toFloat() - 0.5f, c.y.toFloat() - 0.5f, "other/land", 1.4f, 1.4f, 0f)
             }
         }
         selectable.clear()

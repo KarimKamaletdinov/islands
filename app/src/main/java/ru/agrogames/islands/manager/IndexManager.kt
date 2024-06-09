@@ -11,7 +11,7 @@ import ru.agrogames.islands.ui.Element
 import ru.agrogames.islands.ui.ElementType
 import ru.agrogames.islands.ui.UI
 
-class IndexManager(context: Context, editor: () -> Unit, play: () -> Unit) : Manager {
+class IndexManager(context: Context, editor: () -> Unit, play: () -> Unit, upload: () -> Boolean) : Manager {
     private val preferences = PreferenceManager.getDefaultSharedPreferences(context)
     private val ui = UI()
     private val cheatsButtonTexture
@@ -39,8 +39,18 @@ class IndexManager(context: Context, editor: () -> Unit, play: () -> Unit) : Man
 
         ui.createElement(
             Element(
-            ElementType.Button, 1f, 8f, 7f, 1f,
+            ElementType.Button, 1f, 8f, 1f, 1f,
             "ui/editor_button", {editor()})
+        )
+
+        ui.createElement(
+            Element(
+                ElementType.Button, 1f, 1f, 1f, 1f,
+                "ui/upload_button", {
+                    val ok = upload()
+                    if(!ok)
+                        ui.createElement(Element(ElementType.Button, 6f, 1f, 9f, 1f, "ui/upload_error"))
+                })
         )
     }
 

@@ -1,6 +1,9 @@
 package ru.agrogames.islands.activity
 
 import android.annotation.SuppressLint
+import android.content.ClipboardManager
+import android.content.Context
+import android.content.Intent
 import android.opengl.GLSurfaceView
 import android.os.Bundle
 import android.util.Log
@@ -14,11 +17,14 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import ru.agrogames.islands.common.cheats
+import ru.agrogames.islands.common.gzip
+import ru.agrogames.islands.common.ungzip
 import ru.agrogames.islands.engine.impl.Engine
 import ru.agrogames.islands.factories.Factory
 import ru.agrogames.islands.graphics.bitmap.BitmapProvider
 import ru.agrogames.islands.graphics.gl.GLRenderer
-import ru.agrogames.islands.islands.impl.JsonbinIslandProvider
+import ru.agrogames.islands.islands.impl.IslandFactory
+import ru.agrogames.islands.islands.impl.IslandProvider
 import ru.agrogames.islands.manager.GameManager
 import ru.agrogames.islands.manager.IndexManager
 import ru.agrogames.islands.manager.MapEditorManager
@@ -102,24 +108,63 @@ class IslandsActivity : AppCompatActivity() {
     }
 
     private fun startView() {
-        val attackable = JsonbinIslandProvider(this).attackable
-        val engine = Engine(attackable[currentIsland])
+        val provider = IslandProvider(this)
+        val islands = provider.attackable
+        if(currentIsland >= islands.size) {
+            currentIsland = islands.size - 1
+            return
+        }
+        val engine = Engine(islands[currentIsland])
         Log.i("IOW", "aa")
         this.renderer.manager = when (currentPage) {
-            Page.Start -> IndexManager(this, { currentPage = Page.MapEditor }) { currentPage++ }
+            Page.Start -> IndexManager(this, { currentPage = Page.MapEditor }, { currentPage++; currentIsland = 0 },
+                {
+                    val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                    val item = clipboard.primaryClip?.getItemAt(0)
+                    val pasteData = item?.text ?: return@IndexManager false
+                    try {
+                        val json = pasteData.toString().ungzip
+                        IslandFactory.parse(this, 0, json)
+                        provider.saveIsland(json)
+                        currentIsland = 0
+                        currentPage++
+                        return@IndexManager true
+                    } catch (_: Exception){
+                        return@IndexManager false
+                    }
+                })
 
             Page.Choose -> GameManager(false, engine,
                 Renderer(engine, false,
-                    if (currentIsland == attackable.size - 1) null else { -> currentIsland++ },
+                    if (currentIsland == islands.size - 1) null else { -> currentIsland++ },
                     if (currentIsland == 0) null else { -> currentIsland-- },
-                    { currentPage++ }, null, false)
+                    { currentPage++ }, null, {
+                        val t = this
+                        applicationContext.openFileOutput("test.txt", Context.MODE_PRIVATE).use {
+                            it.write("test".toByteArray())
+                        }
+                        val shareIntent: Intent = Intent().apply {
+                            action = Intent.ACTION_SEND
+                            //val uri = FileProvider.getUriForFile(t, "com.agrogames.fileprovider", File(applicationContext.filesDir, "test.txt"))
+                            val gzip = IslandProvider(t).islandToString(islands[currentIsland].id).gzip
+                            putExtra(Intent.EXTRA_TEXT, gzip)
+                            type = "text/markdown"
+                        }
+                        startActivity(Intent.createChooser(shareIntent, null))
+                    }, {
+                       if(islands.size == 1) {
+                           return@Renderer
+                       }
+                        provider.deleteIsland(islands[currentIsland].id)
+                        startView()
+                    }, false)
             )
 
             Page.Game -> GameManager(true, engine,
-                Renderer(engine, true, null, null, null, { currentPage-- },
+                Renderer(engine, true, null, null, null, { currentPage-- }, null, null,
                     PreferenceManager.getDefaultSharedPreferences(this).cheats))
 
-            Page.MapEditor -> MapEditorManager(this, attackable[currentIsland].id, {currentPage++}) {currentPage--}
+            Page.MapEditor -> MapEditorManager(this, islands[currentIsland].id, {currentPage++}) {currentPage--}
             Page.ShipEditor -> ShipEditorManager(this) { currentPage-- }
         }
     }

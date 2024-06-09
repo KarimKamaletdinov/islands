@@ -12,7 +12,7 @@ import ru.agrogames.islands.common.toStringList
 import ru.agrogames.islands.common.units
 import ru.agrogames.islands.engine.abs.common.Point
 import ru.agrogames.islands.graphics.drawtexture.TextureDrawer
-import ru.agrogames.islands.islands.impl.JsonbinIslandProvider
+import ru.agrogames.islands.islands.impl.IslandProvider
 import ru.agrogames.islands.ui.Element
 import ru.agrogames.islands.ui.ElementType
 import ru.agrogames.islands.ui.UI
@@ -77,7 +77,7 @@ class ShipEditorManager(context: Context, private val back: () -> Unit) : Manage
                     runBlocking {
                         launch {
                             withContext(Dispatchers.IO) {
-                                JsonbinIslandProvider(context).saveIsland()
+                                IslandProvider(context).saveIsland()
                                 back()
                                 back()
                             }

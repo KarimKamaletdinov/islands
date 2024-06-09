@@ -1,19 +1,20 @@
 package ru.agrogames.islands.islands.impl
 
 import android.content.Context
-import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
-import okhttp3.OkHttpClient
 import org.json.JSONArray
 import org.json.JSONObject
-import ru.agrogames.islands.common.JsonBin
 import ru.agrogames.islands.common.map
 import ru.agrogames.islands.common.units
+import ru.agrogames.islands.engine.abs.common.Cell
+import ru.agrogames.islands.engine.abs.transport.TransportUnit
+import ru.agrogames.islands.engine.impl.unit.BigShip
 import ru.agrogames.islands.islands.abs.Island
 import ru.agrogames.islands.islands.abs.IslandProvider
 import java.util.Scanner
 
-class JsonbinIslandProvider(private val context: Context) : IslandProvider {
+class IslandProvider(private val context: Context) :
+    IslandProvider {
     override val my
         get() = emptyArray<Island>()
     override val attackable
@@ -29,7 +30,7 @@ class JsonbinIslandProvider(private val context: Context) : IslandProvider {
                 it + 1,
                 json[it].toString()
             )
-        }.toTypedArray()
+        }.reversed().toTypedArray()
     }
 
     override fun getMyById(id: Int): Island {
@@ -45,7 +46,7 @@ class JsonbinIslandProvider(private val context: Context) : IslandProvider {
         val response = preferences.getString("islands",
             Scanner(context.assets.open("islands.json")).useDelimiter("\\A").next())!!
         val json = JSONArray(response)
-        json.put(0, JSONObject("""{
+        json.put(JSONObject("""{
             "map": "${preferences.map.toString().replace("\n", "\\n")}",
             "ship": {
               "name": "transport_ship",
@@ -53,6 +54,30 @@ class JsonbinIslandProvider(private val context: Context) : IslandProvider {
             },
             "units": ${preferences.getString("island", "[]")}
         }""".trimIndent()))
+        preferences.edit().putString("islands", json.toString()).apply()
+    }
+
+    fun saveIsland(jsonString: String){
+        val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+        val response = preferences.getString("islands",
+            Scanner(context.assets.open("islands.json")).useDelimiter("\\A").next())!!
+        val json = JSONArray(response)
+        json.put(JSONObject(jsonString))
+        preferences.edit().putString("islands", json.toString()).apply()
+    }
+    fun islandToString(islandId: Int): String{
+        val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+        val response = preferences.getString("islands",
+            Scanner(context.assets.open("islands.json")).useDelimiter("\\A").next())!!
+        val json = JSONArray(response)
+        return json.getJSONObject(islandId - 1).toString(0).replace("\n", "")
+    }
+    fun deleteIsland(islandId: Int){
+        val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+        val response = preferences.getString("islands",
+            Scanner(context.assets.open("islands.json")).useDelimiter("\\A").next())!!
+        val json = JSONArray(response)
+        json.remove(islandId - 1)
         preferences.edit().putString("islands", json.toString()).apply()
     }
 }
